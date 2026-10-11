@@ -1,0 +1,923 @@
+/* Accepted Atlas A: library | stacked editor/result | teaching inspector. */
+:root {
+  --bg: #0c1622;
+  --surface: #132131;
+  --raised: #1c2d40;
+  --line: #2e435b;
+  --text: #edf4ff;
+  --muted: #a4b8d2;
+  --accent: #66baff;
+  --strong: #2189ed;
+  --code: #0d1a28;
+  --teaching: #ffcf57;
+}
+html[data-theme="light"] {
+  --bg: #eff4fa;
+  --surface: #fff;
+  --raised: #e5eef9;
+  --line: #c1d1e4;
+  --text: #162d47;
+  --muted: #526d8c;
+  --accent: #156cb3;
+  --strong: #217acb;
+  --code: #f5f9fe;
+  --teaching: #805500;
+}
+html {
+  overflow: hidden;
+}
+body {
+  height: 100dvh;
+  overflow: hidden;
+}
+.preview-note {
+  display: none;
+}
+header {
+  height: 80px;
+  padding: 16px 24px;
+  margin: 0;
+  background: transparent;
+  border: 0;
+  gap: 20px;
+}
+.brand {
+  font-size: 25px;
+  letter-spacing: -0.6px;
+  gap: 4px;
+}
+.brand strong {
+  color: var(--accent);
+  font-weight: 650;
+}
+.logo {
+  width: 43px;
+  height: 40px;
+}
+.header-place {
+  border-left: 1px solid var(--line);
+  padding-left: 22px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.header-tools {
+  margin-left: auto;
+}
+.library-toggle {
+  display: none;
+}
+main.atlas-layout {
+  max-width: none;
+  margin: 0;
+  padding: 0 22px;
+  height: calc(100dvh - 80px);
+  display: grid;
+  grid-template-columns: 290px minmax(0, 1fr);
+  gap: 14px;
+}
+.atlas-library {
+  height: 100%;
+  overflow: auto;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  padding: 13px;
+  scrollbar-width: thin;
+}
+.catalogue-nav {
+  display: flex;
+  flex: none;
+  gap: 2px;
+  margin: 0 0 14px;
+  padding: 4px;
+  background: var(--bg);
+  border-radius: 9px;
+}
+.catalogue-nav a {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  padding: 8px 3px;
+  gap: 3px;
+  white-space: normal;
+  text-align: center;
+  border: 0;
+}
+.catalogue-nav a svg {
+  display: none;
+}
+.catalogue-nav a[aria-current="page"] {
+  background: var(--strong);
+  color: white;
+  box-shadow: none;
+}
+.collection-heading {
+  display: none;
+}
+.filters {
+  display: block;
+  margin: 0 0 15px;
+}
+.search-field {
+  width: 100%;
+  padding: 9px;
+  border-radius: 9px;
+  background: var(--raised);
+}
+.search-field input {
+  width: 100%;
+  font-size: 12px;
+}
+.segmented {
+  display: flex;
+  margin-top: 10px;
+  gap: 5px;
+}
+.segmented button {
+  flex: 1;
+  font-size: 11px;
+  padding: 7px 4px;
+}
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.example-card {
+  display: flex;
+  flex-direction: column;
+  padding: 9px;
+  border-radius: 11px;
+  background: var(--bg);
+  min-width: 0;
+  border: 1px solid var(--line);
+}
+.example-card.is-selected {
+  border-color: var(--accent);
+  box-shadow: inset 0 0 0 1px var(--accent);
+  background: var(--raised);
+}
+.example-card h2 {
+  margin: 0;
+  padding: 0;
+  font-size: 13px;
+  order: 2;
+}
+.example-card > a {
+  order: 1;
+}
+.example-card img {
+  width: 100%;
+  height: 103px;
+  object-fit: contain;
+  margin: 0;
+  border-radius: 7px;
+  background: transparent !important;
+}
+.card-copy {
+  padding: 0;
+  order: 3;
+}
+.card-copy > :not(.button) {
+  display: none;
+}
+.card-copy .button {
+  background: none;
+  border: 0;
+  color: var(--muted);
+  font-size: 10px;
+  padding: 6px 0 0;
+  margin: 0;
+  border-radius: 0;
+  display: flex;
+  justify-content: space-between;
+}
+.atlas-workspace {
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  scrollbar-width: thin;
+}
+.workspace-heading {
+  margin: 0 0 10px;
+  align-items: center;
+  min-height: 35px;
+  padding: 0 4px;
+}
+.workspace-heading h1 {
+  font-size: 17px;
+  margin: 0;
+  letter-spacing: 0;
+}
+.workspace-heading .back,
+.workspace-heading .eyebrow,
+.workspace-heading p {
+  display: none;
+}
+.workspace-actions {
+  display: flex;
+  gap: 7px;
+}
+.workspace-actions button {
+  padding: 5px 9px;
+  font-size: 11px;
+}
+.workspace-panels {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 14px;
+  align-items: stretch;
+}
+.workbench {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  grid-column: 1;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  overflow: hidden;
+  background: var(--surface);
+}
+.code-pane,
+.result-pane {
+  border: 0;
+  border-radius: 0;
+  min-width: 0;
+}
+.code-pane {
+  flex: 0 0 38%;
+  display: flex;
+  flex-direction: column;
+  min-height: 160px;
+}
+.result-pane {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border-top: 1px solid var(--line);
+  position: relative;
+}
+.pane-header {
+  min-height: 43px;
+  padding: 10px 15px;
+  font-size: 12px;
+  border-bottom: 1px solid var(--line);
+}
+.editor-host {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+.editor-host .cm-editor {
+  height: 100%;
+}
+.editor-host .cm-scroller {
+  overflow: auto;
+}
+.code-footer {
+  display: none;
+}
+.canvas-surface {
+  flex: 1;
+  min-height: 0;
+  height: auto;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+.canvas-surface canvas {
+  width: auto;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  aspect-ratio: 1;
+}
+.playback {
+  padding: 10px 14px;
+  display: flex;
+  gap: 8px;
+  border-top: 1px solid var(--line);
+}
+.playback .button {
+  padding: 8px 16px;
+  font-size: 12px;
+}
+#status {
+  font-size: 11px;
+  color: var(--muted);
+}
+.explanation-pane {
+  grid-column: 2;
+  margin: 0;
+  padding: 17px;
+  border-radius: 13px;
+  overflow: auto;
+  scrollbar-width: thin;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  min-width: 0;
+}
+.explanation-pane h2 {
+  margin: 0 0 12px;
+  font-size: 17px;
+  color: var(--accent);
+}
+.explanation-pane > p {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 8px 0 16px;
+}
+.explanation-pane > h3 {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted);
+  margin: 15px 0 8px;
+}
+.signature {
+  background: var(--bg);
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 7px;
+  font-size: 11px;
+  line-height: 1.7;
+}
+.argument-map {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 11px;
+  align-items: center;
+}
+.argument-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px;
+  border-radius: 5px;
+  background: var(--raised);
+}
+.argument-chip .number,
+.parameter-rows .number {
+  background: #ffcf57;
+  color: #182334;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 50%;
+  font-weight: 700;
+}
+.argument-chip .number {
+  width: 16px;
+  height: 16px;
+  font-size: 10px;
+}
+.argument-chip code {
+  color: var(--accent);
+}
+.parameter-rows .parameter-row {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+  padding: 16px 0;
+  font-size: 12px;
+}
+.parameter-rows .parameter-row > span:last-child {
+  grid-column: 2 / 4;
+  font-size: 12px;
+  color: var(--muted);
+}
+.parameter-rows .parameter-value {
+  color: var(--accent);
+  max-width: 105px;
+  overflow-wrap: anywhere;
+}
+.try-this {
+  margin-top: 18px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: var(--bg);
+  display: flex;
+  gap: 9px;
+}
+.try-this > svg {
+  color: var(--teaching);
+  flex: none;
+  width: 19px;
+}
+.try-this h2 {
+  color: var(--text);
+  font-size: 15px;
+}
+.try-this code {
+  font-size: 11px;
+  overflow-wrap: anywhere;
+  color: var(--teaching);
+}
+.try-this p {
+  font-size: 12px;
+  color: var(--muted);
+}
+.export-bar {
+  margin-top: 9px;
+  padding: 0 4px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+.export-bar p {
+  font-size: 10px;
+  color: var(--muted);
+  margin: 0;
+}
+.export-bar .button {
+  padding: 5px 9px;
+  font-size: 10px;
+}
+.scope-note {
+  margin: 5px 4px 0;
+  font-size: 10px;
+  color: var(--muted);
+}
+.studio-dock {
+  position: fixed;
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
+  width: min(350px, calc(100vw - 32px));
+  height: 104px;
+  background: transparent;
+  border: 0;
+  z-index: 30;
+  flex: none;
+  display: block;
+}
+.studio-dock .dock {
+  bottom: 28px;
+  touch-action: manipulation;
+}
+/* Keep the original React Bits tiles; prevent generic navigation styling. */
+.studio-dock .dock-item,
+.studio-dock .dock-item[aria-current="page"] {
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+  color: inherit;
+  border-radius: 13px;
+  text-decoration: none;
+}
+.studio-dock .dock-face svg {
+  width: 22px;
+  height: 22px;
+}
+.studio-dock .dock-item:focus-visible {
+  outline: none;
+}
+.studio-dock .dock-dot {
+  background: var(--strong);
+}
+
+.lesson {
+  margin: 0 0 10px;
+}
+@media (min-width: 1101px) {
+  .workspace-panels[data-inspector="false"] {
+    grid-template-columns: 1fr;
+  }
+  .workspace-panels[data-inspector="false"] .explanation-pane {
+    display: none;
+  }
+}
+@media (max-width: 1100px) and (min-width: 701px) {
+  main.atlas-layout {
+    grid-template-columns: 220px minmax(0, 1fr);
+  }
+  .workspace-panels {
+    grid-template-columns: minmax(0, 1fr) 230px;
+    gap: 10px;
+  }
+  .explanation-pane {
+    padding: 12px;
+  }
+  .catalogue-nav a {
+    font-size: 9px;
+  }
+  .workspace-actions .count {
+    display: none;
+  }
+}
+@media (max-width: 900px) and (min-width: 701px) {
+  main.atlas-layout {
+    grid-template-columns: 190px minmax(0, 1fr);
+    padding: 0 12px;
+  }
+  .workspace-panels {
+    display: block;
+    overflow: auto;
+  }
+  .workbench {
+    height: 500px;
+  }
+  .explanation-pane {
+    margin-top: 12px;
+  }
+  .inspector-toggle {
+    display: none;
+  }
+  .example-card img {
+    height: 75px;
+  }
+}
+@media (max-width: 700px) {
+  html {
+    overflow: auto;
+  }
+  body {
+    display: grid;
+    grid-template-rows: auto auto minmax(0, 1fr);
+    height: 100dvh;
+    overflow: hidden;
+  }
+  header {
+    height: auto;
+    padding: 14px 16px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .brand {
+    font-size: 22px;
+  }
+  .header-place {
+    display: none;
+  }
+  .header-tools {
+    margin-left: auto;
+  }
+  .library-toggle {
+    justify-self: start;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin: 0 16px 12px;
+  }
+  main.atlas-layout {
+    display: block;
+    height: auto;
+    min-height: 0;
+    overflow: auto;
+    padding: 0 16px 16px;
+  }
+  .atlas-library {
+    display: none;
+    height: auto;
+    max-height: 60vh;
+    margin-bottom: 15px;
+  }
+  .atlas-layout[data-library-open="true"] .atlas-library {
+    display: block;
+  }
+  .atlas-workspace {
+    display: block;
+    height: auto;
+    overflow: visible;
+  }
+  .workspace-heading {
+    display: block;
+  }
+  .workspace-heading h1 {
+    font-size: 23px;
+  }
+  .workspace-actions {
+    margin-top: 10px;
+  }
+  .inspector-toggle {
+    display: none;
+  }
+  .mobile-tabs {
+    display: flex;
+    margin: 12px 0;
+  }
+  .workspace-panels {
+    display: block;
+  }
+  .workbench {
+    height: auto;
+    border: 0;
+    background: transparent;
+  }
+  .code-pane {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    min-height: 320px;
+  }
+  .result-pane {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+  }
+  .canvas-surface {
+    height: 330px;
+    min-height: 330px;
+  }
+  .canvas-surface canvas {
+    width: 100%;
+    height: 100%;
+  }
+  .explanation-pane {
+    margin: 0;
+    overflow: visible;
+  }
+  .export-bar {
+    display: block;
+    margin-top: 14px;
+  }
+  .export-bar > div {
+    display: flex;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+  .scope-note {
+    font-size: 11px;
+  }
+  button,
+  a {
+    scroll-margin-bottom: 120px;
+  }
+}
+
+/* The supplied argument inspector uses direct labelled fields, with explicit apply. */
+.dino-controls {
+  margin: 14px 0;
+  padding: 12px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+.dino-controls label {
+  display: grid;
+  grid-template-columns: 18px 1fr;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.dino-controls label code {
+  font-size: 11px;
+}
+.dino-controls label .number {
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #ffcf57;
+  color: #182334;
+  font-size: 10px;
+  font-weight: 700;
+}
+.dino-controls input {
+  grid-column: 1 / -1;
+  min-width: 0;
+  width: 100%;
+  padding: 7px 9px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--text);
+  background: var(--raised);
+  font:
+    12px ui-monospace,
+    monospace;
+}
+.dino-controls .button {
+  width: 100%;
+  font-size: 11px;
+  padding: 7px;
+}
+.control-note {
+  font-size: 10px;
+  color: var(--muted);
+  margin: 8px 0 0;
+}
+.atlas-library .spotlight-card.example-card {
+  padding: 9px;
+}
+.atlas-library .example-card img {
+  height: 112px;
+}
+.atlas-library .example-card h2 {
+  margin-top: 7px;
+}
+
+.signature-details {
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.signature-details summary {
+  cursor: pointer;
+  padding: 5px 0;
+}
+.dino-controls label small {
+  grid-column: 1 / -1;
+  font-size: 11px;
+  color: var(--muted);
+}
+/* Readable teaching code rather than miniature catalogue typography. */
+.editor-host .cm-content,
+.editor-host .cm-gutters {
+  font-size: 15px;
+  line-height: 1.8;
+}
+@media (max-width: 700px) {
+  .editor-host .cm-content,
+  .editor-host .cm-gutters {
+    font-size: 13px;
+  }
+}
+
+/* All presets share semantic contrast and a quiet, lightly tinted workspace. */
+html[data-color-preset] {
+  --bg: color-mix(in srgb, #0c1622 97%, var(--accent));
+  --surface: color-mix(in srgb, #132131 96%, var(--accent));
+  --raised: color-mix(in srgb, #1c2d40 92%, var(--accent));
+  --line: color-mix(in srgb, #2e435b 85%, var(--accent));
+}
+html[data-color-preset][data-theme="light"] {
+  --bg: color-mix(in srgb, #f5f7fa 96%, var(--accent));
+  --surface: #fff;
+  --raised: color-mix(in srgb, #f3f5f8 93%, var(--accent));
+  --line: color-mix(in srgb, #c1d1e4 88%, var(--accent));
+}
+.settings-dialog { max-height: calc(100dvh - 32px); overflow-y: auto; }
+.color-presets { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.color-preset { display: flex; align-items: center; gap: 8px; padding: 8px; border: 1px solid var(--line); border-radius: 8px; cursor: pointer; }
+.color-preset:has(input:checked) { border-color: var(--accent); background: var(--raised); }
+.color-preset input { margin: 0; accent-color: var(--strong); }
+.preset-swatch { width: 16px; height: 16px; border-radius: 50%; flex: none; }
+/* Exploration is a full catalogue; the editor remains a separate destination. */
+.atlas-layout[data-exploring="true"] { grid-template-columns: 180px minmax(0, 1fr); }
+.atlas-layout[data-exploring="true"] .catalogue-nav { flex-direction: column; }
+.atlas-layout[data-exploring="true"] .catalogue-nav a { justify-content: flex-start; font-size: 14px; padding: 12px; gap: 9px; }
+.atlas-layout[data-exploring="true"] .catalogue-nav a svg { display: block; }
+.explorer-overview, .configurator-page { height: 100%; overflow: auto; padding: 12px; scrollbar-width: thin; }
+.explorer-overview h1, .configurator-heading h1 { margin: 0; font-size: 30px; }
+.explorer-overview > p, .configurator-heading p { color: var(--muted); }
+.catalogue-page .collection-heading { display: flex; }
+.catalogue-page .filters { display: flex; gap: 14px; }
+.catalogue-page .gallery-grid { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.catalogue-page .example-card { padding: 16px; }
+.catalogue-page .example-card h2 { order: 0; font-size: 20px; margin-bottom: 10px; }
+.catalogue-page .example-card img { height: 180px; }
+.catalogue-page .card-copy > :not(.button) { display: block; }
+.catalogue-page .card-copy .mini-parameters { display: block; }
+.catalogue-page .card-copy .button { color: var(--accent); font-size: 14px; padding: 12px 0; }
+.catalogue-page .example-call { display: block; overflow-wrap: anywhere; color: var(--accent); }
+.catalogue-page .parameter-row { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 5px; margin-bottom: 10px; }
+.catalogue-page .parameter-value { grid-column: 2; }
+.catalogue-page .parameter-row > span:last-child { grid-column: 2; color: var(--muted); font-size: 13px; }
+.configurator-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 16px 0; }
+.configurator-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(260px, 1fr); gap: 20px; align-items: start; }
+.configurator-preview { padding: 0; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); overflow: hidden; }
+.configurator-preview .canvas-surface { width: 100%; aspect-ratio: 1; }
+.configurator-preview canvas { width: 100%; height: 100%; display: block; }
+.configurator-preview > p, .configurator-code { padding: 12px 16px; margin: 0; }
+.configurator-code { background: var(--code); white-space: pre-wrap; overflow-wrap: anywhere; color: var(--accent); }
+.configurator-controls h2, .configurator-parameter h3 { display: flex; align-items: center; gap: 9px; }
+.configurator-controls > p, .configurator-parameter p { color: var(--muted); }
+.configurator-parameter { padding: 14px; margin: 12px 0; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+.configurator-parameter h3 { margin: 0; }
+.configurator-parameter input[type="range"] { display: block; width: 100%; margin-top: 18px; accent-color: var(--strong); min-height: 28px; }
+.configurator-colour { display: flex; align-items: center; gap: 12px; }
+.configurator-colour input { width: 64px; height: 44px; border: 1px solid var(--line); background: var(--raised); border-radius: 8px; cursor: pointer; }
+.configurator-controls > button { display: flex; align-items: center; gap: 8px; }
+.configurator-controls details { margin: 18px 0; overflow-wrap: anywhere; }
+@media (max-width: 800px) {
+  .atlas-layout[data-exploring="true"] { grid-template-columns: minmax(0, 1fr); }
+  .atlas-layout[data-exploring="true"] .atlas-library { display: block; height: auto; }
+  .atlas-layout[data-exploring="true"] .catalogue-nav { flex-direction: row; margin: 0; }
+  .atlas-layout[data-exploring="true"] .catalogue-nav a { font-size: 11px; padding: 6px; }
+  .atlas-layout[data-exploring="true"] { grid-template-rows: auto minmax(0, 1fr); }
+  .configurator-grid { grid-template-columns: minmax(0, 1fr); }
+  .configurator-heading, .catalogue-page .filters { flex-direction: column; align-items: stretch; }
+}
+
+.catalogue-page .collection-heading { gap: 12px; align-items: baseline; margin-bottom: 12px; }
+.catalogue-page .collection-heading h2 { display: none; }
+.catalogue-page .example-card .example-call { font-size: 13px; }
+.configurator-preview .canvas-surface { max-height: 440px; aspect-ratio: auto; display: flex; justify-content: center; }
+.configurator-preview canvas { width: min(100%, 440px); height: auto; aspect-ratio: 1; object-fit: contain; }
+@media (max-width: 700px) {
+ .atlas-layout[data-exploring="true"] .atlas-workspace { overflow: auto; min-height: 0; }
+ .atlas-layout[data-exploring="true"] .explorer-overview, .atlas-layout[data-exploring="true"] .configurator-page { height: auto; overflow: visible; }
+}
+
+/* Catalogue navigation belongs in the Dock; reserve the library for editing. */
+main.atlas-layout[data-exploring="true"] { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); }
+.atlas-layout[data-exploring="true"] .atlas-library { display: none; }
+.catalogue-page .gallery-grid { gap: 18px; align-items: stretch; grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr)); }
+.catalogue-page .example-card { border: 1px solid var(--line); box-shadow: none; }
+.catalogue-page .example-card:hover { border-color: var(--accent); }
+.catalogue-page .example-card h2 { font-size: 20px; line-height: 1.3; overflow-wrap: anywhere; }
+.catalogue-page .card-copy { display: flex; flex-direction: column; flex: 1; gap: 12px; }
+.catalogue-page .card-copy h3 { font-size: 13px; line-height: 1.4; margin: 0; }
+.catalogue-page .card-copy p { font-size: 14px; line-height: 1.6; color: var(--muted); margin: 0; }
+.catalogue-page .card-copy .button { margin-top: auto; width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--raised); color: var(--text); }
+.catalogue-page .mini-parameters .parameter-row { font-size: 13px; line-height: 1.5; grid-template-columns: 22px minmax(0, 1fr); }
+.catalogue-page .mini-parameters .parameter-row > span:last-child { grid-column: 2; }
+.catalogue-page .mini-parameters code { overflow-wrap: anywhere; }
+.catalogue-page .mini-parameters .number, .configurator-parameter .number { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--raised); color: var(--accent); font: 600 12px system-ui; }
+.configurator-preview, .configurator-parameter { border: 1px solid var(--line); box-shadow: none; }
+.configurator-parameter h3 { font-size: 15px; }
+.configurator-parameter p { font-size: 14px; line-height: 1.6; }
+.explorer-overview { max-width: 1600px; width: 100%; margin: 0 auto; }
+
+/* The Dock floats above content; only scroll tails protect the last controls. */
+.studio-dock { position: fixed; bottom: calc(10px + env(safe-area-inset-bottom)); height: 96px; pointer-events: none; }
+.studio-dock .dock { pointer-events: auto; bottom: 0; }
+.explorer-overview, .configurator-page, .atlas-library, .atlas-workspace { padding-bottom: 112px; scroll-padding-bottom: 112px; }
+.catalogue-preview { margin: 0 0 12px; border: 1px solid var(--line); border-radius: 9px; overflow: hidden; }
+.catalogue-preview .canvas-surface { width: 100%; height: 190px; display: flex; justify-content: center; }
+.catalogue-preview canvas { height: 100%; width: auto; max-width: 100%; aspect-ratio: 1; object-fit: contain; }
+.catalogue-playback { display: flex; justify-content: space-between; align-items: center; padding: 7px 10px; background: var(--raised); gap: 8px; }
+.catalogue-playback > span { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--muted); }
+.catalogue-playback button { display: grid; place-items: center; padding: 7px; }
+@media (max-width: 700px) { .atlas-layout { scroll-padding-bottom: 112px; } }
+.atlas-workspace { padding-bottom: 0; }
+.atlas-workspace > .export-bar { margin-bottom: 112px; }
+
+/* Three comfortable catalogue columns, with larger readable figure previews. */
+.catalogue-page .gallery-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.catalogue-preview .canvas-surface { height: 260px; min-height: 0; }
+.catalogue-preview canvas { width: 100%; height: 100%; object-fit: contain; }
+@media (max-width: 1050px) { .catalogue-page .gallery-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 650px) { .catalogue-page .gallery-grid { grid-template-columns: minmax(0, 1fr); } }
+
+.catalogue-page .parameter-inputs { display: grid; gap: 8px; }
+.catalogue-page .configurator-parameter { padding: 10px !important; }
+.catalogue-page .configurator-parameter h3 { display: flex; align-items: center; gap: 8px; }
+.catalogue-page .configurator-parameter p { margin: 4px 0 8px; font-size: 12px; }
+.catalogue-page .parameter-inputs input[type="range"] { width: 100%; accent-color: var(--accent); }
+.catalogue-page .reset-parameters { display: flex; align-items: center; justify-content: center; gap: 6px; }
+
+.catalogue-page .configurator-parameter { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 10px; align-items: center; }
+.catalogue-page .configurator-parameter h3 { grid-column: 1; margin: 0; }
+.catalogue-page .configurator-parameter p { grid-column: 1; margin: 0; }
+.catalogue-page .configurator-parameter .scrub-field, .catalogue-page .configurator-colour { grid-column: 2; grid-row: 1 / 3; }
+.catalogue-page .parameter-inputs input[type="range"] { grid-column: 1 / -1; margin: 4px 0 0; }
+
+/* Quiet Studio surfaces, with motion reserved for meaningful feedback. */
+.studio-card { position: relative; min-width: 0; overflow: hidden; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+.catalogue-page .example-card { box-shadow: none; align-self: start; transition: border-color 160ms ease; }
+.catalogue-page .example-card:hover { border-color: var(--line); }
+.catalogue-page .example-card:focus-within { border-color: var(--accent); }
+.catalogue-page .example-card h2 { padding: 0; margin: 0 0 12px; font-weight: 650; }
+.catalogue-page .card-copy { padding: 0; gap: 10px; }
+.catalogue-page .filters { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.catalogue-page .search-field { flex: 1 1 280px; min-height: 44px; background: var(--surface); border: 1px solid var(--line); padding: 8px 12px; gap: 10px; }
+.catalogue-page .search-field:focus-within { border-color: var(--accent); }
+.catalogue-page .search-field input { font-size: 14px; min-width: 0; }
+.clear-search { display: grid; place-items: center; padding: 5px; border: 0; background: transparent; color: var(--muted); }
+.catalogue-categories { flex-shrink: 0; border: 1px solid var(--line); }
+.catalogue-categories .rubber-segment__item { display: flex; align-items: center; justify-content: center; gap: 6px; }
+.catalogue-page .parameter-inputs { gap: 6px; }
+.catalogue-page .configurator-parameter { background: var(--bg) !important; border-color: var(--line); }
+.catalogue-page .example-call { font-size: 13px; line-height: 1.65; padding: 12px; border: 1px solid var(--line); }
+.catalogue-page .reset-parameters { color: var(--muted); background: transparent; border: 1px solid var(--line); min-height: 38px; }
+.catalogue-page .card-copy .button { background: var(--raised); min-height: 44px; font-size: 14px; }
+.catalogue-page .card-copy .button svg { transition: transform 160ms ease; }
+@media (hover: hover) {
+  .catalogue-page .card-copy .button:hover { border-color: var(--accent); }
+  .catalogue-page .card-copy .button:hover svg { transform: translateX(3px); }
+}
+.catalogue-playback button { min-width: 34px; min-height: 34px; }
+.settings-dialog { border-color: var(--line); border-radius: 16px; }
+.settings-dialog[open] { animation: studio-dialog-in 180ms ease-out; }
+.settings-dialog::backdrop { background: rgb(0 0 0 / 48%); }
+@keyframes studio-dialog-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+@media (max-width: 650px) {
+  .catalogue-categories { width: 100%; }
+  .catalogue-page .search-field { flex-basis: 100%; }
+  .catalogue-page .gallery-grid { gap: 16px; }
+  .catalogue-preview .canvas-surface { height: 230px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .settings-dialog[open] { animation: none; }
+  .studio-card, .catalogue-page .card-copy .button svg { transition: none; }
+  .catalogue-page .card-copy .button:hover svg { transform: none; }
+}
+
+.configurator-parameter .scrub-field { color: var(--text); background: var(--raised); border: 1px solid var(--line); }
+.configurator-parameter .scrub-field__input { background: transparent; color: var(--text); }
+.library-toggle[hidden] { display: none; }
+@media (max-width: 700px) { body:has(.library-toggle[hidden]) { grid-template-rows: auto minmax(0, 1fr); } }

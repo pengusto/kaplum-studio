@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <title>Kaplum Studio — crowned turtle</title>
+  <g transform="translate(1 3)">
+    <g fill="#329cff">
+      <path d="m9 37-6 3c-3 2-2 5 1 5l8-1zm6 9-3 7c-1 3 3 5 5 3l6-8zm21-1 4 7c2 3 6 0 5-3l-3-8z"/>
+      <ellipse cx="26" cy="31" rx="20" ry="18" transform="rotate(-15 26 31)"/>
+      <path d="m40 26 5-9 8 9-12 10z"/>
+      <circle cx="52" cy="23" r="9"/>
+    </g>
+    <path d="M20 13 18 4 24 7 28 1 32 7 39 3 35 13Z" fill="#ffcf57"/>
+    <circle cx="55" cy="21" r="2.2" fill="#0c1622"/>
+  </g>
+</svg>

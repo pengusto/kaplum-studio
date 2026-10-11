@@ -1,0 +1,884 @@
+{
+  "version": 1,
+  "logicalCanvas": [
+    700,
+    700
+  ],
+  "thumbnail": [
+    360,
+    360
+  ],
+  "randomSeed": 12345,
+  "images": [
+    {
+      "file": "recipe-figur-pacman.png",
+      "id": "figur-pacman",
+      "kind": "recipe",
+      "variant": "reference recipe",
+      "teachingTicks": 0,
+      "crop": {
+        "x": 281,
+        "y": 281,
+        "width": 131,
+        "height": 138
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 6859
+    },
+    {
+      "file": "recipe-figur-dino.png",
+      "id": "figur-dino",
+      "kind": "recipe",
+      "variant": "reference recipe",
+      "teachingTicks": 0,
+      "crop": {
+        "x": 255,
+        "y": 274,
+        "width": 203,
+        "height": 163
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 6271
+    },
+    {
+      "file": "recipe-figur-schmetterling.png",
+      "id": "figur-schmetterling",
+      "kind": "recipe",
+      "variant": "reference recipe",
+      "teachingTicks": 0,
+      "crop": {
+        "x": 258,
+        "y": 247,
+        "width": 184,
+        "height": 121
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 5852
+    },
+    {
+      "file": "recipe-figur-fisch.png",
+      "id": "figur-fisch",
+      "kind": "recipe",
+      "variant": "reference recipe",
+      "teachingTicks": 0,
+      "crop": {
+        "x": 282,
+        "y": 311,
+        "width": 121,
+        "height": 78
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 2729
+    },
+    {
+      "file": "recipe-figur-uboot.png",
+      "id": "figur-uboot",
+      "kind": "recipe",
+      "variant": "reference recipe",
+      "teachingTicks": 0,
+      "crop": {
+        "x": 247,
+        "y": 255,
+        "width": 193,
+        "height": 150
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 10384
+    },
+    {
+      "file": "recipe-figur-rakete.png",
+      "id": "figur-rakete",
+      "kind": "recipe",
+      "variant": "reference recipe",
+      "teachingTicks": 0,
+      "crop": {
+        "x": 297,
+        "y": 277,
+        "width": 106,
+        "height": 144
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 3618
+    },
+    {
+      "file": "recipe-figur-feuerwerk.png",
+      "id": "figur-feuerwerk",
+      "kind": "recipe",
+      "variant": "reference recipe",
+      "teachingTicks": 0,
+      "crop": {
+        "x": 209,
+        "y": 209,
+        "width": 282,
+        "height": 282
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 5423
+    },
+    {
+      "file": "recipe-figur-jet.png",
+      "id": "figur-jet",
+      "kind": "recipe",
+      "variant": "reference recipe",
+      "teachingTicks": 0,
+      "crop": {
+        "x": 230,
+        "y": 283,
+        "width": 226,
+        "height": 134
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 5591
+    },
+    {
+      "file": "recipe-figur-sprengkoerper.png",
+      "id": "figur-sprengkoerper",
+      "kind": "recipe",
+      "variant": "reference recipe",
+      "teachingTicks": 0,
+      "crop": {
+        "x": 298,
+        "y": 286,
+        "width": 104,
+        "height": 128
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 3161
+    },
+    {
+      "file": "recipe-figur-feuerball.png",
+      "id": "figur-feuerball",
+      "kind": "recipe",
+      "variant": "reference recipe",
+      "teachingTicks": 0,
+      "crop": {
+        "x": 267,
+        "y": 267,
+        "width": 166,
+        "height": 166
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 13444
+    },
+    {
+      "file": "recipe-figur-hund.png",
+      "id": "figur-hund",
+      "kind": "recipe",
+      "variant": "reference recipe",
+      "teachingTicks": 0,
+      "crop": {
+        "x": 249,
+        "y": 249,
+        "width": 209,
+        "height": 156
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 10214
+    },
+    {
+      "file": "recipe-figur-riesenrad.png",
+      "id": "figur-riesenrad",
+      "kind": "recipe",
+      "variant": "reference recipe",
+      "teachingTicks": 0,
+      "crop": {
+        "x": 159,
+        "y": 138,
+        "width": 382,
+        "height": 437
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 30075
+    },
+    {
+      "file": "recipe-figur-kreis.png",
+      "id": "figur-kreis",
+      "kind": "recipe",
+      "variant": "reference recipe",
+      "teachingTicks": 0,
+      "crop": {
+        "x": 271,
+        "y": 266,
+        "width": 158,
+        "height": 158
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 11626
+    },
+    {
+      "file": "recipe-figur-rechteck.png",
+      "id": "figur-rechteck",
+      "kind": "recipe",
+      "variant": "reference recipe",
+      "teachingTicks": 0,
+      "crop": {
+        "x": 271,
+        "y": 291,
+        "width": 158,
+        "height": 118
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 10000
+    },
+    {
+      "file": "recipe-figur-dreieck.png",
+      "id": "figur-dreieck",
+      "kind": "recipe",
+      "variant": "reference recipe",
+      "teachingTicks": 0,
+      "crop": {
+        "x": 291,
+        "y": 271,
+        "width": 124,
+        "height": 138
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 4604
+    },
+    {
+      "file": "recipe-figur-stern.png",
+      "id": "figur-stern",
+      "kind": "recipe",
+      "variant": "reference recipe",
+      "teachingTicks": 0,
+      "crop": {
+        "x": 224,
+        "y": 311,
+        "width": 214,
+        "height": 222
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 11055
+    },
+    {
+      "file": "recipe-figur-bogen.png",
+      "id": "figur-bogen",
+      "kind": "recipe",
+      "variant": "reference recipe",
+      "teachingTicks": 0,
+      "crop": {
+        "x": 291,
+        "y": 284,
+        "width": 110,
+        "height": 124
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 221
+    },
+    {
+      "file": "recipe-figur-halbkreis.png",
+      "id": "figur-halbkreis",
+      "kind": "recipe",
+      "variant": "reference recipe",
+      "teachingTicks": 0,
+      "crop": {
+        "x": 266,
+        "y": 260,
+        "width": 168,
+        "height": 109
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 6939
+    },
+    {
+      "file": "recipe-figur-oval.png",
+      "id": "figur-oval",
+      "kind": "recipe",
+      "variant": "reference recipe",
+      "teachingTicks": 0,
+      "crop": {
+        "x": 240,
+        "y": 280,
+        "width": 220,
+        "height": 140
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 14519
+    },
+    {
+      "file": "recipe-figur-halboval.png",
+      "id": "figur-halboval",
+      "kind": "recipe",
+      "variant": "reference recipe",
+      "teachingTicks": 0,
+      "crop": {
+        "x": 240,
+        "y": 280,
+        "width": 220,
+        "height": 90
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 7440
+    },
+    {
+      "file": "recipe-figur-wolke.png",
+      "id": "figur-wolke",
+      "kind": "recipe",
+      "variant": "reference recipe",
+      "teachingTicks": 0,
+      "crop": {
+        "x": 267,
+        "y": 269,
+        "width": 174,
+        "height": 127
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 9595
+    },
+    {
+      "file": "recipe-figur-blume.png",
+      "id": "figur-blume",
+      "kind": "recipe",
+      "variant": "reference recipe",
+      "teachingTicks": 0,
+      "crop": {
+        "x": 245,
+        "y": 238,
+        "width": 210,
+        "height": 224
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 23331
+    },
+    {
+      "file": "recipe-figur-spirale.png",
+      "id": "figur-spirale",
+      "kind": "recipe",
+      "variant": "reference recipe",
+      "teachingTicks": 0,
+      "crop": {
+        "x": 209,
+        "y": 207,
+        "width": 274,
+        "height": 296
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 7361
+    },
+    {
+      "file": "recipe-figur-linie.png",
+      "id": "figur-linie",
+      "kind": "recipe",
+      "variant": "reference recipe",
+      "teachingTicks": 0,
+      "crop": {
+        "x": 239,
+        "y": 287,
+        "width": 222,
+        "height": 126
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 1848
+    },
+    {
+      "file": "recipe-figur-text.png",
+      "id": "figur-text",
+      "kind": "recipe",
+      "variant": "reference recipe",
+      "teachingTicks": 0,
+      "crop": {
+        "x": 259,
+        "y": 319,
+        "width": 182,
+        "height": 58
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 1438
+    },
+    {
+      "file": "recipe-figur-hintergrund.png",
+      "id": "figur-hintergrund",
+      "kind": "recipe",
+      "variant": "reference recipe",
+      "teachingTicks": 0,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "width": 700,
+        "height": 700
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 0
+    },
+    {
+      "file": "recipe-figur-landschaft.png",
+      "id": "figur-landschaft",
+      "kind": "recipe",
+      "variant": "reference recipe",
+      "teachingTicks": 0,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "width": 700,
+        "height": 700
+      },
+      "uniformBackdrop": false,
+      "foregroundPixels": 0
+    },
+    {
+      "file": "recipe-figur-zufallsgroesse.png",
+      "id": "figur-zufallsgroesse",
+      "kind": "recipe",
+      "variant": "reference recipe",
+      "teachingTicks": 0,
+      "crop": {
+        "x": 82,
+        "y": 259,
+        "width": 559,
+        "height": 182
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 16801
+    },
+    {
+      "file": "recipe-figur-zufallsfarbe.png",
+      "id": "figur-zufallsfarbe",
+      "kind": "recipe",
+      "variant": "reference recipe",
+      "teachingTicks": 0,
+      "crop": {
+        "x": 70,
+        "y": 270,
+        "width": 560,
+        "height": 160
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 17326
+    },
+    {
+      "file": "recipe-figur-zufallslinien.png",
+      "id": "figur-zufallslinien",
+      "kind": "recipe",
+      "variant": "reference recipe",
+      "teachingTicks": 0,
+      "crop": {
+        "x": 134,
+        "y": 149,
+        "width": 432,
+        "height": 402
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 18000
+    },
+    {
+      "file": "recipe-figur-springen.png",
+      "id": "figur-springen",
+      "kind": "recipe",
+      "variant": "reference recipe",
+      "teachingTicks": 0,
+      "crop": {
+        "x": 0,
+        "y": 104,
+        "width": 700,
+        "height": 596
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 4936
+    },
+    {
+      "file": "recipe-figur-fuellen.png",
+      "id": "figur-fuellen",
+      "kind": "recipe",
+      "variant": "reference recipe",
+      "teachingTicks": 0,
+      "crop": {
+        "x": 271,
+        "y": 271,
+        "width": 124,
+        "height": 138
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 4604
+    },
+    {
+      "file": "activity-circle.png",
+      "id": "circle",
+      "kind": "activity",
+      "variant": "teacher solution",
+      "teachingTicks": 90,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "width": 700,
+        "height": 700
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 0
+    },
+    {
+      "file": "activity-pacman-move.png",
+      "id": "pacman-move",
+      "kind": "activity",
+      "variant": "teacher solution",
+      "teachingTicks": 90,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "width": 700,
+        "height": 700
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 0
+    },
+    {
+      "file": "activity-moving-star.png",
+      "id": "moving-star",
+      "kind": "activity",
+      "variant": "teacher solution",
+      "teachingTicks": 90,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "width": 700,
+        "height": 700
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 0
+    },
+    {
+      "file": "activity-bouncing-ball.png",
+      "id": "bouncing-ball",
+      "kind": "activity",
+      "variant": "teacher solution",
+      "teachingTicks": 90,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "width": 700,
+        "height": 700
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 0
+    },
+    {
+      "file": "activity-butterfly-garden.png",
+      "id": "butterfly-garden",
+      "kind": "activity",
+      "variant": "teacher solution",
+      "teachingTicks": 90,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "width": 700,
+        "height": 700
+      },
+      "uniformBackdrop": false,
+      "foregroundPixels": 0
+    },
+    {
+      "file": "activity-day-night-garden.png",
+      "id": "day-night-garden",
+      "kind": "activity",
+      "variant": "teacher solution",
+      "teachingTicks": 90,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "width": 700,
+        "height": 700
+      },
+      "uniformBackdrop": false,
+      "foregroundPixels": 0
+    },
+    {
+      "file": "activity-pacman-route.png",
+      "id": "pacman-route",
+      "kind": "activity",
+      "variant": "teacher solution",
+      "teachingTicks": 90,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "width": 700,
+        "height": 700
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 0
+    },
+    {
+      "file": "activity-walking-dino.png",
+      "id": "walking-dino",
+      "kind": "activity",
+      "variant": "teacher solution",
+      "teachingTicks": 90,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "width": 700,
+        "height": 700
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 0
+    },
+    {
+      "file": "activity-jumping-dino.png",
+      "id": "jumping-dino",
+      "kind": "activity",
+      "variant": "teacher solution",
+      "teachingTicks": 90,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "width": 700,
+        "height": 700
+      },
+      "uniformBackdrop": false,
+      "foregroundPixels": 0
+    },
+    {
+      "file": "activity-butterfly-circle.png",
+      "id": "butterfly-circle",
+      "kind": "activity",
+      "variant": "teacher solution",
+      "teachingTicks": 90,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "width": 700,
+        "height": 700
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 0
+    },
+    {
+      "file": "activity-solar-system.png",
+      "id": "solar-system",
+      "kind": "activity",
+      "variant": "teacher solution",
+      "teachingTicks": 90,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "width": 700,
+        "height": 700
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 0
+    },
+    {
+      "file": "activity-rainbow-cat.png",
+      "id": "rainbow-cat",
+      "kind": "activity",
+      "variant": "teacher solution",
+      "teachingTicks": 90,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "width": 700,
+        "height": 700
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 0
+    },
+    {
+      "file": "activity-swaying-flowers.png",
+      "id": "swaying-flowers",
+      "kind": "activity",
+      "variant": "teacher solution",
+      "teachingTicks": 90,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "width": 700,
+        "height": 700
+      },
+      "uniformBackdrop": false,
+      "foregroundPixels": 0
+    },
+    {
+      "file": "activity-bouncing-logo.png",
+      "id": "bouncing-logo",
+      "kind": "activity",
+      "variant": "teacher solution",
+      "teachingTicks": 90,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "width": 700,
+        "height": 700
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 0
+    },
+    {
+      "file": "activity-rainbow-spiral.png",
+      "id": "rainbow-spiral",
+      "kind": "activity",
+      "variant": "teacher solution",
+      "teachingTicks": 90,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "width": 700,
+        "height": 700
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 0
+    },
+    {
+      "file": "activity-star-ring.png",
+      "id": "star-ring",
+      "kind": "activity",
+      "variant": "teacher solution",
+      "teachingTicks": 90,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "width": 700,
+        "height": 700
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 0
+    },
+    {
+      "file": "activity-garden-grid.png",
+      "id": "garden-grid",
+      "kind": "activity",
+      "variant": "teacher solution",
+      "teachingTicks": 90,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "width": 700,
+        "height": 700
+      },
+      "uniformBackdrop": false,
+      "foregroundPixels": 0
+    },
+    {
+      "file": "activity-sailing-ship.png",
+      "id": "sailing-ship",
+      "kind": "activity",
+      "variant": "teacher solution",
+      "teachingTicks": 90,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "width": 700,
+        "height": 700
+      },
+      "uniformBackdrop": false,
+      "foregroundPixels": 0
+    },
+    {
+      "file": "activity-jet-flight.png",
+      "id": "jet-flight",
+      "kind": "activity",
+      "variant": "teacher solution",
+      "teachingTicks": 90,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "width": 700,
+        "height": 700
+      },
+      "uniformBackdrop": false,
+      "foregroundPixels": 0
+    },
+    {
+      "file": "activity-following-dog.png",
+      "id": "following-dog",
+      "kind": "activity",
+      "variant": "teacher solution",
+      "teachingTicks": 90,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "width": 700,
+        "height": 700
+      },
+      "uniformBackdrop": false,
+      "foregroundPixels": 0
+    },
+    {
+      "file": "activity-ferris-wheel.png",
+      "id": "ferris-wheel",
+      "kind": "activity",
+      "variant": "teacher solution",
+      "teachingTicks": 90,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "width": 700,
+        "height": 700
+      },
+      "uniformBackdrop": false,
+      "foregroundPixels": 0
+    },
+    {
+      "file": "activity-underwater.png",
+      "id": "underwater",
+      "kind": "activity",
+      "variant": "teacher solution",
+      "teachingTicks": 90,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "width": 700,
+        "height": 700
+      },
+      "uniformBackdrop": false,
+      "foregroundPixels": 0
+    },
+    {
+      "file": "activity-falling-bounce.png",
+      "id": "falling-bounce",
+      "kind": "activity",
+      "variant": "teacher solution",
+      "teachingTicks": 90,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "width": 700,
+        "height": 700
+      },
+      "uniformBackdrop": false,
+      "foregroundPixels": 0
+    },
+    {
+      "file": "activity-fireworks.png",
+      "id": "fireworks",
+      "kind": "activity",
+      "variant": "teacher solution",
+      "teachingTicks": 90,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "width": 700,
+        "height": 700
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 0
+    },
+    {
+      "file": "activity-rocket-flight.png",
+      "id": "rocket-flight",
+      "kind": "activity",
+      "variant": "teacher solution",
+      "teachingTicks": 90,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "width": 700,
+        "height": 700
+      },
+      "uniformBackdrop": true,
+      "foregroundPixels": 0
+    },
+    {
+      "file": "activity-snowfall.png",
+      "id": "snowfall",
+      "kind": "activity",
+      "variant": "teacher solution",
+      "teachingTicks": 90,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "width": 700,
+        "height": 700
+      },
+      "uniformBackdrop": false,
+      "foregroundPixels": 0
+    }
+  ]
+}

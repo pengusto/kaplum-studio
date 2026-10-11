@@ -1,0 +1,1 @@
+Real-engine dark figure previews. Generated with scripts/generate-dark-previews.js using maintained recipe programs, seed 12345 and crops from ../previews/manifest.json. Only the curated white rendering backdrop is changed to #18202e. Original previews are preserved. Animation scenes retain their programmed backgrounds.
