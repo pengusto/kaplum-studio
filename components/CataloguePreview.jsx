@@ -5,7 +5,7 @@ import { Preview } from "../src/runtime";
 import StatusMark from "./react-bits/StatusMark";
 // Only visible catalogue canvases own an active sandbox. Explicit pauses survive route changes.
 export default function CataloguePreview({ source, title, id, pausedPreviews, t, fitFigure = false }) {
-  const host = useRef(null), canvas = useRef(null), instance = useRef(null), sourceRef = useRef(source);
+  const host = useRef(null), canvas = useRef(null), instance = useRef(null), sourceRef = useRef(source), cameraRef = useRef(null);
   sourceRef.current = source;
   const [visible, setVisible] = useState(false);
   const [hidden, setHidden] = useState(false);
@@ -30,14 +30,15 @@ export default function CataloguePreview({ source, title, id, pausedPreviews, t,
         }
         // Opaque backgrounds are complete scenes, not figures to zoom into.
         if (right >= 0 && right - left <= 630 && bottom - top <= 630) {
-          const side = Math.min(700, Math.max(right - left + 1, bottom - top + 1) * 1.45);
+          const side = Math.min(700, Math.max(400, Math.max(right - left + 1, bottom - top + 1) * 2.4));
           crop = { x: Math.max(0, Math.min(700 - side, (left + right) / 2 - side / 2)), y: Math.max(0, Math.min(700 - side, (top + bottom) / 2 - side / 2)), side };
         }
       }
       const bounds = canvas.current.getBoundingClientRect();
       const size = Math.min(1600, Math.max(700, Math.ceil(Math.max(bounds.width, bounds.height) * devicePixelRatio)));
+      cameraRef.current = { ...crop, size };
       // Render the camera directly in the worker instead of enlarging a bitmap.
-      preview.run(sourceRef.current.replace(/^setBackground\("white"\);\s*/, ""), { ...crop, size });
+      preview.run(sourceRef.current.replace(/^setBackground\("white"\);\s*/, ""), cameraRef.current);
     });
     instance.current = preview;
     const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting && entry.intersectionRatio >= 0.35), { threshold: [0, 0.35] });
@@ -56,7 +57,7 @@ export default function CataloguePreview({ source, title, id, pausedPreviews, t,
     preview.stop();
     setDrawn(false);
     if (visible && !hidden && !paused && (!reduced || allowed)) {
-      const timer = setTimeout(() => preview.run(source.replace(/^setBackground\("white"\);\s*/, "")), 100);
+      const timer = setTimeout(() => preview.run(source.replace(/^setBackground\("white"\);\s*/, ""), cameraRef.current), 100);
       return () => { clearTimeout(timer); preview.stop(); };
     } else preview.stop();
   }, [source, visible, hidden, paused, reduced, allowed]);

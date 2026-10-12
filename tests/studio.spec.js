@@ -676,7 +676,7 @@ test("Figure catalogue uses three columns and fits small drawings without changi
   const dino = page.locator(".example-card").filter({ has: page.getByRole("link", { name: "Dinosaur", exact: true }) });
   await expect(dino.locator(".catalogue-preview")).toHaveAttribute("data-drawn", "true");
   const drawingWidth = () => dino.locator("canvas").evaluate(el => { const pixels = el.getContext("2d").getImageData(0, 0, 700, 700).data; let left = 700, right = 0; for(let y=0;y<700;y++) for(let x=0;x<700;x++) if(pixels[(y*700+x)*4+3]>20) { left=Math.min(left,x);right=Math.max(right,x); } return right-left; });
-  await expect.poll(drawingWidth).toBeGreaterThan(400);
+  await expect.poll(drawingWidth).toBeGreaterThan(200);
   await expect(dino.locator(".example-call")).toContainText('drawDino(80, "LimeGreen", 25)');
   await page.setViewportSize({ width: 900, height: 900 });
   expect(await columns()).toBe(2);
@@ -727,7 +727,7 @@ test("Quiet catalogue cards and React Bits filters support keyboard, search and 
   expect(errors).toEqual([]);
 });
 
-test("Retina catalogue renders sharp geometry and refits after changing Pacman radius", async ({ browser }) => {
+test("Retina catalogue renders sharp geometry and keeps size changes visible", async ({ browser }) => {
   const context = await browser.newContext({ viewport: { width: 1900, height: 1100 }, deviceScaleFactor: 2 });
   const page = await context.newPage();
   try {
@@ -744,21 +744,45 @@ test("Retina catalogue renders sharp geometry and refits after changing Pacman r
         left=Math.min(left,x);right=Math.max(right,x);top=Math.min(top,y);bottom=Math.max(bottom,y);
       }
       let partial=0, occupied=0;
-      const y=Math.round(height*.36);
+      const y=Math.round(height*.44);
       for(let x=0;x<width;x++) {const alpha=pixels[(y*width+x)*4+3]; if(alpha>0) occupied++; if(alpha>0 && alpha<255)partial++;}
       return { width, css: c.getBoundingClientRect().width, left, right, top, bottom, partial, occupied };
     });
     let first=await geometry();
     expect(first.width).toBeGreaterThanOrEqual(Math.ceil(first.css*2));
     expect(first.partial).toBeLessThanOrEqual(6);
-    expect(first.occupied).toBeGreaterThan(first.width*.3);
-    await card.getByRole('slider', {name:'radius slider', exact:true}).fill('120');
-    await expect(card.locator('.example-call')).toContainText('drawPacman(120,');
-    await expect(card.locator('.catalogue-preview')).toHaveAttribute('data-drawn', 'true');
-    await expect.poll(async () => {
-      const next = await geometry();
-      return next.left > next.width*.1 && next.top > next.width*.1 && next.right < next.width*.9 && next.bottom < next.width*.9;
-    }).toBe(true);
-    await expect(card.locator('.example-call')).toContainText('drawPacman(120,');
+    expect(first.occupied).toBeGreaterThan(first.width*.15);
+    const initialWidth = first.right - first.left;
+    await card.getByRole('slider', {name:'radius slider', exact:true}).fill('100');
+    await card.locator('canvas').scrollIntoViewIfNeeded();
+    await expect(card.locator('.example-call')).toContainText('drawPacman(100,');
+    await expect.poll(async () => { const next = await geometry(); return (next.right-next.left)/initialWidth; }).toBeGreaterThan(1.9);
+    await card.getByRole('slider', {name:'radius slider', exact:true}).fill('25');
+    await card.locator('canvas').scrollIntoViewIfNeeded();
+    await expect.poll(async () => { const next = await geometry(); return (next.right-next.left)/initialWidth; }).toBeLessThan(.55);
+    await card.getByRole('button', {name:'Reset example', exact:true}).click();
+    await card.locator('canvas').scrollIntoViewIfNeeded();
+    await expect.poll(async () => { const next = await geometry(); return Math.abs((next.right-next.left)-initialWidth); }).toBeLessThan(3);
   } finally { await context.close(); }
+});
+
+
+test("Dinosaur size visibly changes on a stable catalogue scale", async ({ page }) => {
+  await page.goto('/#figures');
+  await page.getByRole('searchbox').fill('drawDino');
+  const card = page.locator('.example-card');
+  await expect(card.locator('.catalogue-preview')).toHaveAttribute('data-drawn', 'true');
+  const width = () => card.locator('canvas').evaluate(c => {
+    const pixels = c.getContext('2d').getImageData(0,0,c.width,c.height).data;
+    let left=c.width,right=-1;
+    for(let y=0;y<c.height;y++)for(let x=0;x<c.width;x++)if(pixels[(y*c.width+x)*4+3]>20){left=Math.min(left,x);right=Math.max(right,x);}
+    return right-left;
+  });
+  const initial = await width();
+  await card.getByRole('slider', {name:'size slider', exact:true}).fill('40');
+    await card.locator('canvas').scrollIntoViewIfNeeded();
+  await expect.poll(async () => (await width())/initial).toBeLessThan(.6);
+  await card.getByRole('slider', {name:'size slider', exact:true}).fill('120');
+    await card.locator('canvas').scrollIntoViewIfNeeded();
+  await expect.poll(async () => (await width())/initial).toBeGreaterThan(1.4);
 });
