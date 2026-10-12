@@ -75,3 +75,29 @@ test('three new teacher experiments run and show their expected final states',as
   await page.goto('/#course/'+id);await page.getByRole('button',{name:'Run',exact:true}).click();await expect(page.locator('.inspection-values')).toContainText(`x: ${x}`);await expect(page.locator('.inspection-values')).toContainText(color);await expect(page.locator('.inspection-values')).toContainText(width);
  }
 });
+
+
+test('mobile lesson has readable code, a guided start and centred navigation', async ({page}) => {
+ for (const width of [320,390,700]) {
+  await page.setViewportSize({width,height:844});
+  await page.goto('/#course/state');
+  await expect(page.locator('#code .cm-line')).toHaveCount(12);
+  for (const locale of ['en','de','ja','tr','hy']) {
+   await page.locator('.language-picker select').selectOption(locale);
+   const bounds = await page.evaluate(() => {
+    const selectors = ['header .brand','header .release-links','header .header-tools','.studio-dock .dock'];
+    return selectors.map(selector => {
+     const r=document.querySelector(selector).getBoundingClientRect();
+     return {left:r.left,right:r.right,centre:(r.left+r.right)/2,dock:selector.includes('.dock')};
+    });
+   });
+   for (const r of bounds) { expect(r.left).toBeGreaterThanOrEqual(-1); expect(r.right).toBeLessThanOrEqual(width+1); if(r.dock) expect(Math.abs(r.centre-width/2)).toBeLessThan(2); }
+  }
+  await page.locator('.language-picker select').selectOption('en');
+  await page.locator('.lesson-task button').click();
+  await expect(page.locator('.result-pane')).toBeVisible();
+  await expect(page.getByRole('group',{name:'Drawing playback'})).toBeVisible();
+  await page.getByRole('button',{name:'Next drawing step',exact:true}).click();
+  await expect(page.locator('.drawing-step')).toContainText('Position changed');
+ }
+});

@@ -1020,3 +1020,19 @@ html:has(.documentation), body:has(.documentation) { height: auto; overflow: aut
 .inspection-table th,.inspection-table td {text-align:start;padding:7px;border-bottom:1px solid var(--line);overflow-wrap:anywhere;}
 .inspection-table tr[data-changed="true"] td:last-child {color:var(--accent);font-weight:600;}
 .drawing-step small {display:block;margin-top:10px;}
+
+/* Keep both navigation surfaces independent of generic nav wrapping. */
+.studio-dock { width: min(420px, calc(100vw - 24px)); }
+.studio-dock .dock { flex-wrap: nowrap; }
+@media (max-width: 700px) {
+  header:has(.release-links) { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:10px; width:100%; box-sizing:border-box; }
+  header:has(.release-links) .brand { min-width:0; font-size:20px; }
+  header:has(.release-links) .release-links { order:initial; flex-basis:auto; flex-wrap:nowrap; margin:0; gap:6px; }
+  header:has(.release-links) .release-links a { padding:10px; }
+  header:has(.release-links) .header-tools { grid-column:1 / -1; justify-content:space-between; width:100%; min-width:0; }
+  header:has(.release-links) .language-picker select { max-width:160px; }
+  .studio-dock { left:12px; right:12px; width:auto; transform:none; }
+}
+.lesson-task h2 { margin:12px 0 0; font-size:1.25rem; }
+.lesson-task ol { padding-left:22px; color:var(--muted); line-height:1.7; }
+.lesson-task .button { margin-top:4px; }

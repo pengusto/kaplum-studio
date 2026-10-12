@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import {TurtleState,DrawingStep} from "./TurtleInspection";
 import FeatureLessons from "./FeatureLessons";
-import {featureLessons,lessonCopy} from "../src/feature-lessons";
+import {featureLessons,lessonCopy,lessonGuide} from "../src/feature-lessons";
 import ExampleConstruction from "./ExampleConstruction";
 import DinoControls from "./DinoControls";
 import EditorPane from "./EditorPane";
@@ -138,12 +138,22 @@ export default function Workspace({ route, preferences, t, drafts }) {
   return (
     <>
       {kind === "course" && !lesson && <FeatureLessons locale={locale} />}
-      {lesson && <section className="lesson-task"><a href="#course">{lessonCopy[locale][3]}</a><p>{lesson.task[locale]}</p></section>}
+      {lesson && <section className="lesson-task">
+        <a href="#course">{lessonCopy[locale][3]}</a>
+        <h2>{title}</h2>
+        <p>{lesson.task[locale]}</p>
+        <ol><li>{lessonGuide[locale][1]}</li><li>{lessonGuide[locale][2]}</li></ol>
+        <button className="button primary" onClick={() => {
+          setPanel("result");
+          preview.current?.run(code.current, undefined, true);
+          requestAnimationFrame(() => document.querySelector(".result-pane")?.scrollIntoView({block:"start"}));
+        }}><Play size={16} aria-hidden="true"/>{lessonGuide[locale][0]}</button>
+      </section>}
       <div className="workspace-heading">
         <div>
           <a
             className="back"
-            href={`#${kind === "animation" ? "animations" : kind === "command" ? "commands" : "figures"}`}
+            href={`#${kind === "course" ? "course" : kind === "animation" ? "animations" : kind === "command" ? "commands" : "figures"}`}
           >
             <ArrowLeft size={15} />
             {t("back")}

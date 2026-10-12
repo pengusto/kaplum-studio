@@ -154,7 +154,7 @@ export default function Studio() {
             : t("discover")}
         </span>
         <nav className="release-links" aria-label={docsCopy[preferences.locale].title}>
-          <a href={assetUrl(`/docs/?lang=${preferences.locale}`)}><BookOpen size={18}/><span>{docsCopy[preferences.locale].title}</span></a>
+          <a href={assetUrl(`/docs/?lang=${preferences.locale}`)} aria-label={docsCopy[preferences.locale].title}><BookOpen size={18}/><span>{docsCopy[preferences.locale].title}</span></a>
           <a href="https://github.com/pengusto/kaplum-studio" aria-label="GitHub"><GitBranch size={18}/><span>GitHub</span></a>
         </nav>
         <WarmTooltipGroup delay={300} lean={0}>
