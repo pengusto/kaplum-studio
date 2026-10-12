@@ -43,3 +43,18 @@ test('drawing Undo discards future history and leaves learner code intact',async
  await page.getByRole('button',{name:'Record drawing',exact:true}).click();const group=page.getByRole('group',{name:'Drawing playback'});await expect(group).toBeVisible();await page.getByRole('button',{name:'Show final drawing',exact:true}).click();await expect(group.locator('output').first()).toHaveText('3 / 3');
  await page.getByRole('button',{name:'Undo drawing step',exact:true}).click();await expect(group.locator('output').first()).toHaveText('2 / 2');await expect(page.locator('.turtle-state')).toContainText('x: 0.0');await expect(editor).toContainText('forward(80)');
 });
+
+test('course test lab exposes five runnable finite lessons and preserves drafts and reset',async({page})=>{
+ await page.goto('/#course');await expect(page.locator('.feature-lesson-grid article')).toHaveCount(5);
+ for(const id of ['square','pen-journey','stamps','circles','undo']){
+  await page.goto('/#course/'+id);await expect(page.locator('.lesson-task')).toBeVisible();await page.getByRole('button',{name:'Record drawing',exact:true}).click();await expect(page.getByRole('group',{name:'Drawing playback'})).toBeVisible();await page.getByRole('button',{name:'Show final drawing',exact:true}).click();await expect(page.locator('#status')).not.toHaveAttribute('data-state','error');
+ }
+ const editor=page.locator('#code');await editor.click();await page.keyboard.press('ControlOrMeta+A');await page.keyboard.insertText('forward(42); // retained lesson draft');await page.goto('/#course');await page.goto('/#course/undo');await expect(editor).toContainText('retained lesson draft');
+ page.once('dialog',d=>d.dismiss());await page.getByRole('button',{name:'Reset',exact:true}).click();await expect(editor).toContainText('retained lesson draft');
+ page.once('dialog',d=>d.accept());await page.getByRole('button',{name:'Reset',exact:true}).click();await expect(editor).not.toContainText('retained lesson draft');
+});
+
+test('test lab and construction source remain usable in five languages and narrow reduced-motion view',async({page})=>{
+ await page.setViewportSize({width:390,height:844});await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/#course');
+ for(const language of ['en','de','ja','tr','hy']){await page.locator('.language-picker select').selectOption(language);await expect(page.locator('.feature-lesson-grid article')).toHaveCount(5);await expect.poll(()=>page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);}
+});

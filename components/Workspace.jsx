@@ -14,6 +14,8 @@ import {
   Image,
   SlidersHorizontal,
 } from "lucide-react";
+import FeatureLessons from "./FeatureLessons";
+import {featureLessons,lessonCopy} from "../src/feature-lessons";
 import ExampleConstruction from "./ExampleConstruction";
 import DinoControls from "./DinoControls";
 import EditorPane from "./EditorPane";
@@ -41,9 +43,10 @@ export default function Workspace({ route, preferences, t, drafts }) {
         : kind === "command"
           ? reference.find((x) => x.name === id)
           : null;
+  const lesson = kind === "course" ? featureLessons.find(x => x.id === id) : null;
   const source =
     kind === "course"
-      ? "hideTurtle();\ngoto(0, 0);\n// Make a filled coral circle with radius 60.\n"
+      ? lesson?.code || "hideTurtle();\ngoto(0, 0);\n// Make a filled coral circle with radius 60.\n"
       : kind === "personal"
         ? 'hideTurtle();\ngoto(0, 0);\ncolor("DeepSkyBlue");\n// Try your first drawing here.\n'
         : starterCode(item?.code || item?.starter || "");
@@ -58,7 +61,7 @@ export default function Workspace({ route, preferences, t, drafts }) {
     kind === "command"
       ? item
       : kind === "course"
-        ? reference.find((x) => x.name === "drawCircle")
+        ? reference.find((x) => x.name === (lesson?.command || "drawCircle"))
         : findEntry(source, reference);
   const [status, setStatus] = useState({ type: "ready" }),
     [panel, setPanel] = useState("code"),
@@ -74,7 +77,7 @@ export default function Workspace({ route, preferences, t, drafts }) {
   const [turtleState, setTurtleState] = useState(null), [grid, setGrid] = useState(false), [pointer, setPointer] = useState(null), [copyError, setCopyError] = useState(false);
   const title =
     kind === "course"
-      ? t("lesson")
+      ? lesson?.title[locale] || t("lesson")
       : kind === "personal"
         ? t("personal")
         : kind === "figure"
@@ -133,6 +136,8 @@ export default function Workspace({ route, preferences, t, drafts }) {
             : t("ready");
   return (
     <>
+      {kind === "course" && !lesson && <FeatureLessons locale={locale} />}
+      {lesson && <section className="lesson-task"><a href="#course">{lessonCopy[locale][3]}</a><p>{lesson.task[locale]}</p></section>}
       <div className="workspace-heading">
         <div>
           <a
@@ -173,7 +178,7 @@ export default function Workspace({ route, preferences, t, drafts }) {
           </button>
         </div>
       </div>
-      {kind === "course" && (
+      {kind === "course" && !lesson && (
         <section className="lesson">
           <div>
             <h2>{t("lesson")}</h2>

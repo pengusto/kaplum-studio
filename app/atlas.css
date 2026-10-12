@@ -991,3 +991,17 @@ html:has(.documentation), body:has(.documentation) { height: auto; overflow: aut
 .example-construction { margin-block: 1rem; padding: .8rem; border: 1px solid var(--line); border-radius: .8rem; }
 .example-construction summary { cursor: pointer; font-weight: 600; }
 .example-construction pre { max-height: 26rem; overflow: auto; padding: .8rem; background: var(--surface); border: 1px solid var(--line); border-radius: .5rem; font-size: .8rem; line-height: 1.5; }
+
+.feature-lessons { margin-bottom: 2rem; }
+.feature-lesson-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 1rem; }
+.feature-lesson-grid article { display:flex; flex-direction:column; gap:.7rem; }
+.feature-lesson-grid .button { margin-top:auto; align-self:flex-start; }
+.lesson-task { margin-bottom:1rem; padding:1rem; border:1px solid var(--line); border-radius:.8rem; background:var(--surface); }
+@media(max-width:700px) { .feature-lesson-grid { grid-template-columns:1fr; } }
+.feature-lessons, .lesson-task { flex-shrink: 0; }
+/* Lessons add teaching text above the editor: scroll the workbench as a unit. */
+@media(min-width:701px) {
+ .lesson-task ~ .workspace-panels, .feature-lessons ~ .workspace-panels { flex: 0 0 850px; min-height: 850px; }
+}
+
+.lesson-task ~ .workspace-panels .code-footer { display:flex; }

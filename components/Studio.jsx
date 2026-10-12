@@ -54,7 +54,7 @@ export default function Studio() {
     const read = () => {
       const hash = location.hash.slice(1);
       setRoute(
-        /^(figures|commands|animations|course|personal|figure\/[^/]+|command\/[^/]+|animation\/[^/]+|inspect-figure\/[^/]+|inspect-command\/[^/]+)$/.test(
+        /^(figures|commands|animations|course|personal|course\/[^/]+|figure\/[^/]+|command\/[^/]+|animation\/[^/]+|inspect-figure\/[^/]+|inspect-command\/[^/]+)$/.test(
           hash,
         )
           ? hash

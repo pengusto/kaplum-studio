@@ -184,3 +184,11 @@ test('bounded drawing undo restores turtle, fill, clear and stamps and discards 
   return {noHistory,removed,total,shorter,restored,logical,counter,stampPixel,fillPixel,beforeBytes,zero:h.length,last:undo()};
  });expect(result.noHistory).toBe(false);expect(result.removed).toBe(true);expect(result.shorter).toBe(result.total-1);expect(result.logical.x).toBeCloseTo(result.restored.x);expect(result.logical.angleDeg).toBeCloseTo(result.restored.angleDeg);expect(result.counter).toBe(4);expect(result.stampPixel).toEqual([255,0,0,255]);expect(result.fillPixel).toEqual([255,215,0,255]);expect(result.beforeBytes).toBeLessThan(4000000);expect(result.zero).toBe(0);expect(result.last).toBe(false);
 });
+
+test('trace checkpoint overflow is explicit and redraw cost stays bounded',async({page},testInfo)=>{
+ await load(page);const result=await page.evaluate(()=>{
+  let message;try{recordDrawing(()=>{for(let i=0;i<10001;i++)goto(i,0);});}catch(e){message=e.message;}
+  goto(0,0);const h=recordDrawing(()=>{for(let i=0;i<500;i++){goto(i%100,0);stamp();}});h.finish();const begin=performance.now();h.undo();const latency=performance.now()-begin;
+  return {message,latency,bytes:h.bytes,total:h.length};
+ });expect(result.message).toContain('10,000 steps');expect(result.bytes).toBeLessThan(4000000);expect(result.latency).toBeLessThan(2000);await testInfo.attach('drawing-undo-sample',{body:JSON.stringify(result),contentType:'application/json'});
+});
