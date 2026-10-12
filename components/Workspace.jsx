@@ -1,6 +1,6 @@
 "use client";
 import {analyzeDebugSource} from "../src/source-debugger";
-import {debuggerCopy} from "../src/debugger-copy";
+import {debuggerCopy,conditionExplanation} from "../src/debugger-copy";
 import {lessonTasks,taskLabels} from "../src/lesson-tasks";
 import {executionMode} from "../src/execution-mode";
 import { assetUrl } from "../src/asset-url";
@@ -135,7 +135,7 @@ export default function Workspace({ route, preferences, t, drafts }) {
     try { const compiled=analyzeDebugSource(code.current); executableLines.current=compiled.lines; setBreakpointError(false); setPanel("result"); preview.current?.run(code.current,undefined,false,{code:compiled.code,breakpoints}); }
     catch(error) {setDebugError(error.message);}
   }
-  useEffect(()=>{editor.current?.debugLine(debug?.line || null);if(debug?.line) editor.current?.showLine(debug.line);editor.current?.breakpoints(debug ? breakpoints : []);},[debug,breakpoints]);
+  useEffect(()=>{editor.current?.debugLine(debug?.line || null);editor.current?.condition(debug?.condition ? {...debug.condition,text:conditionExplanation(debug.condition,locale)} : null);if(debug?.line) editor.current?.showLine(debug.line);editor.current?.breakpoints(debug ? breakpoints : []);},[debug,breakpoints,locale]);
   function updateBreakpoints(lines) {
     setBreakpoints(lines);setBreakpointError(false);
     preview.current?.control("debug-breakpoints",undefined,lines);
@@ -388,7 +388,8 @@ export default function Workspace({ route, preferences, t, drafts }) {
             </div>
             {debug && <section className="debug-command" aria-label={debugText.upNext} aria-live="polite">
               <strong>{debug.done ? debugText.finished : `${debugText.upNext}: ${debugText.line} ${debug.line}`}</strong>
-              {!debug.done && <small>{debugText.stepHint}</small>}
+              {!debug.done && <small>{debug.kind === "condition" ? debugText.condition : debugText.stepHint}</small>}
+              {debug.condition && <p className="condition-feedback" data-result={debug.condition.result} role="status"><code>{debug.condition.source}</code> · {conditionExplanation(debug.condition,locale)}</p>}
             </section>}
             {debugError && <p className="source-debugger" role="alert">{debugError}</p>}
             <div className="canvas-surface" data-grid={grid} data-canvas={preferences.canvas}>

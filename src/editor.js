@@ -1,6 +1,6 @@
 import { EditorView, basicSetup } from "codemirror";
 import { EditorState, Compartment, StateEffect, StateField } from "@codemirror/state";
-import { keymap, Decoration } from "@codemirror/view";
+import { keymap, Decoration, WidgetType } from "@codemirror/view";
 import { indentWithTab } from "@codemirror/commands";
 import { javascript } from "@codemirror/lang-javascript";
 import { oneDark } from "@codemirror/theme-one-dark";
@@ -13,6 +13,29 @@ const debugLines=StateField.define({
     for(const effect of tr.effects) if(effect.is(debugLineEffect)) {
       const line=effect.value;
       value=line && line<=tr.state.doc.lines ? Decoration.set([Decoration.line({class:"cm-debug-line"}).range(tr.state.doc.line(line).from)]) : Decoration.none;
+    }
+    return value;
+  },
+  provide:field=>EditorView.decorations.from(field)
+});
+const conditionEffect=StateEffect.define();
+class ConditionNote extends WidgetType {
+  constructor(text,result) {super();this.text=text;this.result=result;}
+  eq(other) {return this.text===other.text && this.result===other.result;}
+  toDOM() {const note=document.createElement("span");note.className="cm-condition-note";note.textContent=` // ${this.text}`;return note;}
+}
+const conditionLines=StateField.define({
+  create:()=>Decoration.none,
+  update(value,tr) {
+    if(tr.docChanged) value=Decoration.none;
+    for(const effect of tr.effects) if(effect.is(conditionEffect)) {
+      const note=effect.value;
+      if(!note || note.line>tr.state.doc.lines) {value=Decoration.none;continue;}
+      const line=tr.state.doc.line(note.line);
+      value=Decoration.set([
+        Decoration.line({class:`cm-condition-${note.result ? "true" : "false"}`}).range(line.from),
+        Decoration.widget({widget:new ConditionNote(note.text,note.result),side:1}).range(line.to)
+      ],true);
     }
     return value;
   },
@@ -38,6 +61,7 @@ export function createEditor(parent) {
     extensions: [
       basicSetup,
       debugLines,
+      conditionLines,
       breakpointLines,
       javascript(),
       keymap.of([indentWithTab]),
@@ -71,6 +95,7 @@ export function createEditor(parent) {
     },
     breakpoints(lines) {view.dispatch({effects:breakpointEffect.of(lines)});},
     showLine(line) {if(line>0 && line<=view.state.doc.lines) view.dispatch({effects:EditorView.scrollIntoView(view.state.doc.line(line).from,{y:"center"})});},
+    condition(note) {view.dispatch({effects:conditionEffect.of(note)});},
     debugLine(line) { view.dispatch({effects:debugLineEffect.of(line)}); },
     focus() {
       view.focus();

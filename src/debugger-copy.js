@@ -33,3 +33,13 @@ const stepRows={
  hy:["Հաջորդը","Վերջին քայլերը","Հրահանգ","Ստուգել ընթացքը","Մտնել ցիկլի մարմին","Դեռ ոչինչ չի կատարվել։ Սեղմեք Հաջորդ քայլը։","Վերջին 8 կետերը։ Օգնական կանչը մեկ քայլ է։"]
 };
 for(const [locale,values] of Object.entries(stepRows)) Object.assign(debuggerCopy[locale],Object.fromEntries(["upNext","recent","statement","control","body","initialStep","historyHelp"].map((key,i)=>[key,values[i]])));
+
+const conditionRows={
+ en:["Check result","True — enter this branch.","False — skip this branch; use else if present.","True — run another loop iteration.","False — leave the loop."],
+ de:["Prüfung","Wahr — dieser Zweig wird ausgeführt.","Falsch — diesen Zweig überspringen; falls vorhanden geht es mit else weiter.","Wahr — die Schleife läuft noch einmal.","Falsch — die Schleife endet."],
+ ja:["条件の結果","真 — この分岐を実行します。","偽 — この分岐を飛ばし、elseがあれば進みます。","真 — ループをもう一度実行します。","偽 — ループを終了します。"],
+ tr:["Koşul sonucu","Doğru — bu dalı çalıştır.","Yanlış — bu dalı atla; varsa else ile devam et.","Doğru — döngüyü bir kez daha çalıştır.","Yanlış — döngüden çık."],
+ hy:["Ստուգման արդյունք","Ճիշտ — կատարել այս ճյուղը։","Սխալ — բաց թողնել այս ճյուղը, շարունակել else-ով, եթե կա։","Ճիշտ — կատարել ցիկլի ևս մեկ քայլ։","Սխալ — ավարտել ցիկլը։"]
+};
+for(const [locale,values] of Object.entries(conditionRows)) Object.assign(debuggerCopy[locale],Object.fromEntries(["condition","ifTrue","ifFalse","loopTrue","loopFalse"].map((key,i)=>[key,values[i]])));
+export function conditionExplanation(condition,locale) {return debuggerCopy[locale][`${condition.control}${condition.result ? "True" : "False"}`];}

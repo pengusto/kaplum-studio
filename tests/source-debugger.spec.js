@@ -15,10 +15,10 @@ test('branches, shadowed bindings, continue and break preserve native results',(
  const source='let total=0; for(let i=0;i<6;i++){if(i===1){continue;} if(i===4){break;} {let total=10; total++;} total+=i;}';
  const plain=Function(source+'return total;')();
  const iterator=Function('return function*(){'+compileDebugSource(source)+'return total;}')()();
- let result,steps=0;do{result=iterator.next();expect(++steps).toBeLessThan(100);}while(!result.done);
+ let result,steps=0;do{result=iterator.next(result?.value?.kind === "condition" ? result.value.result : undefined);expect(++steps).toBeLessThan(100);}while(!result.done);
  expect(result.value).toBe(plain);
  const empty=Function('return function*(){'+compileDebugSource('while(true){}')+'}')()();
- for(let i=0;i<5;i++) expect(empty.next().done).toBe(false);
+ for(let i=0;i<5;i++) expect(empty.next(true).done).toBe(false);
 });
 test('native stepping executes statements only on advance and inspects loop variables',async({page})=>{
  await start(page,'let distance=20;\nfor(let i=0;i<3;i++){\n forward(distance);\n distance+=10;\n}\nright(90);');
@@ -26,7 +26,7 @@ test('native stepping executes statements only on advance and inspects loop vari
  await expect(panel).toContainText('Line 1');await expect(page.locator('.cm-debug-line')).toContainText('let distance');
  await expect(panel).toContainText('not in scope');await expect(page.locator('.cm-debug-line')).toHaveText('let distance=20;');
  const next=page.getByRole('button',{name:'Next code statement',exact:true});await next.click();await expect(panel).toContainText('Line 2');await expect(panel.locator('dd').first()).toHaveText('20');
- await next.click();await next.click();await expect(panel).toContainText('Line 3');await expect(page.locator('.turtle-state')).toContainText('y: 0.0');
+ await next.click();await next.click();await next.click();await expect(panel).toContainText('Line 3');await expect(page.locator('.turtle-state')).toContainText('y: 0.0');
  await next.click();await expect(panel).toContainText('Line 4');await expect(page.locator('.cm-debug-line')).toHaveText('distance+=10;');await expect(page.locator('.debug-history li').last()).toContainText('forward(distance);');await expect(page.locator('.turtle-state')).toContainText('y: 20.0');
  await page.screenshot({path:'/tmp/kaplum-source-debugger.png'});
  await page.getByRole('button',{name:'Continue code',exact:true}).click();await expect(panel).toContainText('Finished');await expect(panel.locator('dd').first()).toHaveText('50');await expect(page.locator('.debug-history li').last()).toContainText('right(90);');await expect(page.locator('.debug-history li')).toHaveCount(8);await expect(page.locator('.turtle-state')).toContainText('y: 90.0');
@@ -92,6 +92,7 @@ test('circle helper shows exact next call and completed call without stepping he
 test('debugging keeps editable source and drawing together on desktop and mobile',async({page})=>{
  await page.setViewportSize({width:1440,height:1000});
  await start(page,Array.from({length:25},()=> 'forward(2);').join('\n'));
+ await expect(page.locator('.workspace-panels')).toHaveAttribute('data-debug','true');
  const code=page.locator('.code-pane'),result=page.locator('.result-pane');
  await expect(code).toBeVisible();await expect(result).toBeVisible();
  const a=await code.boundingBox(),b=await result.boundingBox();
@@ -107,4 +108,42 @@ test('debugging keeps editable source and drawing together on desktop and mobile
  await expect.poll(()=>page.locator('.cm-scroller').evaluate(el=>el.scrollTop)).toBeGreaterThan(0);
  await expect.poll(()=>page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
  await page.screenshot({path:'/tmp/kaplum-debug-mobile-context.png'});
+});
+
+test('condition instrumentation evaluates once and preserves branches, updates and omitted tests',()=>{
+ for(const source of [
+  'let n=0; if(n++===0){n+=10;}else{n+=100;}',
+  'let n=0; while(n++<3){if(n===2){continue;} n+=1;}',
+  'let n=0; for(let i=0;i<4;i++){if(i===2){break;}n+=i;}',
+  'let n=0; for(;;){n++;if(n===2){break;}}',
+  'let n=0; for(n=0;n<3;n++){}',
+  'let n=0; if(false){n=3;}else{if(true){n=4;}}'
+ ]) {
+  const native=Function(source+'return n;')();
+  const iterator=Function('return function*(){'+compileDebugSource(source)+'return n;}')()();
+  let step,count=0;const results=[];
+  do {step=iterator.next(step?.value?.kind === "condition" ? step.value.result : undefined);if(step.value?.kind === "condition") results.push(step.value.result);expect(++count).toBeLessThan(100);} while(!step.done);
+  expect(step.value).toBe(native);expect(results.length).toBeGreaterThan(0);
+ }
+});
+test('true and false checks explain if else and loop exit beside actual source',async({page})=>{
+ await page.setViewportSize({width:458,height:772});
+ await start(page,'let n=0;\nif(n>0){\n forward(50);\n}else{\n right(90);\n}\nfor(let i=0;i<1;i++){\n forward(20);\n}');
+ const next=page.getByRole('button',{name:'Next code statement',exact:true});
+ await next.click();await next.click();
+ await expect(page.locator('.cm-condition-false')).toContainText('False — skip this branch');
+ await expect(page.locator('.condition-feedback')).toHaveAttribute('data-result','false');
+ await next.click();await expect(page.locator('.cm-debug-line')).toContainText('right(90)');
+ await next.click();await next.click();
+ await expect(page.locator('.cm-condition-true')).toContainText('True — run another loop iteration');
+ await page.screenshot({path:'/tmp/kaplum-condition-mobile.png'});
+ await page.getByRole('button',{name:'Continue code',exact:true}).click();
+ await expect(page.locator('.debug-command')).toContainText('Finished');
+ await expect(page.locator('.cm-condition-false')).toContainText('False — leave the loop');
+ await page.locator('.language-picker select').selectOption('de');
+ await expect(page.locator('.cm-condition-note')).toContainText('Falsch — die Schleife endet');
+ await page.locator('.language-picker select').selectOption('en');
+ await expect.poll(()=>page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
+ await page.getByRole('button',{name:'Stop',exact:true}).click();
+ await expect(page.locator('.cm-condition-note')).toHaveCount(0);
 });

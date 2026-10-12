@@ -109,19 +109,20 @@ function debugValues(bindings) {
   });
 }
 function debugStatus(playing=false, breakpoint=false) {
-  postMessage({type:"debug",line:debuggerRun.current?.line || 0,done:debuggerRun.done,playing,breakpoint,source:debuggerRun.current?.source || "",kind:debuggerRun.current?.kind || "statement",history:debuggerRun.history,variables:debuggerRun.variables || []});
+  postMessage({type:"debug",line:debuggerRun.current?.line || 0,done:debuggerRun.done,playing,breakpoint,source:debuggerRun.current?.source || "",kind:debuggerRun.current?.kind || "statement",history:debuggerRun.history,condition:debuggerRun.condition || null,variables:debuggerRun.variables || []});
 }
 function advanceDebug(playing=false) {
   stopDebugTimer();
   if(!debuggerRun || debuggerRun.done) return;
   if(++debuggerRun.steps>100000) throw Error("Debugger prototype: 100,000-step budget exceeded.");
   const previous=debuggerRun.current;
-  const next=debuggerRun.iterator.next();
+  const next=debuggerRun.iterator.next(previous?.kind === "condition" ? previous.result : undefined);
   if(previous) debuggerRun.history=[...debuggerRun.history,previous].slice(-8);
   // Retain only primitive snapshots, not closure references from completed scopes.
   debuggerRun.variables=debugValues(next.done ? debuggerRun.bindings || [] : next.value.bindings);
   debuggerRun.bindings=next.done ? null : next.value.bindings;
-  debuggerRun.current=next.done ? null : {line:next.value.line,source:next.value.source,kind:next.value.kind};
+  debuggerRun.current=next.done ? null : {line:next.value.line,source:next.value.source,kind:next.value.kind,...(next.value.kind === "condition" ? {result:next.value.result,control:next.value.control} : {})};
+  if(debuggerRun.current?.kind === "condition") debuggerRun.condition=debuggerRun.current;
   debuggerRun.done=next.done;
   const breakpoint=playing && !next.done && debuggerRun.breakpoints.has(next.value.line);
   debugStatus(playing && !next.done && !breakpoint,breakpoint);
