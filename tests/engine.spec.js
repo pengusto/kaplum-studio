@@ -212,13 +212,13 @@ test('undo restores initial styles and pen; unfinished helper fills reject recor
 
 test('inspection checkpoint describes actual styles, endpoints and effects without changing program queries',async({page})=>{
  await load(page);const result=await page.evaluate(()=>{
-  const h=recordDrawing(()=>{wrap(false);color('coral');width(6);goto(35,-20);angle(90);penup();forward(80);pendown();forward(60);stamp();clear();});
+  stamp();const h=recordDrawing(()=>{wrap(false);color('coral');width(6);goto(35,-20);angle(90);penup();forward(80);pendown();forward(60);stamp();clear();});
   const logical=position();const details=[];while(h.step<h.length){h.next();details.push(h.current);}
   const final=__displayTurtleState();h.back();const back=h.current;h.reset();return {logical,details,final,back,reset:h.current};
  });
  expect(result.logical.x).toBeCloseTo(175);expect(result.logical.y).toBeCloseTo(-20);expect(result.final.penColor).toBe('#ff7f50');expect(result.final.lineWidth).toBe(6);expect(result.final.stampCount).toBe(0);
  expect(result.details.some(d=>d.before.penColor!==d.after.penColor)).toBe(true);expect(result.details.some(d=>d.before.lineWidth!==d.after.lineWidth)).toBe(true);
- expect(result.details.some(d=>!d.after.pen&&d.after.x===115&&d.effects.stroke===0)).toBe(true);expect(result.details.some(d=>d.effects.stamp===1)).toBe(true);expect(result.details.at(-1).effects.clear).toBe(1);expect(result.back.after.stampCount).toBe(1);expect(result.reset.before).toEqual(result.reset.after);
+ expect(result.details.some(d=>!d.after.pen&&d.after.x===115&&d.effects.stroke===0)).toBe(true);expect(result.details.some(d=>d.effects.stamp===1)).toBe(true);expect(result.details.at(-1).effects.clear).toBe(1);expect(result.back.after.stampCount).toBe(1);expect(result.reset.before).toEqual(result.reset.after);expect(result.reset.after.stampCount).toBe(0);
 });
 
 test('teacher inspection messages reject invalid sandbox values and return detached snapshots',async()=>{

@@ -224,13 +224,13 @@
     if (typeof program !== "function" || trace?.capturing) throw Error("recordDrawing needs a synchronous drawing function.");
     if (trace) throw Error("Restart the program before recording another drawing.");
     const saved = {};
-    const initial = checkpointState();
     const styles = Object.fromEntries(["strokeStyle","fillStyle","lineWidth","lineCap","lineJoin","miterLimit","font","textAlign","textBaseline","globalAlpha","globalCompositeOperation"].map(key => [key, rawInk[key]]));
     if (window.__hasOpenTurtleFill?.()) throw Error("Close the fill with endFill() before recording a drawing.");
     const baselineTransform = rawInk.getTransform();
     const baselineDash = rawInk.getLineDash();
     const baselineDashOffset = rawInk.lineDashOffset;
     erase(rawInk); stamps.clear();
+    const initial = checkpointState();
     trace = {capturing:true, ops:[], steps:[], bytes:0};
     let result;
     try {
