@@ -322,3 +322,16 @@ export function exampleCall(source, name) {
   });
   return result;
 }
+
+// Shared by catalogue and inspector; expressions are preserved verbatim.
+export function parameterValues(source, entry, locale) {
+  const call = entry && exampleCall(source, entry.name);
+  return entry ? parameterMeanings(entry, locale).map((p, i) => call?.values[i] ?? p.value ?? "undefined") : [];
+}
+export function replaceParameterCall(source, entry, values) {
+  const call = entry && exampleCall(source, entry.name);
+  if (!call) return source;
+  const args = [...values];
+  while (args.at(-1) === "undefined") args.pop();
+  return source.slice(0, call.position) + `${entry.name}(${args.join(", ")})` + source.slice(call.position + call.source.length);
+}

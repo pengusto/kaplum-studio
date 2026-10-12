@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { exampleCall } from "../src/parameters";
+import { exampleCall, replaceParameterCall } from "../src/parameters";
 // Edit literal arguments of the displayed parser-identified call, preserving all surrounding code.
 export default function DinoControls({ source, onApply, t }) {
   const call = exampleCall(source, "drawDino");
@@ -48,12 +48,7 @@ export default function DinoControls({ source, onApply, t }) {
         className="button primary"
         disabled={!valid}
         onClick={() => {
-          const replacement = `drawDino(${Number(draft[0])}, ${JSON.stringify(draft[1])}, ${Number(draft[2])})`;
-          onApply(
-            source.slice(0, call.position) +
-              replacement +
-              source.slice(call.position + call.source.length),
-          );
+          onApply(replaceParameterCall(source, { name: "drawDino" }, [String(Number(draft[0])), JSON.stringify(draft[1]), String(Number(draft[2]))]));
         }}
       >
         {t("applyRun")}

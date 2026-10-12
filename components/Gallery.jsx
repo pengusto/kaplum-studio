@@ -6,7 +6,7 @@ import { Search, ArrowUpRight, RotateCcw, X, Shapes, PawPrint, LayoutGrid } from
 import RubberSegment from "./react-bits/RubberSegment";
 import StudioCard from "./StudioCard";
 import ParameterControls from "./ParameterControls";
-import { exampleCall, parameterMeanings } from "../src/parameters";
+import { parameterValues, replaceParameterCall } from "../src/parameters";
 import Parameters, { findEntry } from "./Parameters";
 import { recipes, reference } from "../src/reference";
 import { examples } from "../src/examples";
@@ -90,16 +90,10 @@ export default function Gallery({ section, preferences, t, selectedRoute, overvi
 
 function GalleryCard({ item, isCommand, section, source, title, entry, href, overview, preferences, locale, t, selectedRoute, pausedPreviews, drafts }) {
   const original = item.code || item.starter;
-  const call = entry && exampleCall(original, entry.name);
-  const initialValues = entry ? parameterMeanings(entry, locale).map((p, i) => call?.values[i] ?? p.value ?? "undefined") : [];
+  const initialValues = parameterValues(original, entry, locale);
   const [values, setValues] = useState(initialValues);
   const change = (index, value) => setValues(previous => previous.map((old, i) => i === index ? value : old));
-  const replaceCall = text => {
-    const match = entry && exampleCall(text, entry.name);
-    const argumentsToShow = [...values];
-    while (argumentsToShow.at(-1) === "undefined") argumentsToShow.pop();
-    return match ? text.slice(0, match.position) + `${entry.name}(${argumentsToShow.join(", ")})` + text.slice(match.position + match.source.length) : text;
-  };
+  const replaceCall = text => replaceParameterCall(text, entry, values);
   const liveSource = overview ? replaceCall(original) : original;
   const displaySource = overview ? replaceCall(source) : source;
   const studioHref = `#${isCommand ? "command" : section === "animations" ? "animation" : "figure"}/${item.id || item.name}`;

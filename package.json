@@ -9,7 +9,8 @@
     "dev": "bun scripts/prepare-public.js && next dev --port 4173",
     "build": "bun scripts/prepare-public.js && next build",
     "preview": "STATIC_DIR=out bun server.js",
-    "test": "playwright test"
+    "test": "playwright test",
+    "profile:previews": "bun scripts/profile-previews.js"
   },
   "dependencies": {
     "@codemirror/commands": "6.11.1",

@@ -149,7 +149,12 @@ test("offline ZIP retains exact source, fallback canvas, notices and real execut
 }) => {
   await page.goto("/#personal");
   const source = 'hideTurtle(); goto(0, 0); drawCircle(60, "coral", true);';
-  await page.locator("#code").fill(source);
+  // Exercise CodeMirror through real input; Firefox contenteditable fill can
+  // append DOM text before its document observer has reconciled the buffer.
+  await page.locator("#code").click();
+  await page.keyboard.press('ControlOrMeta+A');
+  await page.keyboard.insertText(source);
+  await expect(page.locator("#code")).toHaveText(source);
   const download = page.waitForEvent("download");
   await page
     .getByRole("button", { name: "Download project ZIP", exact: true })
@@ -576,7 +581,7 @@ test("Inline parameter reset and explicit pause work without leaving the catalog
   await expect(preview).toHaveAttribute("data-paused", "true");
   await expect(preview).toHaveAttribute("data-playing", "false");
   await card.getByRole("button", { name: "Reset example", exact: true }).click();
-  await expect(card.locator(".example-call")).toContainText('drawDino(80, "LimeGreen", 25)');
+  await expect(card.locator(".example-call")).toContainText('drawDino(120, "LimeGreen", 25)');
   await expect(page).toHaveURL(/#figures$/);
 });
 
@@ -677,7 +682,7 @@ test("Figure catalogue uses three columns and fits small drawings without changi
   await expect(dino.locator(".catalogue-preview")).toHaveAttribute("data-drawn", "true");
   const drawingWidth = () => dino.locator("canvas").evaluate(el => { const pixels = el.getContext("2d").getImageData(0, 0, 700, 700).data; let left = 700, right = 0; for(let y=0;y<700;y++) for(let x=0;x<700;x++) if(pixels[(y*700+x)*4+3]>20) { left=Math.min(left,x);right=Math.max(right,x); } return right-left; });
   await expect.poll(drawingWidth).toBeGreaterThan(200);
-  await expect(dino.locator(".example-call")).toContainText('drawDino(80, "LimeGreen", 25)');
+  await expect(dino.locator(".example-call")).toContainText('drawDino(120, "LimeGreen", 25)');
   await page.setViewportSize({ width: 900, height: 900 });
   expect(await columns()).toBe(2);
   await page.setViewportSize({ width: 390, height: 844 });
@@ -753,10 +758,10 @@ test("Retina catalogue renders sharp geometry and keeps size changes visible", a
     expect(first.partial).toBeLessThanOrEqual(6);
     expect(first.occupied).toBeGreaterThan(first.width*.15);
     const initialWidth = first.right - first.left;
-    await card.getByRole('slider', {name:'radius slider', exact:true}).fill('100');
+    await card.getByRole('slider', {name:'radius slider', exact:true}).fill('150');
     await card.locator('canvas').scrollIntoViewIfNeeded();
-    await expect(card.locator('.example-call')).toContainText('drawPacman(100,');
-    await expect.poll(async () => { const next = await geometry(); return (next.right-next.left)/initialWidth; }).toBeGreaterThan(1.9);
+    await expect(card.locator('.example-call')).toContainText('drawPacman(150,');
+    await expect.poll(async () => { const next = await geometry(); return (next.right-next.left)/initialWidth; }).toBeGreaterThan(1.7);
     await card.getByRole('slider', {name:'radius slider', exact:true}).fill('25');
     await card.locator('canvas').scrollIntoViewIfNeeded();
     await expect.poll(async () => { const next = await geometry(); return (next.right-next.left)/initialWidth; }).toBeLessThan(.55);
@@ -782,9 +787,9 @@ test("Dinosaur size visibly changes on a stable catalogue scale", async ({ page 
   await card.getByRole('slider', {name:'size slider', exact:true}).fill('40');
     await card.locator('canvas').scrollIntoViewIfNeeded();
   await expect.poll(async () => (await width())/initial).toBeLessThan(.6);
-  await card.getByRole('slider', {name:'size slider', exact:true}).fill('120');
+  await card.getByRole('slider', {name:'size slider', exact:true}).fill('160');
     await card.locator('canvas').scrollIntoViewIfNeeded();
-  await expect.poll(async () => (await width())/initial).toBeGreaterThan(1.4);
+  await expect.poll(async () => (await width())/initial).toBeGreaterThan(1.3);
 });
 
 
@@ -807,4 +812,86 @@ test("Static catalogue shares engine loads and stops transferring unchanged fram
   await expect(page.locator('.example-call')).toContainText('drawDino(60,');
   await expect(page.locator('.catalogue-preview')).toHaveAttribute('data-drawn','true');
   for(const path of ['/engine/library.js','/engine/functions.js','/src/worker.js','/engine/teaching-clock.js']) expect(requests.filter(p=>p===path)).toHaveLength(1);
+});
+
+
+test("Catalogue ranges represent complete ovals and the default 24 firework rays", async ({ page }) => {
+  await page.goto('/#figures');
+  await page.getByRole('searchbox').fill('drawOvalArc');
+  const oval = page.locator('.example-card').filter({ has: page.getByRole('heading', { name: 'Oval', exact: true }) });
+  const degrees = oval.getByRole('slider', {name:'degrees slider', exact:true});
+  await expect(degrees).toHaveValue('360');
+  await degrees.fill('270');
+  await expect(oval.locator('.example-call')).toContainText('270,');
+  await oval.getByRole('button', {name:'Reset example', exact:true}).click();
+  await expect(degrees).toHaveValue('360');
+  await page.getByRole('searchbox').fill('Firework');
+  const rays = page.getByRole('slider', {name:'rays slider', exact:true});
+  await expect(rays).toHaveValue('24');
+  await rays.fill('40');
+  await expect(page.locator('.example-call')).toContainText('40)');
+});
+
+test("Catalogue performance sample records first drawing and warm slider latency", async ({ page }, testInfo) => {
+  const start = Date.now();
+  await page.goto('/#figures');
+  await page.getByRole('searchbox').fill('drawDino');
+  const preview = page.locator('.catalogue-preview');
+  await expect(preview).toHaveAttribute('data-drawn', 'true');
+  const firstDrawingMs = Date.now() - start;
+  await page.evaluate(() => {
+    window.lastFrameAt = 0;
+    addEventListener('message', event => { if(event.data?.type === 'frame') window.lastFrameAt = performance.now(); });
+  });
+  const started = await page.evaluate(() => performance.now());
+  await page.getByRole('slider', {name:'size slider', exact:true}).fill('100');
+  await page.locator('canvas').scrollIntoViewIfNeeded();
+  await expect.poll(() => page.evaluate(() => window.lastFrameAt)).toBeGreaterThan(started);
+  const sliderMs = await page.evaluate(start => window.lastFrameAt - start, started);
+  console.log('Preview sample:', JSON.stringify({firstDrawingMs, sliderMs, browser:testInfo.project.name}));
+  await testInfo.attach('preview-performance.json', {body: JSON.stringify({ firstDrawingMs, sliderMs, viewport: page.viewportSize(), browser: testInfo.project.name }), contentType:'application/json'});
+  // Generous regression ceiling, not a claim about the desired 150ms UX budget.
+  expect(sliderMs).toBeLessThan(2000);
+});
+
+
+test("Static previews settle without an indeterminate spinner; animations keep running", async ({ page }) => {
+  await page.goto('/#figures');
+  await page.getByRole('searchbox').fill('drawDino');
+  const preview = page.locator('.catalogue-preview');
+  await expect(preview).toHaveAttribute('data-drawn', 'true');
+  await expect(preview.getByRole('status')).toHaveText('Ready');
+  await expect(preview.locator('.status-mark')).toHaveAttribute('data-status', 'done');
+  await expect(preview.locator('.status-mark')).not.toHaveAttribute('data-indeterminate', '');
+  await page.locator('.studio-dock').getByRole('link', {name:'Animations', exact:true}).click();
+  await expect(page.locator('.catalogue-preview').first().getByRole('status')).toHaveText('Running');
+});
+
+test("Figure exploration extremes preserve a clear margin in the actual catalogue camera", async ({ page }) => {
+  await page.goto('/#figures');
+  const cases = [
+    ['drawDino','size',160], ['drawButterfly','size',140], ['drawPacman','radius',180],
+    ['drawCircle','radius',120], ['drawHalfCircle','radius',120],
+    ['drawTriangle','size',170], ['drawStar','size',100], ['drawFlower','size',60],
+    ['drawRect','widthValue',280], ['drawRect','height',280],
+  ];
+  for (const [name, parameter, max] of cases) {
+    await page.getByRole('searchbox').fill(name);
+    const card = page.locator('.example-card').filter({has:page.getByRole('slider',{name:`${parameter} slider`,exact:true})}).first();
+    const slider = card.getByRole('slider',{name:`${parameter} slider`,exact:true});
+    await expect(slider).toHaveAttribute('max',String(max));
+    for (const value of [await slider.getAttribute('min'), String(max)]) {
+      await slider.fill(value);
+      await card.locator('canvas').scrollIntoViewIfNeeded();
+      await expect(card.locator('.catalogue-preview')).toHaveAttribute('data-drawn','true');
+      // A one-pixel margin detects cropping, independent of device pixel ratio.
+      await expect.poll(() => card.locator('canvas').evaluate(c => {
+        const pixels=c.getContext('2d').getImageData(0,0,c.width,c.height).data;
+        let edge=0,occupied=0;
+        for(let i=3;i<pixels.length;i+=4)if(pixels[i]>20)occupied++;
+        for(let i=0;i<c.width;i++)for(const k of [i,(c.height-1)*c.width+i,i*c.width,i*c.width+c.width-1])if(pixels[k*4+3]>20)edge++;
+        return occupied>0 && edge===0;
+      })).toBe(true);
+    }
+  }
 });

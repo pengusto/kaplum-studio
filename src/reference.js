@@ -1685,8 +1685,8 @@ export const recipes = [
       "tr": "Pacman",
       "hy": "Pacman"
     },
-    "shortCode": "drawPacman(50, \"gold\", 60);",
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0, 0);\nangle(90);\ndrawPacman(50, \"gold\", 60);"
+    "shortCode": "drawPacman(85, \"gold\", 60);",
+    "code": "setBackground(\"white\"); hideTurtle(); goto(0, 0);\nangle(90);\ndrawPacman(85, \"gold\", 60);"
   },
   {
     "id": "figur-dino",
@@ -1697,8 +1697,8 @@ export const recipes = [
       "tr": "Dinozor",
       "hy": "Դինոզավր"
     },
-    "shortCode": "drawDino(80, \"LimeGreen\", 25);",
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0, 0);\ndrawDino(80, \"LimeGreen\", 25);"
+    "shortCode": "drawDino(120, \"LimeGreen\", 25);",
+    "code": "setBackground(\"white\"); hideTurtle(); goto(0, 0);\ndrawDino(120, \"LimeGreen\", 25);"
   },
   {
     "id": "figur-schmetterling",
@@ -1709,8 +1709,8 @@ export const recipes = [
       "tr": "Kelebek",
       "hy": "Թիթեռ"
     },
-    "shortCode": "drawButterfly(70, \"royalblue\", 35);",
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0, 0);\ndrawButterfly(70, \"royalblue\", 35);"
+    "shortCode": "drawButterfly(110, \"royalblue\", 35);",
+    "code": "setBackground(\"white\"); hideTurtle(); goto(0, 0);\ndrawButterfly(110, \"royalblue\", 35);"
   },
   {
     "id": "figur-fisch",
@@ -1721,8 +1721,8 @@ export const recipes = [
       "tr": "Balık",
       "hy": "Ձուկ"
     },
-    "shortCode": "drawFish(90, \"coral\");\ndraw();",
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0, 0);\ndrawFish(90, \"coral\");"
+    "shortCode": "drawFish(190, \"coral\");\ndraw();",
+    "code": "setBackground(\"white\"); hideTurtle(); goto(0, 0);\ndrawFish(190, \"coral\");"
   },
   {
     "id": "figur-uboot",
@@ -1733,8 +1733,8 @@ export const recipes = [
       "tr": "Denizaltı",
       "hy": "Սուզանավ"
     },
-    "shortCode": "drawSubmarine(160, \"gold\");\ndraw();",
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0, 0);\ndrawSubmarine(160, \"gold\");"
+    "shortCode": "drawSubmarine(250, \"gold\");\ndraw();",
+    "code": "setBackground(\"white\"); hideTurtle(); goto(0, 0);\ndrawSubmarine(250, \"gold\");"
   },
   {
     "id": "figur-rakete",
@@ -1745,8 +1745,8 @@ export const recipes = [
       "tr": "Roket",
       "hy": "Հրթիռ"
     },
-    "shortCode": "drawRocket(110, \"coral\", 0);\ndraw();",
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0, 0);\ndrawRocket(110, \"coral\", 0);"
+    "shortCode": "drawRocket(220, \"coral\", 0);\ndraw();",
+    "code": "setBackground(\"white\"); hideTurtle(); goto(0, 0);\ndrawRocket(220, \"coral\", 0);"
   },
   {
     "id": "figur-feuerwerk",
@@ -1769,8 +1769,8 @@ export const recipes = [
       "tr": "Jet",
       "hy": "Ինքնաթիռ"
     },
-    "shortCode": "drawJet(120);\ndraw();",
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0, 0);\ndrawJet(120);"
+    "shortCode": "drawJet(220);\ndraw();",
+    "code": "setBackground(\"white\"); hideTurtle(); goto(0, 0);\ndrawJet(220);"
   },
   {
     "id": "figur-sprengkoerper",
@@ -1781,8 +1781,8 @@ export const recipes = [
       "tr": "Çizgi film bombası",
       "hy": "Մուլտֆիլմի ռումբ"
     },
-    "shortCode": "drawBomb(95);\ndraw();",
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0, 0);\ndrawBomb(95);"
+    "shortCode": "drawBomb(200);\ndraw();",
+    "code": "setBackground(\"white\"); hideTurtle(); goto(0, 0);\ndrawBomb(200);"
   },
   {
     "id": "figur-feuerball",
@@ -1793,8 +1793,8 @@ export const recipes = [
       "tr": "Ateş topu",
       "hy": "Հրե գունդ"
     },
-    "shortCode": "drawFireball(130);\ndraw();",
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0, 0);\ndrawFireball(130);"
+    "shortCode": "drawFireball(240);\ndraw();",
+    "code": "setBackground(\"white\"); hideTurtle(); goto(0, 0);\ndrawFireball(240);"
   },
   {
     "id": "figur-hund",
@@ -1805,8 +1805,8 @@ export const recipes = [
       "tr": "Köpek",
       "hy": "Շուն"
     },
-    "shortCode": "drawDog(130, \"right\", 15);\ndraw();",
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0, -30);\ndrawDog(130, \"right\", 15);"
+    "shortCode": "drawDog(230, \"right\", 15);\ndraw();",
+    "code": "setBackground(\"white\"); hideTurtle(); goto(0, -30);\ndrawDog(230, \"right\", 15);"
   },
   {
     "id": "figur-riesenrad",
@@ -1829,8 +1829,8 @@ export const recipes = [
       "tr": "Daire",
       "hy": "Շրջան"
     },
-    "shortCode": "drawCircle(60, \"tomato\", true);",
-    "code": "setBackground(\"white\"); hideTurtle(); goto(-60, 0);\nangle(0);\ndrawCircle(60, \"tomato\", true);"
+    "shortCode": "drawCircle(90, \"tomato\", true);",
+    "code": "setBackground(\"white\"); hideTurtle(); goto(-60, 0);\nangle(0);\ndrawCircle(90, \"tomato\", true);"
   },
   {
     "id": "figur-rechteck",
@@ -1853,8 +1853,8 @@ export const recipes = [
       "tr": "Üçgen",
       "hy": "Եռանկյուն"
     },
-    "shortCode": "drawTriangle(100, \"orange\", true);",
-    "code": "setBackground(\"white\"); hideTurtle(); goto(-40, -40);\nangle(0);\ndrawTriangle(100, \"orange\", true);"
+    "shortCode": "drawTriangle(140, \"orange\", true);",
+    "code": "setBackground(\"white\"); hideTurtle(); goto(-40, -40);\nangle(0);\ndrawTriangle(140, \"orange\", true);"
   },
   {
     "id": "figur-stern",
@@ -1865,8 +1865,8 @@ export const recipes = [
       "tr": "Yıldız",
       "hy": "Աստղ"
     },
-    "shortCode": "drawStar(5, 70, \"gold\", true);",
-    "code": "setBackground(\"white\"); hideTurtle(); goto(-40, -50);\nangle(0);\ndrawStar(5, 70, \"gold\", true);"
+    "shortCode": "drawStar(5, 95, \"gold\", true);",
+    "code": "setBackground(\"white\"); hideTurtle(); goto(-40, -50);\nangle(0);\ndrawStar(5, 95, \"gold\", true);"
   },
   {
     "id": "figur-bogen",
@@ -1937,8 +1937,8 @@ export const recipes = [
       "tr": "Çiçek",
       "hy": "Ծաղիկ"
     },
-    "shortCode": "drawFlower(6, 35, \"orchid\", \"gold\");",
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0, 0);\nangle(0);\ndrawFlower(6, 35, \"orchid\", \"gold\");"
+    "shortCode": "drawFlower(6, 50, \"orchid\", \"gold\");",
+    "code": "setBackground(\"white\"); hideTurtle(); goto(0, 0);\nangle(0);\ndrawFlower(6, 50, \"orchid\", \"gold\");"
   },
   {
     "id": "figur-spirale",

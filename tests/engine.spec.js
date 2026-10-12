@@ -68,3 +68,26 @@ test("CSS and RGB colours, aliases, fills and invalid input work in the new core
   expect(result.state.angleDeg).toBe(90);
   expect(result.errors).toHaveLength(4);
 });
+
+
+test("Teaching clock sleeps without callbacks and cancellation leaves no pending timer", async () => {
+  const { runInNewContext } = await import('node:vm');
+  const clock = await readFile(new URL('../engine/teaching-clock.js', import.meta.url), 'utf8');
+  let now = 0, next = 0;
+  const timers = new Map(), timestamps = [];
+  const scope = { performance:{now:()=>now}, setTimeout:callback=>{const id=++next;timers.set(id,callback);return id;}, clearTimeout:id=>timers.delete(id) };
+  scope.self = scope;
+  runInNewContext(clock, scope);
+  expect(timers.size).toBe(0);
+  const cancelled = scope.requestAnimationFrame(()=>{throw Error('cancelled callback ran');});
+  expect(timers.size).toBe(1);
+  scope.cancelAnimationFrame(cancelled);
+  expect(timers.size).toBe(0);
+  const animate = time => {timestamps.push(time);if(timestamps.length<3)scope.requestAnimationFrame(animate);};
+  scope.requestAnimationFrame(animate);
+  now = 51;
+  const [id, callback] = [...timers][0];timers.delete(id);callback();
+  expect(timestamps).toHaveLength(3);
+  expect(timestamps[2]).toBeCloseTo(50);
+  expect(timers.size).toBe(0);
+});

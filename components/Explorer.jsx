@@ -7,7 +7,7 @@ import ParameterControls from "./ParameterControls";
 import StudioCard from "./StudioCard";
 import StatusMark from "./react-bits/StatusMark";
 import { recipes, reference } from "../src/reference";
-import { exampleCall, parameterMeanings } from "../src/parameters";
+import { parameterValues, replaceParameterCall, parameterMeanings } from "../src/parameters";
 import { Preview } from "../src/runtime";
 
 export default function Explorer({ route, preferences, t, drafts, pausedPreviews }) {
@@ -25,12 +25,11 @@ function Configurator({ route, preferences, t, drafts }) {
   const item = figure ? recipes.find(x => x.id === id) : reference.find(x => x.name === id);
   const original = (item?.code || "").replace(/^setBackground\("white"\);\s*/, "");
   const entry = figure ? findEntry(original, reference) : item;
-  const call = entry && exampleCall(original, entry.name);
-  const initialValues = entry ? parameterMeanings(entry, preferences.locale).map((parameter, index) => call?.values[index] ?? parameter.value ?? "undefined") : [];
+  const initialValues = parameterValues(original, entry, preferences.locale);
   const [values, setValues] = useState(initialValues);
   const [status, setStatus] = useState({ type: "ready" });
   const canvas = useRef(null), preview = useRef(null);
-  const source = call ? original.slice(0, call.position) + `${entry.name}(${values.join(", ")})` + original.slice(call.position + call.source.length) : original;
+  const source = replaceParameterCall(original, entry, values);
   useEffect(() => {
     if (!item) return;
     const instance = new Preview(canvas.current, setStatus);

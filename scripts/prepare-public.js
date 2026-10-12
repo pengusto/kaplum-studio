@@ -1,4 +1,7 @@
-import { cp, mkdir } from "node:fs/promises";
+import { cp, mkdir, rm } from "node:fs/promises";
+// Only generated destinations are removed; source assets remain untouched.
+for (const name of ["engine", "assets", "src", "THIRD_PARTY_NOTICES.txt", "favicon.svg", "favicon.ico", "apple-touch-icon.png"])
+  await rm(`public/${name}`, { recursive: true, force: true });
 await mkdir("public/src", { recursive: true });
 for (const name of ["engine", "assets", "THIRD_PARTY_NOTICES.txt"])
   await cp(name, `public/${name}`, { recursive: true });

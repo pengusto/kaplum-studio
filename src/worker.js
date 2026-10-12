@@ -1,6 +1,7 @@
 // Browser-only drawing adapter. It exposes no host DOM or storage.
 self.window = self;
 let canvases;
+let requestSnapshot = () => {};
 // The teaching surface stays 700 units wide. A render camera changes only
 // raster resolution and framing, never coordinates, sizes or wrapping.
 function drawingCanvas(render) {
@@ -27,12 +28,12 @@ function drawingCanvas(render) {
       if (property === "drawImage") return (image, ...args) => {
         if (image?.surface && args.length === 2) {
           // The stored image already contains this camera's region.
-          logical.revision++;
+          logical.revision++; requestSnapshot();
           target.drawImage(image.surface, args[0] + x, args[1] + y, side, side);
-        } else { logical.revision++; target.drawImage(image?.surface || image, ...args); }
+        } else { logical.revision++; requestSnapshot(); target.drawImage(image?.surface || image, ...args); }
       };
       if (["fill", "stroke", "clearRect", "fillRect", "strokeRect", "fillText", "strokeText", "putImageData"].includes(property)) {
-        return (...args) => { logical.revision++; return target[property](...args); };
+        return (...args) => { logical.revision++; requestSnapshot(); return target[property](...args); };
       }
       const value = Reflect.get(target, property, target);
       return typeof value === "function" ? value.bind(target) : value;
@@ -95,7 +96,15 @@ onmessage = async (event) => {
         sending = false;
       }
     };
-    setInterval(snapshot, 33);
+    let snapshotTimer = null;
+    requestSnapshot = () => {
+      if (snapshotTimer !== null) return;
+      snapshotTimer = setTimeout(async () => {
+        snapshotTimer = null;
+        await snapshot();
+        if (sentRevision !== canvases.turtlecanvas.revision) requestSnapshot();
+      }, 33);
+    };
     postMessage({ type: "executing" });
     (0, eval)(
       '"use strict";' +
