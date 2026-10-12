@@ -1,4 +1,18 @@
 import { assetUrl } from "./asset-url.js";
+// Share immutable engine sources between previews. Failed loads are retryable.
+let sourceLoad;
+function loadSources() {
+  if (!sourceLoad) {
+    sourceLoad = Promise.all([
+      "/engine/library.js", "/engine/functions.js", "/src/worker.js", "/engine/teaching-clock.js",
+    ].map(async path => {
+      const response = await fetch(assetUrl(path));
+      if (!response.ok) throw Error(`Cannot load ${path}`);
+      return response.text();
+    })).catch(error => { sourceLoad = undefined; throw error; });
+  }
+  return sourceLoad;
+}
 // Each run receives a new opaque sandbox and a terminable worker.
 export class Preview {
   constructor(canvas, onStatus, onFrame) {
@@ -20,18 +34,7 @@ export class Preview {
     const run = this.sequence;
     this.onStatus({ type: "running" });
     try {
-      const sources = await Promise.all(
-        [
-          "/engine/library.js",
-          "/engine/functions.js",
-          "/src/worker.js",
-          "/engine/teaching-clock.js",
-        ].map(async (path) => {
-          const response = await fetch(assetUrl(path));
-          if (!response.ok) throw Error(`Cannot load ${path}`);
-          return response.text();
-        }),
-      );
+      const sources = await loadSources();
       if (run !== this.sequence) return;
       const frame = document.createElement("iframe");
       this.frame = frame;

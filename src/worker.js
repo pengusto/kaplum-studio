@@ -15,7 +15,7 @@ function drawingCanvas(render) {
       (e - x) * scale, (f - y) * scale);
   transform(1, 0, 0, 1, 0, 0);
   const logical = {
-    width: 700, height: 700, surface,
+    width: 700, height: 700, surface, revision: 0,
     addEventListener() {},
     getContext() { return adapted; },
   };
@@ -27,9 +27,13 @@ function drawingCanvas(render) {
       if (property === "drawImage") return (image, ...args) => {
         if (image?.surface && args.length === 2) {
           // The stored image already contains this camera's region.
+          logical.revision++;
           target.drawImage(image.surface, args[0] + x, args[1] + y, side, side);
-        } else target.drawImage(image?.surface || image, ...args);
+        } else { logical.revision++; target.drawImage(image?.surface || image, ...args); }
       };
+      if (["fill", "stroke", "clearRect", "fillRect", "strokeRect", "fillText", "strokeText", "putImageData"].includes(property)) {
+        return (...args) => { logical.revision++; return target[property](...args); };
+      }
       const value = Reflect.get(target, property, target);
       return typeof value === "function" ? value.bind(target) : value;
     },
@@ -79,10 +83,11 @@ onmessage = async (event) => {
     canvases = { imagecanvas: drawingCanvas(event.data.render), turtlecanvas: drawingCanvas(event.data.render) };
     (0, eval)(event.data.engine);
     // Sequential snapshots never clear drawing state and cannot flood the host.
-    let sending = false;
+    let sending = false, sentRevision = -1;
     const snapshot = async () => {
-      if (sending) return;
+      if (sending || sentRevision === canvases.turtlecanvas.revision) return;
       sending = true;
+      sentRevision = canvases.turtlecanvas.revision;
       try {
         const bitmap = await createImageBitmap(canvases.turtlecanvas.surface);
         postMessage({ type: "frame", bitmap }, [bitmap]);

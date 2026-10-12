@@ -57,7 +57,7 @@ export default function CataloguePreview({ source, title, id, pausedPreviews, t,
     preview.stop();
     setDrawn(false);
     if (visible && !hidden && !paused && (!reduced || allowed)) {
-      const timer = setTimeout(() => preview.run(source.replace(/^setBackground\("white"\);\s*/, ""), cameraRef.current), 100);
+      const timer = setTimeout(() => preview.run(source.replace(/^setBackground\("white"\);\s*/, ""), cameraRef.current), cameraRef.current ? 50 : 0);
       return () => { clearTimeout(timer); preview.stop(); };
     } else preview.stop();
   }, [source, visible, hidden, paused, reduced, allowed]);

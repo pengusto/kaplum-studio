@@ -786,3 +786,25 @@ test("Dinosaur size visibly changes on a stable catalogue scale", async ({ page 
     await card.locator('canvas').scrollIntoViewIfNeeded();
   await expect.poll(async () => (await width())/initial).toBeGreaterThan(1.4);
 });
+
+
+test("Static catalogue shares engine loads and stops transferring unchanged frames", async ({ page }) => {
+  const requests = [];
+  page.on('request', r => { if (/\/(engine\/.*\.js|src\/worker\.js)$/.test(new URL(r.url()).pathname)) requests.push(new URL(r.url()).pathname); });
+  await page.addInitScript(() => {
+    window.previewFrames=0;
+    addEventListener('message', e => { if(e.data?.type==='frame')window.previewFrames++; });
+  });
+  await page.goto('/#figures');
+  await page.getByRole('searchbox').fill('drawDino');
+  await expect(page.locator('.catalogue-preview')).toHaveAttribute('data-drawn','true');
+  const frames = await page.evaluate(() => window.previewFrames);
+  // Deliberate sampling window: a static picture must not stream 30 bitmaps/sec.
+  await page.waitForTimeout(400);
+  expect(await page.evaluate(() => window.previewFrames)-frames).toBeLessThanOrEqual(1);
+  await page.getByRole('slider',{name:'size slider',exact:true}).fill('60');
+  await page.locator('canvas').scrollIntoViewIfNeeded();
+  await expect(page.locator('.example-call')).toContainText('drawDino(60,');
+  await expect(page.locator('.catalogue-preview')).toHaveAttribute('data-drawn','true');
+  for(const path of ['/engine/library.js','/engine/functions.js','/src/worker.js','/engine/teaching-clock.js']) expect(requests.filter(p=>p===path)).toHaveLength(1);
+});
