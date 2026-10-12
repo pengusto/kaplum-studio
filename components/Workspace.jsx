@@ -135,7 +135,7 @@ export default function Workspace({ route, preferences, t, drafts }) {
     try { const compiled=analyzeDebugSource(code.current); executableLines.current=compiled.lines; setBreakpointError(false); setPanel("result"); preview.current?.run(code.current,undefined,false,{code:compiled.code,breakpoints}); }
     catch(error) {setDebugError(error.message);}
   }
-  useEffect(()=>{editor.current?.debugLine(debug?.line || null);editor.current?.breakpoints(debug ? breakpoints : []);},[debug,breakpoints]);
+  useEffect(()=>{editor.current?.debugLine(debug?.line || null);if(debug?.line) editor.current?.showLine(debug.line);editor.current?.breakpoints(debug ? breakpoints : []);},[debug,breakpoints]);
   function updateBreakpoints(lines) {
     setBreakpoints(lines);setBreakpointError(false);
     preview.current?.control("debug-breakpoints",undefined,lines);
@@ -263,7 +263,7 @@ export default function Workspace({ route, preferences, t, drafts }) {
           </div>
         </section>
       )}
-      <div className="mobile-tabs">
+      <div className="mobile-tabs" data-debug={!!debug}>
         <RubberSegment
           aria-label={t("panelChoice")}
           items={["code", "result", "explanation"].map((value) => ({
@@ -285,6 +285,7 @@ export default function Workspace({ route, preferences, t, drafts }) {
         className="workspace-panels"
         data-panel={panel}
         data-inspector={inspector}
+        data-debug={!!debug}
       >
         <div className="workbench">
           <section className="code-pane">
@@ -386,8 +387,8 @@ export default function Workspace({ route, preferences, t, drafts }) {
               </details>
             </div>
             {debug && <section className="debug-command" aria-label={debugText.upNext} aria-live="polite">
-              <strong>{debug.done ? debugText.finished : debugText.upNext}</strong>
-              {!debug.done && <><span>{debugText.line} {debug.line} · {debugText[debug.kind]}</span><pre><code>{debug.source}</code></pre><small>{debugText.stepHint}</small></>}
+              <strong>{debug.done ? debugText.finished : `${debugText.upNext}: ${debugText.line} ${debug.line}`}</strong>
+              {!debug.done && <small>{debugText.stepHint}</small>}
             </section>}
             {debugError && <p className="source-debugger" role="alert">{debugError}</p>}
             <div className="canvas-surface" data-grid={grid} data-canvas={preferences.canvas}>
@@ -408,10 +409,10 @@ export default function Workspace({ route, preferences, t, drafts }) {
             </div>
             {debug && <section className="source-debugger" aria-label={debugText.title}>
               <strong>{debugText.title}</strong>
-              <section className="debug-history" aria-label={debugText.recent}><h3>{debugText.recent}</h3>
+              <details className="debug-history"><summary>{debugText.recent}</summary>
                 {!debug.history.length ? <p>{debugText.initialStep}</p> : <ol>{debug.history.map((step,index)=><li key={index}><span>{debugText.line} {step.line} · {debugText[step.kind]}</span><code>{step.source}</code></li>)}</ol>}
                 <small>{debugText.historyHelp}</small>
-              </section>
+              </details>
               {debug.breakpoint && <p role="status">{debugText.breakpointHit}</p>}
               <p aria-live="polite">{debug.done ? debugText.finished : `${debugText.line} ${debug.line}`}</p>
               <details className="breakpoint-settings"><summary>{debugText.breakpoints}</summary>

@@ -1086,11 +1086,7 @@ html:has(.documentation), body:has(.documentation) { height: auto; overflow: aut
 
 .result-pane:has(.source-debugger) {overflow:auto;}
 .result-pane:has(.source-debugger) .canvas-surface {flex-shrink:0;min-height:260px;}
-@media(min-width:701px) {
-  .workspace-panels:has(.source-debugger) {flex:0 0 auto;min-height:900px;}
-  .workbench:has(.source-debugger) {min-height:900px;height:auto;}
-  .workbench:has(.source-debugger) .code-pane {flex:0 0 220px;}
-}
+
 
 .breakpoint-settings form {display:flex;flex-wrap:wrap;align-items:end;gap:8px;margin:8px 0;}
 .breakpoint-settings label {display:flex;flex-wrap:wrap;align-items:center;gap:8px;}
@@ -1113,9 +1109,22 @@ html:has(.documentation), body:has(.documentation) { height: auto; overflow: aut
 .debug-command {padding:10px 12px;border-bottom:1px solid var(--line);flex-shrink:0;}
 .debug-command strong,.debug-command span {display:block;}
 .debug-command span,.debug-history li span {font-size:12px;color:var(--muted);}
-.debug-command pre {margin:8px 0;background:var(--code);border:1px solid var(--line);border-radius:8px;padding:10px;white-space:pre-wrap;overflow-wrap:anywhere;color:var(--accent);}
 .debug-command small {color:var(--muted);font-size:12px;}
 .debug-history ol {padding-left:24px;max-height:210px;overflow:auto;}
 .debug-history li {padding:5px 0;}
 .debug-history code {display:block;white-space:pre-wrap;overflow-wrap:anywhere;color:var(--accent);}
 .canvas-toolbar:has(+ .debug-command) {flex-wrap:wrap;}
+
+/* Keep the actual editable program beside its drawing during source debugging. */
+.mobile-tabs[data-debug="true"],.workspace-panels[data-debug="true"] .explanation-pane {display:none;}
+.workspace-panels[data-debug="true"] {flex:0 0 auto;min-height:0;grid-template-columns:minmax(0,1fr);}
+.workspace-panels[data-debug="true"] .workbench {display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);height:auto;min-height:0;align-items:start;}
+.workspace-panels[data-debug="true"] .code-pane {display:flex;min-height:0;height:560px;position:sticky;top:12px;}
+.workspace-panels[data-debug="true"] .code-footer {display:none;}
+.workspace-panels[data-debug="true"] .result-pane {display:flex;border-top:0;border-left:1px solid var(--line);overflow:visible;}
+@media(max-width:700px) {
+ .workspace-panels[data-debug="true"] .workbench {display:flex;flex-direction:column;gap:12px;}
+ .workspace-panels[data-debug="true"] .code-pane {position:static;width:100%;height:180px;flex:0 0 180px;}
+ .workspace-panels[data-debug="true"] .result-pane {width:100%;border:1px solid var(--line);}
+ .workspace-panels[data-debug="true"] .canvas-surface {flex-basis:240px;height:240px;min-height:0;}
+}

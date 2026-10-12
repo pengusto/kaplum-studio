@@ -24,10 +24,10 @@ test('native stepping executes statements only on advance and inspects loop vari
  await start(page,'let distance=20;\nfor(let i=0;i<3;i++){\n forward(distance);\n distance+=10;\n}\nright(90);');
  const panel=page.getByRole('region',{name:'Code debugger · prototype'});
  await expect(panel).toContainText('Line 1');await expect(page.locator('.cm-debug-line')).toContainText('let distance');
- await expect(panel).toContainText('not in scope');await expect(page.locator('.debug-command code')).toHaveText('let distance=20;');
+ await expect(panel).toContainText('not in scope');await expect(page.locator('.cm-debug-line')).toHaveText('let distance=20;');
  const next=page.getByRole('button',{name:'Next code statement',exact:true});await next.click();await expect(panel).toContainText('Line 2');await expect(panel.locator('dd').first()).toHaveText('20');
  await next.click();await next.click();await expect(panel).toContainText('Line 3');await expect(page.locator('.turtle-state')).toContainText('y: 0.0');
- await next.click();await expect(panel).toContainText('Line 4');await expect(page.locator('.debug-command code')).toHaveText('distance+=10;');await expect(page.locator('.debug-history li').last()).toContainText('forward(distance);');await expect(page.locator('.turtle-state')).toContainText('y: 20.0');
+ await next.click();await expect(panel).toContainText('Line 4');await expect(page.locator('.cm-debug-line')).toHaveText('distance+=10;');await expect(page.locator('.debug-history li').last()).toContainText('forward(distance);');await expect(page.locator('.turtle-state')).toContainText('y: 20.0');
  await page.screenshot({path:'/tmp/kaplum-source-debugger.png'});
  await page.getByRole('button',{name:'Continue code',exact:true}).click();await expect(panel).toContainText('Finished');await expect(panel.locator('dd').first()).toHaveText('50');await expect(page.locator('.debug-history li').last()).toContainText('right(90);');await expect(page.locator('.debug-history li')).toHaveCount(8);await expect(page.locator('.turtle-state')).toContainText('y: 90.0');
  const downloaded=page.waitForEvent('download');await page.getByRole('button',{name:'Download .js',exact:true}).click();const file=await downloaded;const exported=await readFile(await file.path(),'utf8');expect(exported).toContain('let distance=20;');expect(exported).not.toContain('yield {');
@@ -82,9 +82,29 @@ test('circle helper shows exact next call and completed call without stepping he
  await page.goto('/#animation/circle');
  await page.getByRole('button',{name:'Start code debugger',exact:true}).click();
  const next=page.getByRole('button',{name:'Next code statement',exact:true});
- for(const expected of ['hideArrow();','goto(0, 0);','drawCircle(radius, "coral", true);']) {await next.click();await expect(page.locator('.debug-command code')).toHaveText(expected);}
- await expect(page.locator('.debug-command code')).toHaveText('drawCircle(radius, "coral", true);');
+ for(const expected of ['hideArrow();','goto(0, 0);','drawCircle(radius, "coral", true);']) {await next.click();await expect(page.locator('.cm-debug-line')).toHaveText(expected);}
+ await expect(page.locator('.cm-debug-line')).toHaveText('drawCircle(radius, "coral", true);');
  await expect(page.locator('.source-debugger dd').first()).toHaveText('60');
  await next.click();await expect(page.locator('.debug-history li').last()).toContainText('drawCircle(radius, "coral", true);');
  await expect(page.locator('.debug-command')).toContainText('Finished');
+});
+
+test('debugging keeps editable source and drawing together on desktop and mobile',async({page})=>{
+ await page.setViewportSize({width:1440,height:1000});
+ await start(page,Array.from({length:25},()=> 'forward(2);').join('\n'));
+ const code=page.locator('.code-pane'),result=page.locator('.result-pane');
+ await expect(code).toBeVisible();await expect(result).toBeVisible();
+ const a=await code.boundingBox(),b=await result.boundingBox();
+ expect(a.x+a.width).toBeLessThanOrEqual(b.x+1);
+ await page.setViewportSize({width:458,height:772});
+ await expect(code).toBeVisible();await expect(result).toBeVisible();
+ await expect(page.locator('.mobile-tabs')).toBeHidden();
+ expect((await code.boundingBox()).height).toBeLessThanOrEqual(200);
+ expect((await code.boundingBox()).y).toBeLessThan((await result.boundingBox()).y);
+ const next=page.getByRole('button',{name:'Next code statement',exact:true});
+ for(let i=0;i<20;i++) await next.click();
+ await expect(page.locator('.cm-debug-line')).toHaveText('forward(2);');
+ await expect.poll(()=>page.locator('.cm-scroller').evaluate(el=>el.scrollTop)).toBeGreaterThan(0);
+ await expect.poll(()=>page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
+ await page.screenshot({path:'/tmp/kaplum-debug-mobile-context.png'});
 });
