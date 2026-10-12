@@ -27,3 +27,7 @@ On 12 October 2026, the owner confirmed that `engine/functions.js` contains help
 ## Release closeout
 
 All five UI dictionaries and existing teaching translations are selectable and persist across reloads. Native-speaker review remains outstanding. Root deployment remains supported; GitHub Pages builds at `/kaplum-studio` and asset loading, favicon and ZIP exports share that mount path. Browser and deployment verification are recorded in the GitHub workflow runs.
+
+## Documentation and release navigation
+
+The public `/docs/` guide shares the maintained command reference, parameter meanings and sandbox previews with Studio. It covers getting started, coordinates, parameters and offline exports in all five UI languages. The Studio header links to documentation and the public repository. Contribution guidance and bug/learning-improvement templates live in the repository. Translation review, Safari testing and curriculum validation remain outstanding; this remains an early-development release.

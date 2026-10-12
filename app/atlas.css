@@ -932,3 +932,45 @@ main.atlas-layout[data-exploring="true"] { grid-template-columns: minmax(0, 1fr)
 .atlas-workspace { overflow: auto; }
 .atlas-layout[data-exploring="true"] .explorer-overview, .atlas-layout[data-exploring="true"] .configurator-page { height: auto; overflow: visible; }
 html:has(.legal-page), body:has(.legal-page) { height: auto; overflow: auto; }
+
+/* Release navigation is secondary to the learning workspace. */
+.release-links { display: flex; align-items: center; gap: 14px; margin-left: auto; }
+.release-links a, .docs-repo, .docs-studio-link { display: inline-flex; gap: 8px; align-items: center; color: var(--text); }
+.release-links a { font-size: 13px; }
+.release-links a:hover, .documentation a:hover { color: var(--accent); }
+header:has(.release-links) .header-tools { margin-left: 0; }
+html:has(.documentation), body:has(.documentation) { height: auto; overflow: auto; }
+.documentation { min-height: 100dvh; }
+.docs-topbar { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 20px 32px; border-bottom: 1px solid var(--line); }
+.docs-tools { display: flex; align-items: center; gap: 16px; }
+.docs-tools select { background: var(--surface); color: var(--text); border: 1px solid var(--line); padding: 8px; border-radius: 8px; }
+.docs-layout { max-width: 1360px; margin: 0 auto; display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 48px; padding: 36px 32px; }
+.docs-sidebar { position: sticky; top: 24px; align-self: start; }
+.docs-sidebar nav { display: grid; gap: 6px; margin-bottom: 24px; }
+.docs-sidebar nav a { padding: 10px 12px; border-radius: 8px; color: var(--muted); }
+.docs-sidebar nav a:hover { background: var(--surface); color: var(--text); }
+.docs-heading { display: flex; gap: 14px; align-items: center; color: var(--accent); }
+.docs-heading h1 { font-size: clamp(28px, 4vw, 40px); margin: 0; }
+.docs-content { min-width: 0; }
+.docs-content section { scroll-margin-top: 24px; padding: 28px 0; border-bottom: 1px solid var(--line); }
+.docs-content h2 { font-size: 24px; margin: 0 0 16px; }
+.docs-content p { line-height: 1.8; color: var(--muted); max-width: 78ch; }
+.docs-content pre { white-space: pre-wrap; overflow-wrap: anywhere; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 16px; color: var(--accent); }
+.docs-content small { color: var(--muted); font-size: 14px; }
+.docs-search { display: flex; gap: 10px; align-items: center; padding: 10px 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; margin-bottom: 18px; }
+.docs-search input { width: 100%; border: 0; background: transparent; color: var(--text); font: inherit; }
+.docs-reference { display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 20px; }
+.docs-command-list { display: flex; flex-direction: column; max-height: 680px; overflow: auto; gap: 4px; }
+.docs-command-list button { text-align: left; padding: 10px; border: 1px solid transparent; border-radius: 8px; background: transparent; color: var(--muted); font: 13px ui-monospace, monospace; cursor: pointer; }
+.docs-command-list button[aria-pressed="true"] { color: var(--accent); background: var(--surface); border-color: var(--line); }
+.docs-command { min-width: 0; padding: 20px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+.docs-command h3 { font-size: 22px; margin: 0 0 12px; }
+.docs-command .catalogue-preview { margin: 16px 0; }
+.docs-command .canvas-surface { height: 260px; }
+.docs-table-wrap { overflow: auto; }
+.docs-command table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.docs-command th, .docs-command td { padding: 10px 8px; text-align: left; border-bottom: 1px solid var(--line); }
+.docs-footer { display: flex; gap: 20px; padding: 24px 0; font-size: 13px; color: var(--muted); }
+@media (max-width: 850px) { .release-links span { display: none; } .docs-layout { grid-template-columns: 1fr; gap: 16px; padding: 24px 20px; } .docs-sidebar { position: static; } .docs-sidebar nav { display: flex; flex-wrap: wrap; gap: 4px; } }
+@media (max-width: 550px) { .docs-topbar { padding: 16px; flex-wrap: wrap; } .docs-reference { grid-template-columns: 1fr; } .docs-command-list { flex-direction: row; max-height: none; overflow-x: auto; } .docs-command-list button { flex-shrink: 0; } .docs-command { padding: 14px; } .release-links { gap: 10px; } }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }

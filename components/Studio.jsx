@@ -1,8 +1,10 @@
 "use client";
+import { docsCopy } from "../src/docs-copy";
 import { legalCopy } from "../src/legal";
 import { assetUrl } from "../src/asset-url";
 import { useEffect, useRef, useState } from "react";
 import {
+  GitBranch,
   Shapes,
   Terminal,
   Clapperboard,
@@ -151,6 +153,10 @@ export default function Studio() {
             ? t(section)
             : t("discover")}
         </span>
+        <nav className="release-links" aria-label={docsCopy[preferences.locale].title}>
+          <a href={assetUrl(`/docs/?lang=${preferences.locale}`)}><BookOpen size={18}/><span>{docsCopy[preferences.locale].title}</span></a>
+          <a href="https://github.com/pengusto/kaplum-studio" aria-label="GitHub"><GitBranch size={18}/><span>GitHub</span></a>
+        </nav>
         <WarmTooltipGroup delay={300} lean={0}>
           <div className="header-tools">
             <label className="language-picker">

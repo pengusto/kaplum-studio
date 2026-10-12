@@ -4,7 +4,7 @@
 [![CI: GitHub Actions](https://img.shields.io/badge/CI-GitHub%20Actions-2088FF?logo=githubactions&logoColor=white)](.github/workflows/ci.yml)
 [![Status: early development](https://img.shields.io/badge/status-early%20development-orange)](#project-status)
 
-[**Live Studio**](https://pengusto.github.io/kaplum-studio/) · **English** · [Deutsch](docs/readme/README.de.md)
+[**Live Studio**](https://pengusto.github.io/kaplum-studio/) · [**Documentation**](https://pengusto.github.io/kaplum-studio/docs/) · **English** · [Deutsch](docs/readme/README.de.md)
 
 Kaplum Studio is a visual JavaScript Turtle studio for children who are new to programming. Learners pick a drawing or animation, see its code next to the live result, understand what each parameter does, change a value and immediately see the effect.
 
