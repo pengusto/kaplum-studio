@@ -233,12 +233,12 @@ export default function Studio() {
             t={t}
             drafts={drafts.current}
           />}
-        </div>
-      </main>
       <footer className="studio-legal-links">
         <a href={assetUrl(`/legal/#${preferences.locale}`)}>{legalCopy[preferences.locale].notice}</a>
         <a href={assetUrl(`/legal/#privacy-${preferences.locale}`)}>{legalCopy[preferences.locale].privacy}</a>
       </footer>
+        </div>
+      </main>
       <nav className="studio-dock" aria-label={t("navigationLabel")}>
         <Dock
           theme={preferences.theme}

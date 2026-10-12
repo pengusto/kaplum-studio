@@ -928,3 +928,7 @@ main.atlas-layout[data-exploring="true"] { grid-template-columns: minmax(0, 1fr)
 .legal-page section { padding-top: 36px; margin-bottom: 36px; border-top: 1px solid var(--line); scroll-margin-top: 24px; }
 .legal-page address { font-style: normal; }
 .legal-page a, .studio-legal-links a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+
+.atlas-workspace { overflow: auto; }
+.atlas-layout[data-exploring="true"] .explorer-overview, .atlas-layout[data-exploring="true"] .configurator-page { height: auto; overflow: visible; }
+html:has(.legal-page), body:has(.legal-page) { height: auto; overflow: auto; }
