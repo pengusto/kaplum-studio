@@ -62,3 +62,11 @@ This is opt-in drawing history with the existing 10,000-checkpoint/100,000-opera
 Recording requires every `beginFill()` to be closed with `endFill()`. An unfinished fill rejects the recording and cancels the pending helper path; close an already open fill before starting a recording. Undo restores completed drawing checkpoints, pen state and recorded styles, including the original dash pattern. It does not resume helper-local fill bookkeeping or JavaScript execution. Restart before continuing a program.
 
 Pacman and Dino construction panels explain the anchor, composition and parameter limits in all five interface languages, followed by the exact maintained helper source. Dino remains upright independently of Turtle heading; Pacman defaults to that heading unless `direction` is supplied.
+
+## Teacher inspection
+
+The workspace panel shows displayed position, heading, pen state, pen colour, line width, Turtle visibility and live stamp count. State comes from coalesced worker frames; it introduces no polling interval. `getTurtleState()` and position/heading query contracts remain unchanged. Colour and width changes now request a drawing update, so finite playback can demonstrate them individually. `redrawOnMove(false)` still batches updates until explicit `draw()`.
+
+A recording controller exposes `current`: detached `before`/`after` state plus bounded counts of stroke, fill, text, clear, stamp and stamp-removal effects between checkpoints. The inspector shows the checkpoint selected by playback; program queries retain computed logical state. Endpoints do not claim distance travelled or the original function call. A helper or batched drawing can include several canvas operations in one checkpoint. Step zero displays the starting state; Previous rewinds, Undo truncates future history, Stop removes inspection. Canvas clearing is reported as an effect; it does not imply all content stays blank if the same checkpoint also draws. This remains drawing inspection, not JavaScript source debugging.
+
+The course test lab adds state/query, colour/width and wrapping experiments (eight lessons total). Five-language explanatory copy is AI-assisted pending fluent review.

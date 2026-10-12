@@ -14,6 +14,7 @@ import {
   Image,
   SlidersHorizontal,
 } from "lucide-react";
+import {TurtleState,DrawingStep} from "./TurtleInspection";
 import FeatureLessons from "./FeatureLessons";
 import {featureLessons,lessonCopy} from "../src/feature-lessons";
 import ExampleConstruction from "./ExampleConstruction";
@@ -305,7 +306,7 @@ export default function Workspace({ route, preferences, t, drafts }) {
               />
             </div>
             <div className="turtle-state" aria-label={labels.state}>
-              <span>{turtleState ? `x: ${turtleState.x.toFixed(1)} · y: ${turtleState.y.toFixed(1)} · ${turtleState.angleDeg.toFixed(1)}° · ${labels.pen}: ${turtleState.pen ? "✓" : "—"}` : `${labels.state}: —`}</span>
+              <TurtleState state={turtleState} locale={locale}/>
               <label><input type="checkbox" checked={grid} onChange={e => setGrid(e.target.checked)}/>{labels.grid}</label>
               {pointer && <span>{labels.pointer}: {pointer.x}, {pointer.y}</span>}
               {pointer && <button type="button" className="button secondary" onClick={async () => { try { await navigator.clipboard.writeText(`goto(${pointer.x}, ${pointer.y});`); setCopyError(false); } catch { setCopyError(true); } }}>{labels.copy}</button>}
@@ -325,6 +326,7 @@ export default function Workspace({ route, preferences, t, drafts }) {
                 <button className="button secondary" onClick={() => preview.current.control("reset")}>{labels.resetReplay}</button>
                 <label>{labels.delay}<input type="range" min="30" max="1000" step="10" value={playbackDelay} onChange={e => {setPlaybackDelay(Number(e.target.value));preview.current.control("speed",Number(e.target.value));}}/><output>{playbackDelay} ms</output></label>
               </div>}
+              {playback && <DrawingStep playback={playback} locale={locale}/>}
             </div>
             <div className="playback">
               <button className="button primary" onClick={run}>

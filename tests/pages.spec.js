@@ -123,11 +123,11 @@ test('exported stamps, path circle and bounded undo execute from file without ne
   await(await pending).saveAs(join(dir,'project.zip'));execFileSync('unzip',['-q',join(dir,'project.zip'),'-d',dir]);expect(await readFile(join(dir,'program.js'),'utf8')).toBe(source);
   const offline=await browser.newPage();const errors=[];offline.on('pageerror',e=>errors.push(e.message));await offline.goto(pathToFileURL(join(dir,'index.html')).href);
   await expect.poll(()=>offline.evaluate(()=>[...document.getElementById('turtlecanvas').getContext('2d').getImageData(290,350,1,1).data])).toEqual([255,0,0,255]);
-  expect(await offline.evaluate(()=>position().x)).toBeCloseTo(0);expect(await offline.evaluate(()=>heading())).toBeCloseTo(-180);expect(errors).toEqual([]);await offline.close();
+  expect(await offline.evaluate(()=>position().x)).toBeCloseTo(0);expect(await offline.evaluate(()=>heading())).toBeCloseTo(-180);const detail=await offline.evaluate(()=>__displayTurtleState());expect(detail.penColor).toBe('#ff0000');expect(detail.stampCount).toBe(1);expect(errors).toEqual([]);await offline.close();
  }finally{await rm(dir,{recursive:true,force:true});}
 });
 
 test('mounted course lab and construction views load under Pages subpath',async({page})=>{
- await page.goto(`${base}/#course`);await expect(page.locator('.feature-lesson-grid article')).toHaveCount(5);await page.locator('.feature-lesson-grid article').first().getByRole('link').click();await expect(page).toHaveURL(/#course\/square$/);await page.getByRole('button',{name:'Record drawing',exact:true}).click();await expect(page.getByRole('group',{name:'Drawing playback'})).toBeVisible();
+ await page.goto(`${base}/#course`);await expect(page.locator('.feature-lesson-grid article')).toHaveCount(8);await page.locator('.feature-lesson-grid article').first().getByRole('link').click();await expect(page).toHaveURL(/#course\/square$/);await page.getByRole('button',{name:'Record drawing',exact:true}).click();await expect(page.getByRole('group',{name:'Drawing playback'})).toBeVisible();
  await page.goto(`${base}/#figure/figur-pacman`);await page.locator('.example-construction summary').click();await expect(page.locator('.example-construction pre')).toContainText('function drawPacman(');
 });

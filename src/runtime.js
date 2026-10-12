@@ -1,3 +1,4 @@
+import {inspectionState,inspectionStep} from "./turtle-inspection.js";
 import { assetUrl } from "./asset-url.js";
 // Share immutable engine sources between previews. Failed loads are retryable.
 let sourceLoad;
@@ -94,13 +95,14 @@ export class Preview {
           context.clearRect(0, 0, this.canvas.width, this.canvas.height);
           context.drawImage(data.bitmap, 0, 0);
           data.bitmap.close();
-          if (data.state && [data.state.x, data.state.y, data.state.angleDeg].every(Number.isFinite)) {
-            const next = JSON.stringify(data.state);
-            if (next !== this.lastState) { this.lastState = next; this.onState?.(data.state); }
+          const inspected=inspectionState(data.state);
+          if (inspected) {
+            const next = JSON.stringify(inspected);
+            if (next !== this.lastState) { this.lastState = next; this.onState?.(inspected); }
           }
           this.onFrame?.({ render });
         } else if (data.type === "playback" && Number.isInteger(data.step) && Number.isInteger(data.total)) {
-          this.onPlayback?.({step:data.step, total:data.total, playing:data.playing === true});
+          this.onPlayback?.({step:data.step, total:data.total, detail:inspectionStep(data.detail), playing:data.playing === true});
         } else if (data.type === "executing")
           this.onStatus({ type: "executing" });
         else if (data.type === "error") {

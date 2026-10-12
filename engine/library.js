@@ -51,9 +51,10 @@
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
     context.restore();
   }
+  const checkpointState = () => ({...state, penColor:String(rawInk.strokeStyle), lineWidth:rawInk.lineWidth, stampCount:stamps.size});
   function draw() {
     if (trace?.capturing) {
-      const checkpoint = {...state};
+      const checkpoint = checkpointState();
       const previous = trace.steps.at(-1);
       if (!previous || previous.end !== trace.ops.length || JSON.stringify(previous.state) !== JSON.stringify(checkpoint)) {
         if (trace.steps.length >= 10000) throw Error("Drawing trace limit exceeded (10,000 steps).");
@@ -166,6 +167,7 @@
       const rgb = channels.map((value) => Math.max(0, Math.min(255, finite(value, "Colour channel"))));
       ink.strokeStyle = `rgb(${rgb.join(",")})`;
     }
+    drawIf();
   }
   function goto(x, y) {
     const nextX = finite(x, "X"), nextY = finite(y, "Y");
@@ -177,6 +179,7 @@
     const thickness = finite(value, "Width");
     if (thickness <= 0) throw new Error("Width must be positive.");
     ink.lineWidth = thickness;
+    drawIf();
   }
   function write(text) {
     ink.save();
@@ -221,7 +224,7 @@
     if (typeof program !== "function" || trace?.capturing) throw Error("recordDrawing needs a synchronous drawing function.");
     if (trace) throw Error("Restart the program before recording another drawing.");
     const saved = {};
-    const initial = {...state};
+    const initial = checkpointState();
     const styles = Object.fromEntries(["strokeStyle","fillStyle","lineWidth","lineCap","lineJoin","miterLimit","font","textAlign","textBaseline","globalAlpha","globalCompositeOperation"].map(key => [key, rawInk[key]]));
     if (window.__hasOpenTurtleFill?.()) throw Error("Close the fill with endFill() before recording a drawing.");
     const baselineTransform = rawInk.getTransform();
@@ -281,13 +284,30 @@
       data.steps.length = cursor;
       data.ops.length = cursor ? data.steps[cursor - 1].end : 0;
       data.bytes = data.ops.reduce((bytes, op) => bytes + JSON.stringify(op).length, 0);
-      Object.assign(state, displayState);
+      for (const key of Object.keys(state)) state[key]=displayState[key];
       stamps.clear(); for (const [id, impression] of replayStamps) stamps.set(id, {...impression});
       return true;
     }
+    function currentStep() {
+      const current = cursor ? data.steps[cursor-1] : null;
+      const previous = cursor > 1 ? data.steps[cursor-2] : null;
+      const effects = {stroke:0, fill:0, text:0, clear:0, stamp:0, removeStamp:0};
+      if (current) for (let i=previous?.end || 0;i<current.end;i++) {
+        const op=data.ops[i];
+        if (op.kind === "stamp") effects.stamp++;
+        if (op.kind === "clearStamp" || op.kind === "clearStamps") effects.removeStamp++;
+        if (op.kind === "call") {
+          if (["stroke","strokeRect"].includes(op.name)) effects.stroke++;
+          if (["fill","fillRect"].includes(op.name)) effects.fill++;
+          if (["fillText","strokeText"].includes(op.name)) effects.text++;
+          if (op.name === "clearRect") effects.clear++;
+        }
+      }
+      return {before:publicState(previous?.state || initial),after:publicState(current?.state || initial),effects};
+    }
     resetSurface();displayState=initial;draw();
     const controller = Object.freeze({
-      get length(){return data.steps.length;}, get step(){return cursor;}, get bytes(){return data.bytes;},
+      get length(){return data.steps.length;}, get step(){return cursor;}, get bytes(){return data.bytes;}, get current(){return currentStep();},
       next:()=>seek(Math.min(data.steps.length,cursor+1)), back:()=>seek(Math.max(0,cursor-1)),
       reset:()=>seek(0), finish:()=>seek(data.steps.length), seek, undo:undoStep,
     });
@@ -297,7 +317,8 @@
     if (trace?.capturing) throw Error("Undo requires a completed finite drawing recording.");
     return activeHistory ? activeHistory.undo() : false;
   }
-  window.__displayTurtleState = () => { const shown=displayState || state;return {x:shown.x,y:shown.y,angleDeg:shown.heading,pen:shown.pen,visible:shown.visible}; };
+  function publicState(shown) {return {x:shown.x,y:shown.y,angleDeg:shown.heading,pen:shown.pen,visible:shown.visible,penColor:shown.penColor,lineWidth:shown.lineWidth,stampCount:shown.stampCount};}
+  window.__displayTurtleState = () => publicState(displayState || checkpointState());
   Object.assign(window, {
     forward, color, goto, width, write, draw, drawIf, onKey, onClick, recordDrawing, circle, stamp, clearStamp, undo,
     position: () => ({ x: state.x, y: state.y }),

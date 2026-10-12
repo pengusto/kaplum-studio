@@ -208,3 +208,23 @@ test('undo restores initial styles and pen; unfinished helper fills reject recor
  expect(result.message).toContain('endFill()');expect(result.openAfterFailure).toBe(false);expect(result.pen).toBe(false);expect(result.initialPen).toBe(true);
  expect(result.stroke).toBe('#0000ff');expect(result.width).toBe(7);expect(result.font).toBe('18px serif');expect(result.dash).toEqual([4,2]);expect(result.offset).toBe(3);
 });
+
+
+test('inspection checkpoint describes actual styles, endpoints and effects without changing program queries',async({page})=>{
+ await load(page);const result=await page.evaluate(()=>{
+  const h=recordDrawing(()=>{wrap(false);color('coral');width(6);goto(35,-20);angle(90);penup();forward(80);pendown();forward(60);stamp();clear();});
+  const logical=position();const details=[];while(h.step<h.length){h.next();details.push(h.current);}
+  const final=__displayTurtleState();h.back();const back=h.current;h.reset();return {logical,details,final,back,reset:h.current};
+ });
+ expect(result.logical.x).toBeCloseTo(175);expect(result.logical.y).toBeCloseTo(-20);expect(result.final.penColor).toBe('#ff7f50');expect(result.final.lineWidth).toBe(6);expect(result.final.stampCount).toBe(0);
+ expect(result.details.some(d=>d.before.penColor!==d.after.penColor)).toBe(true);expect(result.details.some(d=>d.before.lineWidth!==d.after.lineWidth)).toBe(true);
+ expect(result.details.some(d=>!d.after.pen&&d.after.x===115&&d.effects.stroke===0)).toBe(true);expect(result.details.some(d=>d.effects.stamp===1)).toBe(true);expect(result.details.at(-1).effects.clear).toBe(1);expect(result.back.after.stampCount).toBe(1);expect(result.reset.before).toEqual(result.reset.after);
+});
+
+test('teacher inspection messages reject invalid sandbox values and return detached snapshots',async()=>{
+ const {inspectionState,inspectionStep}=await import('../src/turtle-inspection.js');
+ const state={x:0,y:0,angleDeg:90,pen:false,visible:true,penColor:'#ff7f50',lineWidth:6,stampCount:1};
+ const valid=inspectionState(state);expect(valid).toEqual(state);expect(valid).not.toBe(state);
+ for(const value of [{...state,x:Infinity},{...state,lineWidth:0},{...state,pen:'yes'},{...state,stampCount:1001},{...state,penColor:'x'.repeat(129)}])expect(inspectionState(value)).toBeNull();
+ const effects={stroke:1,fill:0,text:0,clear:0,stamp:0,removeStamp:0};expect(inspectionStep({before:state,after:state,effects})).toBeTruthy();expect(inspectionStep({before:state,after:state,effects:{...effects,stroke:-1}})).toBeNull();
+});

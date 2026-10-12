@@ -83,7 +83,7 @@ self.addEventListener("unhandledrejection", (event) => {
 });
 let playback = null, playbackTimer = null, playbackDelay = 300;
 function playbackStatus(playing = false) {
-  postMessage({type:"playback", step:playback?.step || 0, total:playback?.length || 0, playing});
+  postMessage({type:"playback", step:playback?.step || 0, total:playback?.length || 0, detail:playback?.current || null, playing});
 }
 function pausePlayback() { if (playbackTimer !== null) clearTimeout(playbackTimer); playbackTimer=null; }
 function playPlayback() {
