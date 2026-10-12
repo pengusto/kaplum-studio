@@ -1710,7 +1710,9 @@ loop();
     starter: `// Change the fish colour from coral to gold.
 let x = -260;
 let time = 0;
-wrap(false); hideTurtle(); redrawOnMove(false);
+wrap(false);
+hideTurtle();
+redrawOnMove(false);
 function loop() {
   setTiltedBackground("SkyBlue", "DodgerBlue", Math.sin(time) * 3);
   goto(x, -110 + Math.sin(time) * 12);
@@ -1725,14 +1727,17 @@ function loop() {
   x = x + 1.5;
   if (x > 450) x = -450;
   time = time + 0.025;
-  draw(); requestAnimationFrame(loop);
+  draw();
+  requestAnimationFrame(loop);
 }
 loop();
 `,
     solution: `// Teacher solution: Change the fish colour from coral to gold.
 let x = -260;
 let time = 0;
-wrap(false); hideTurtle(); redrawOnMove(false);
+wrap(false);
+hideTurtle();
+redrawOnMove(false);
 function loop() {
   setTiltedBackground("SkyBlue", "DodgerBlue", Math.sin(time) * 3);
   goto(x, -110 + Math.sin(time) * 12);
@@ -1747,7 +1752,8 @@ function loop() {
   x = x + 1.5;
   if (x > 450) x = -450;
   time = time + 0.025;
-  draw(); requestAnimationFrame(loop);
+  draw();
+  requestAnimationFrame(loop);
 }
 loop();
 `,
@@ -1767,7 +1773,9 @@ let y = 220;
 let speedY = 0;
 let bounces = 0;
 let fireTick = 0;
-wrap(false); hideTurtle(); redrawOnMove(false);
+wrap(false);
+hideTurtle();
+redrawOnMove(false);
 function loop() {
   setDualBackground("SkyBlue", "ForestGreen", -220);
   if (bounces < 3) {
@@ -1778,17 +1786,23 @@ function loop() {
       speedY = -speedY * 0.6;
       bounces = bounces + 1;
     }
-    goto(0, y); drawBomb(45);
+    goto(0, y);
+    drawBomb(45);
   } else {
     fireTick = fireTick + 1;
     if (fireTick < 45) {
-      goto(0, -185); drawFireball(20 + fireTick * 3);
+      goto(0, -185);
+      drawFireball(20 + fireTick * 3);
     }
     if (fireTick > 100) {
-      y = 220; speedY = 0; bounces = 0; fireTick = 0;
+      y = 220;
+      speedY = 0;
+      bounces = 0;
+      fireTick = 0;
     }
   }
-  draw(); requestAnimationFrame(loop);
+  draw();
+  requestAnimationFrame(loop);
 }
 loop();
 `,
@@ -1797,7 +1811,9 @@ let y = 220;
 let speedY = 0;
 let bounces = 0;
 let fireTick = 0;
-wrap(false); hideTurtle(); redrawOnMove(false);
+wrap(false);
+hideTurtle();
+redrawOnMove(false);
 function loop() {
   setDualBackground("SkyBlue", "ForestGreen", -220);
   if (bounces < 3) {
@@ -1808,17 +1824,23 @@ function loop() {
       speedY = -speedY * 0.6;
       bounces = bounces + 1;
     }
-    goto(0, y); drawBomb(45);
+    goto(0, y);
+    drawBomb(45);
   } else {
     fireTick = fireTick + 1;
     if (fireTick < 45) {
-      goto(0, -185); drawFireball(20 + fireTick * 3);
+      goto(0, -185);
+      drawFireball(20 + fireTick * 3);
     }
     if (fireTick > 100) {
-      y = 220; speedY = 0; bounces = 0; fireTick = 0;
+      y = 220;
+      speedY = 0;
+      bounces = 0;
+      fireTick = 0;
     }
   }
-  draw(); requestAnimationFrame(loop);
+  draw();
+  requestAnimationFrame(loop);
 }
 loop();
 `,
@@ -1837,7 +1859,9 @@ loop();
 let tick = 0;
 let rotation = 0;
 let paintColor = getRandomColor();
-wrap(false); hideTurtle(); redrawOnMove(false);
+wrap(false);
+hideTurtle();
+redrawOnMove(false);
 function loop() {
   setBackground("MidnightBlue");
   if (tick < 50) {
@@ -1854,8 +1878,12 @@ function loop() {
     rotation = rotation + 0.8;
   }
   tick = tick + 1;
-  if (tick > 155) { tick = 0; rotation = 0; paintColor = getRandomColor(); }
-  draw(); requestAnimationFrame(loop);
+  if (tick > 155) {
+    tick = 0;
+    rotation = 0;
+    paintColor = getRandomColor(); }
+  draw();
+  requestAnimationFrame(loop);
 }
 loop();
 `,
@@ -1863,7 +1891,9 @@ loop();
 let tick = 0;
 let rotation = 0;
 let paintColor = getRandomColor();
-wrap(false); hideTurtle(); redrawOnMove(false);
+wrap(false);
+hideTurtle();
+redrawOnMove(false);
 function loop() {
   setBackground("MidnightBlue");
   if (tick < 50) {
@@ -1880,8 +1910,12 @@ function loop() {
     rotation = rotation + 0.8;
   }
   tick = tick + 1;
-  if (tick > 155) { tick = 0; rotation = 0; paintColor = getRandomColor(); }
-  draw(); requestAnimationFrame(loop);
+  if (tick > 155) {
+    tick = 0;
+    rotation = 0;
+    paintColor = getRandomColor(); }
+  draw();
+  requestAnimationFrame(loop);
 }
 loop();
 `,
@@ -1899,7 +1933,9 @@ loop();
     starter: `// Change the rocket movement from + 2 to + 4.
 let y = -260;
 let time = 0;
-wrap(false); hideTurtle(); redrawOnMove(false);
+wrap(false);
+hideTurtle();
+redrawOnMove(false);
 function loop() {
   setBackground("MidnightBlue");
   goto(0, y - 55);
@@ -1909,14 +1945,17 @@ function loop() {
   y = y + 2;
   if (y > 420) y = -420;
   time = time + 0.3;
-  draw(); requestAnimationFrame(loop);
+  draw();
+  requestAnimationFrame(loop);
 }
 loop();
 `,
     solution: `// Teacher solution: Change the rocket movement from + 2 to + 4.
 let y = -260;
 let time = 0;
-wrap(false); hideTurtle(); redrawOnMove(false);
+wrap(false);
+hideTurtle();
+redrawOnMove(false);
 function loop() {
   setBackground("MidnightBlue");
   goto(0, y - 55);
@@ -1926,7 +1965,8 @@ function loop() {
   y = y + 4;
   if (y > 420) y = -420;
   time = time + 0.3;
-  draw(); requestAnimationFrame(loop);
+  draw();
+  requestAnimationFrame(loop);
 }
 loop();
 `,
@@ -1948,7 +1988,9 @@ let flakes = [];
 for (let i = 0; i < 35; i++) {
   flakes.push({x: getRandomNumber(-330, 330), y: getRandomNumber(-330, 330)});
 }
-wrap(false); hideTurtle(); redrawOnMove(false);
+wrap(false);
+hideTurtle();
+redrawOnMove(false);
 function loop() {
   let day = tick % 800 < 400;
   let sky = day ? "SkyBlue" : "MidnightBlue";
@@ -1956,7 +1998,8 @@ function loop() {
   goto(-170, 190);
   drawOvalArc(90, 90, 360, day ? "gold" : "white", true);
   if (!day) {
-    goto(-150, 205); drawOvalArc(85, 85, 360, sky, true);
+    goto(-150, 205);
+    drawOvalArc(85, 85, 360, sky, true);
   }
   for (let flake of flakes) {
     goto(flake.x + Math.sin(tick * 0.02 + flake.y) * 8, flake.y);
@@ -1965,7 +2008,8 @@ function loop() {
     if (flake.y < -235) flake.y = 350;
   }
   tick = tick + 1;
-  draw(); requestAnimationFrame(loop);
+  draw();
+  requestAnimationFrame(loop);
 }
 loop();
 `,
@@ -1976,7 +2020,9 @@ let flakes = [];
 for (let i = 0; i < 50; i++) {
   flakes.push({x: getRandomNumber(-330, 330), y: getRandomNumber(-330, 330)});
 }
-wrap(false); hideTurtle(); redrawOnMove(false);
+wrap(false);
+hideTurtle();
+redrawOnMove(false);
 function loop() {
   let day = tick % 800 < 400;
   let sky = day ? "SkyBlue" : "MidnightBlue";
@@ -1984,7 +2030,8 @@ function loop() {
   goto(-170, 190);
   drawOvalArc(90, 90, 360, day ? "gold" : "white", true);
   if (!day) {
-    goto(-150, 205); drawOvalArc(85, 85, 360, sky, true);
+    goto(-150, 205);
+    drawOvalArc(85, 85, 360, sky, true);
   }
   for (let flake of flakes) {
     goto(flake.x + Math.sin(tick * 0.02 + flake.y) * 8, flake.y);
@@ -1993,7 +2040,8 @@ function loop() {
     if (flake.y < -235) flake.y = 350;
   }
   tick = tick + 1;
-  draw(); requestAnimationFrame(loop);
+  draw();
+  requestAnimationFrame(loop);
 }
 loop();
 `,

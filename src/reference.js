@@ -24,7 +24,7 @@ export const reference = [
       "tr": "Turtle yönünü kullanmaz.",
       "hy": "Չի օգտագործում Turtle-ի ուղղությունը։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); setBackground(\"skyblue\");"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\nsetBackground(\"skyblue\");"
   },
   {
     "name": "setDualBackground",
@@ -51,7 +51,7 @@ export const reference = [
       "tr": "Turtle yönünü kullanmaz.",
       "hy": "Չի օգտագործում Turtle-ի ուղղությունը։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); setDualBackground(\"skyblue\",\"green\",-80);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\nsetDualBackground(\"skyblue\",\"green\",-80);"
   },
   {
     "name": "setTiltedBackground",
@@ -78,7 +78,7 @@ export const reference = [
       "tr": "rotation = 0 yataydır; pozitif dereceler sınırı saat yönünde eğer.",
       "hy": "rotation = 0-ը հորիզոնական է․ դրական աստիճանները սահմանը թեքում են ժամացույցի սլաքի ուղղությամբ։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); setTiltedBackground(\"skyblue\",\"blue\",20);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\nsetTiltedBackground(\"skyblue\",\"blue\",20);"
   },
   {
     "name": "setTextColor",
@@ -105,7 +105,7 @@ export const reference = [
       "tr": "Turtle yönünü kullanmaz.",
       "hy": "Չի օգտագործում Turtle-ի ուղղությունը։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); setTextColor(\"coral\"); write(\"Hello!\");"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\nsetTextColor(\"coral\");\nwrite(\"Hello!\");"
   },
   {
     "name": "setTextSize",
@@ -132,7 +132,7 @@ export const reference = [
       "tr": "Turtle yönünü kullanmaz.",
       "hy": "Չի օգտագործում Turtle-ի ուղղությունը։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); setTextSize(30); write(\"Hello!\");"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\nsetTextSize(30);\nwrite(\"Hello!\");"
   },
   {
     "name": "writeText",
@@ -159,7 +159,7 @@ export const reference = [
       "tr": "Turtle yönünü kullanmaz.",
       "hy": "Չի օգտագործում Turtle-ի ուղղությունը։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); writeText(\"Hello!\",30,\"coral\");"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\nwriteText(\"Hello!\",30,\"coral\");"
   },
   {
     "name": "drawCircle",
@@ -186,7 +186,7 @@ export const reference = [
       "tr": "Açılar derece cinsindedir. 0 yukarı, 90 sağdır; pozitif dönüş saat yönündedir.",
       "hy": "Անկյունները աստիճաններով են։ 0-ը վերև է, 90-ը՝ աջ․ դրական պտույտը ժամացույցի սլաքի ուղղությամբ է։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); drawCircle(80,\"coral\",true);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\ndrawCircle(80,\"coral\",true);"
   },
   {
     "name": "drawHalfCircle",
@@ -213,7 +213,7 @@ export const reference = [
       "tr": "Açılar derece cinsindedir. 0 yukarı, 90 sağdır; pozitif dönüş saat yönündedir.",
       "hy": "Անկյունները աստիճաններով են։ 0-ը վերև է, 90-ը՝ աջ․ դրական պտույտը ժամացույցի սլաքի ուղղությամբ է։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); drawHalfCircle(80,\"coral\",true);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\ndrawHalfCircle(80,\"coral\",true);"
   },
   {
     "name": "drawOvalArc",
@@ -240,7 +240,7 @@ export const reference = [
       "tr": "Turtle yönünü kullanmaz.",
       "hy": "Չի օգտագործում Turtle-ի ուղղությունը։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); drawOvalArc(140,80,360,\"coral\",true);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\ndrawOvalArc(140,80,360,\"coral\",true);"
   },
   {
     "name": "drawHalfOval",
@@ -267,7 +267,7 @@ export const reference = [
       "tr": "Turtle yönünü kullanmaz; taban çizgisi yatay kalır.",
       "hy": "Չի օգտագործում Turtle-ի ուղղությունը․ հիմքի գիծը մնում է հորիզոնական։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); drawHalfOval(140,80,\"coral\",true);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\ndrawHalfOval(140,80,\"coral\",true);"
   },
   {
     "name": "drawRect",
@@ -294,7 +294,7 @@ export const reference = [
       "tr": "Açılar derece cinsindedir. 0 yukarı, 90 sağdır; pozitif dönüş saat yönündedir.",
       "hy": "Անկյունները աստիճաններով են։ 0-ը վերև է, 90-ը՝ աջ․ դրական պտույտը ժամացույցի սլաքի ուղղությամբ է։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); drawRect(120,80,\"coral\",true);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\ndrawRect(120,80,\"coral\",true);"
   },
   {
     "name": "drawTriangle",
@@ -321,7 +321,7 @@ export const reference = [
       "tr": "Açılar derece cinsindedir. 0 yukarı, 90 sağdır; pozitif dönüş saat yönündedir.",
       "hy": "Անկյունները աստիճաններով են։ 0-ը վերև է, 90-ը՝ աջ․ դրական պտույտը ժամացույցի սլաքի ուղղությամբ է։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); drawTriangle(100,\"coral\",true);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\ndrawTriangle(100,\"coral\",true);"
   },
   {
     "name": "drawStar",
@@ -348,7 +348,7 @@ export const reference = [
       "tr": "Açılar derece cinsindedir. 0 yukarı, 90 sağdır; pozitif dönüş saat yönündedir.",
       "hy": "Անկյունները աստիճաններով են։ 0-ը վերև է, 90-ը՝ աջ․ դրական պտույտը ժամացույցի սլաքի ուղղությամբ է։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); drawStar();"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\ndrawStar();"
   },
   {
     "name": "drawFlower",
@@ -375,7 +375,7 @@ export const reference = [
       "tr": "Geçerli yönü kullanır; pozitif dönüş saat yönündedir.",
       "hy": "Օգտագործում է ընթացիկ ուղղությունը․ դրական պտույտը ժամացույցի սլաքի ուղղությամբ է։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); drawFlower();"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\ndrawFlower();"
   },
   {
     "name": "drawCloud",
@@ -402,7 +402,7 @@ export const reference = [
       "tr": "Geçerli yönü kullanır; pozitif dönüş saat yönündedir.",
       "hy": "Օգտագործում է ընթացիկ ուղղությունը․ դրական պտույտը ժամացույցի սլաքի ուղղությամբ է։"
     },
-    "code": "setBackground(\"#eaf5ff\"); hideTurtle(); goto(0,0); drawCloud();"
+    "code": "setBackground(\"#eaf5ff\");\nhideTurtle();\ngoto(0,0);\ndrawCloud();"
   },
   {
     "name": "drawDino",
@@ -429,7 +429,7 @@ export const reference = [
       "tr": "Turtle yönünü kullanmaz.",
       "hy": "Չի օգտագործում Turtle-ի ուղղությունը։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); drawDino();"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\ndrawDino();"
   },
   {
     "name": "drawPacman",
@@ -456,7 +456,7 @@ export const reference = [
       "tr": "Açılar derece cinsindedir. 0 yukarı, 90 sağdır; pozitif dönüş saat yönündedir.",
       "hy": "Անկյունները աստիճաններով են։ 0-ը վերև է, 90-ը՝ աջ․ դրական պտույտը ժամացույցի սլաքի ուղղությամբ է։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); drawPacman();"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\ndrawPacman();"
   },
   {
     "name": "drawButterfly",
@@ -483,7 +483,7 @@ export const reference = [
       "tr": "Açılar derece cinsindedir. 0 yukarı, 90 sağdır; pozitif dönüş saat yönündedir.",
       "hy": "Անկյունները աստիճաններով են։ 0-ը վերև է, 90-ը՝ աջ․ դրական պտույտը ժամացույցի սլաքի ուղղությամբ է։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); drawButterfly();"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\ndrawButterfly();"
   },
   {
     "name": "drawFish",
@@ -510,7 +510,7 @@ export const reference = [
       "tr": "Turtle yönünü kullanmaz.",
       "hy": "Չի օգտագործում Turtle-ի ուղղությունը։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); drawFish();"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\ndrawFish();"
   },
   {
     "name": "drawSubmarine",
@@ -537,7 +537,7 @@ export const reference = [
       "tr": "Turtle yönünü kullanmaz.",
       "hy": "Չի օգտագործում Turtle-ի ուղղությունը։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); drawSubmarine();"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\ndrawSubmarine();"
   },
   {
     "name": "drawRocket",
@@ -564,7 +564,7 @@ export const reference = [
       "tr": "Açılar derece cinsindedir. 0 yukarı, 90 sağdır; pozitif dönüş saat yönündedir.",
       "hy": "Անկյունները աստիճաններով են։ 0-ը վերև է, 90-ը՝ աջ․ դրական պտույտը ժամացույցի սլաքի ուղղությամբ է։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); drawRocket();"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\ndrawRocket();"
   },
   {
     "name": "drawFirework",
@@ -591,7 +591,7 @@ export const reference = [
       "tr": "Açılar derece cinsindedir. 0 yukarı, 90 sağdır; pozitif dönüş saat yönündedir.",
       "hy": "Անկյունները աստիճաններով են։ 0-ը վերև է, 90-ը՝ աջ․ դրական պտույտը ժամացույցի սլաքի ուղղությամբ է։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); drawFirework();"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\ndrawFirework();"
   },
   {
     "name": "drawJet",
@@ -618,7 +618,7 @@ export const reference = [
       "tr": "Turtle yönünü kullanmaz.",
       "hy": "Չի օգտագործում Turtle-ի ուղղությունը։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); drawJet();"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\ndrawJet();"
   },
   {
     "name": "drawBomb",
@@ -645,7 +645,7 @@ export const reference = [
       "tr": "Turtle yönünü kullanmaz.",
       "hy": "Չի օգտագործում Turtle-ի ուղղությունը։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); drawBomb();"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\ndrawBomb();"
   },
   {
     "name": "drawFireball",
@@ -672,7 +672,7 @@ export const reference = [
       "tr": "Turtle yönünü kullanmaz.",
       "hy": "Չի օգտագործում Turtle-ի ուղղությունը։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); drawFireball();"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\ndrawFireball();"
   },
   {
     "name": "drawDog",
@@ -699,7 +699,7 @@ export const reference = [
       "tr": "Turtle yönünü kullanmaz.",
       "hy": "Չի օգտագործում Turtle-ի ուղղությունը։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); drawDog();"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\ndrawDog();"
   },
   {
     "name": "drawFerrisWheel",
@@ -726,7 +726,7 @@ export const reference = [
       "tr": "Açılar derece cinsindedir. 0 yukarı, 90 sağdır; pozitif dönüş saat yönündedir.",
       "hy": "Անկյունները աստիճաններով են։ 0-ը վերև է, 90-ը՝ աջ․ դրական պտույտը ժամացույցի սլաքի ուղղությամբ է։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); drawFerrisWheel();"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\ndrawFerrisWheel();"
   },
   {
     "name": "drawLine",
@@ -753,7 +753,7 @@ export const reference = [
       "tr": "Turtle yönünü kullanmaz.",
       "hy": "Չի օգտագործում Turtle-ի ուղղությունը։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); drawLine(-80,-50,80,50,\"coral\",6);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\ndrawLine(-80,-50,80,50,\"coral\",6);"
   },
   {
     "name": "drawArc",
@@ -780,7 +780,7 @@ export const reference = [
       "tr": "Açılar derece cinsindedir. 0 yukarı, 90 sağdır; pozitif dönüş saat yönündedir.",
       "hy": "Անկյունները աստիճաններով են։ 0-ը վերև է, 90-ը՝ աջ․ դրական պտույտը ժամացույցի սլաքի ուղղությամբ է։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); drawArc(80,120,\"coral\");"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\ndrawArc(80,120,\"coral\");"
   },
   {
     "name": "drawSpiral",
@@ -807,7 +807,7 @@ export const reference = [
       "tr": "Geçerli yönde başlar; turn adım başına saat yönündeki derece değişimidir.",
       "hy": "Սկսում է ընթացիկ ուղղությամբ․ turn-ը մեկ քայլում ժամացույցի սլաքի ուղղությամբ անկյան փոփոխությունն է։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); drawSpiral(50,61,\"coral\");"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\ndrawSpiral(50,61,\"coral\");"
   },
   {
     "name": "jumpHeight",
@@ -834,7 +834,7 @@ export const reference = [
       "tr": "Turtle yönünü kullanmaz.",
       "hy": "Չի օգտագործում Turtle-ի ուղղությունը։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); goto(0,jumpHeight(20)); drawDino();"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\ngoto(0,jumpHeight(20));\ndrawDino();"
   },
   {
     "name": "getRandomNumber",
@@ -861,7 +861,7 @@ export const reference = [
       "tr": "Turtle yönünü kullanmaz.",
       "hy": "Չի օգտագործում Turtle-ի ուղղությունը։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); writeText(getRandomNumber(1,10));"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\nwriteText(getRandomNumber(1,10));"
   },
   {
     "name": "getRandomColor",
@@ -888,7 +888,7 @@ export const reference = [
       "tr": "Turtle yönünü kullanmaz.",
       "hy": "Չի օգտագործում Turtle-ի ուղղությունը։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); drawCircle(70,getRandomColor(),true);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\ndrawCircle(70,getRandomColor(),true);"
   },
   {
     "name": "jumpRandom",
@@ -915,7 +915,7 @@ export const reference = [
       "tr": "Turtle yönünü kullanmaz.",
       "hy": "Չի օգտագործում Turtle-ի ուղղությունը։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); jumpRandom(); drawCircle(40,\"coral\",true);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\njumpRandom();\ndrawCircle(40,\"coral\",true);"
   },
   {
     "name": "hideArrow",
@@ -942,7 +942,7 @@ export const reference = [
       "tr": "Turtle yönünü kullanmaz.",
       "hy": "Չի օգտագործում Turtle-ի ուղղությունը։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); hideArrow(); goto(0,0); drawCircle(70,\"coral\",true);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\nhideArrow();\ngoto(0,0);\ndrawCircle(70,\"coral\",true);"
   },
   {
     "name": "goto",
@@ -969,7 +969,7 @@ export const reference = [
       "tr": "Açılar derece cinsindedir. 0 yukarı, 90 sağdır; pozitif dönüş saat yönündedir.",
       "hy": "Անկյունները աստիճաններով են։ 0-ը վերև է, 90-ը՝ աջ․ դրական պտույտը ժամացույցի սլաքի ուղղությամբ է։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); goto(-80, 40); drawCircle(40, \"coral\", true);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\ngoto(-80, 40);\ndrawCircle(40, \"coral\", true);"
   },
   {
     "name": "angle",
@@ -996,7 +996,7 @@ export const reference = [
       "tr": "Açılar derece cinsindedir. 0 yukarı, 90 sağdır; pozitif dönüş saat yönündedir.",
       "hy": "Անկյունները աստիճաններով են։ 0-ը վերև է, 90-ը՝ աջ․ դրական պտույտը ժամացույցի սլաքի ուղղությամբ է։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); angle(90); forward(100);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\nangle(90);\nforward(100);"
   },
   {
     "name": "forward",
@@ -1023,7 +1023,7 @@ export const reference = [
       "tr": "Açılar derece cinsindedir. 0 yukarı, 90 sağdır; pozitif dönüş saat yönündedir.",
       "hy": "Անկյունները աստիճաններով են։ 0-ը վերև է, 90-ը՝ աջ․ դրական պտույտը ժամացույցի սլաքի ուղղությամբ է։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); forward(100);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\nforward(100);"
   },
   {
     "name": "right",
@@ -1050,7 +1050,7 @@ export const reference = [
       "tr": "Açılar derece cinsindedir. 0 yukarı, 90 sağdır; pozitif dönüş saat yönündedir.",
       "hy": "Անկյունները աստիճաններով են։ 0-ը վերև է, 90-ը՝ աջ․ դրական պտույտը ժամացույցի սլաքի ուղղությամբ է։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); forward(80); right(90); forward(80);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\nforward(80);\nright(90);\nforward(80);"
   },
   {
     "name": "left",
@@ -1077,7 +1077,7 @@ export const reference = [
       "tr": "Açılar derece cinsindedir. 0 yukarı, 90 sağdır; pozitif dönüş saat yönündedir.",
       "hy": "Անկյունները աստիճաններով են։ 0-ը վերև է, 90-ը՝ աջ․ դրական պտույտը ժամացույցի սլաքի ուղղությամբ է։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); forward(80); left(90); forward(80);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\nforward(80);\nleft(90);\nforward(80);"
   },
   {
     "name": "penup",
@@ -1104,7 +1104,7 @@ export const reference = [
       "tr": "Açılar derece cinsindedir. 0 yukarı, 90 sağdır; pozitif dönüş saat yönündedir.",
       "hy": "Անկյունները աստիճաններով են։ 0-ը վերև է, 90-ը՝ աջ․ դրական պտույտը ժամացույցի սլաքի ուղղությամբ է։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); penup(); goto(-80,0); pendown(); forward(80);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\npenup();\ngoto(-80,0);\npendown();\nforward(80);"
   },
   {
     "name": "pendown",
@@ -1131,7 +1131,7 @@ export const reference = [
       "tr": "Açılar derece cinsindedir. 0 yukarı, 90 sağdır; pozitif dönüş saat yönündedir.",
       "hy": "Անկյունները աստիճաններով են։ 0-ը վերև է, 90-ը՝ աջ․ դրական պտույտը ժամացույցի սլաքի ուղղությամբ է։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); penup(); goto(-80,0); pendown(); forward(80);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\npenup();\ngoto(-80,0);\npendown();\nforward(80);"
   },
   {
     "name": "color",
@@ -1158,7 +1158,7 @@ export const reference = [
       "tr": "Açılar derece cinsindedir. 0 yukarı, 90 sağdır; pozitif dönüş saat yönündedir.",
       "hy": "Անկյունները աստիճաններով են։ 0-ը վերև է, 90-ը՝ աջ․ դրական պտույտը ժամացույցի սլաքի ուղղությամբ է։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); color(\"coral\"); forward(100);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\ncolor(\"coral\");\nforward(100);"
   },
   {
     "name": "width",
@@ -1185,7 +1185,7 @@ export const reference = [
       "tr": "Açılar derece cinsindedir. 0 yukarı, 90 sağdır; pozitif dönüş saat yönündedir.",
       "hy": "Անկյունները աստիճաններով են։ 0-ը վերև է, 90-ը՝ աջ․ դրական պտույտը ժամացույցի սլաքի ուղղությամբ է։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); width(8); forward(100);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\nwidth(8);\nforward(100);"
   },
   {
     "name": "beginFill",
@@ -1212,7 +1212,7 @@ export const reference = [
       "tr": "Açılar derece cinsindedir. 0 yukarı, 90 sağdır; pozitif dönüş saat yönündedir.",
       "hy": "Անկյունները աստիճաններով են։ 0-ը վերև է, 90-ը՝ աջ․ դրական պտույտը ժամացույցի սլաքի ուղղությամբ է։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); beginFill(\"coral\"); forward(80); right(120); forward(80); right(120); forward(80); endFill();"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\nbeginFill(\"coral\");\nforward(80);\nright(120);\nforward(80);\nright(120);\nforward(80);\nendFill();"
   },
   {
     "name": "endFill",
@@ -1239,7 +1239,7 @@ export const reference = [
       "tr": "Açılar derece cinsindedir. 0 yukarı, 90 sağdır; pozitif dönüş saat yönündedir.",
       "hy": "Անկյունները աստիճաններով են։ 0-ը վերև է, 90-ը՝ աջ․ դրական պտույտը ժամացույցի սլաքի ուղղությամբ է։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); beginFill(\"coral\"); forward(80); right(120); forward(80); right(120); forward(80); endFill();"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\nbeginFill(\"coral\");\nforward(80);\nright(120);\nforward(80);\nright(120);\nforward(80);\nendFill();"
   },
   {
     "name": "clear",
@@ -1266,7 +1266,7 @@ export const reference = [
       "tr": "Açılar derece cinsindedir. 0 yukarı, 90 sağdır; pozitif dönüş saat yönündedir.",
       "hy": "Անկյունները աստիճաններով են։ 0-ը վերև է, 90-ը՝ աջ․ դրական պտույտը ժամացույցի սլաքի ուղղությամբ է։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); drawCircle(50); clear(); drawCircle(80,\"blue\",true);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\ndrawCircle(50);\nclear();\ndrawCircle(80,\"blue\",true);"
   },
   {
     "name": "hideTurtle",
@@ -1293,7 +1293,7 @@ export const reference = [
       "tr": "Açılar derece cinsindedir. 0 yukarı, 90 sağdır; pozitif dönüş saat yönündedir.",
       "hy": "Անկյունները աստիճաններով են։ 0-ը վերև է, 90-ը՝ աջ․ դրական պտույտը ժամացույցի սլաքի ուղղությամբ է։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); hideTurtle(); drawCircle(80,\"coral\",true);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\nhideTurtle();\ndrawCircle(80,\"coral\",true);"
   },
   {
     "name": "draw",
@@ -1320,7 +1320,7 @@ export const reference = [
       "tr": "Açılar derece cinsindedir. 0 yukarı, 90 sağdır; pozitif dönüş saat yönündedir.",
       "hy": "Անկյունները աստիճաններով են։ 0-ը վերև է, 90-ը՝ աջ․ դրական պտույտը ժամացույցի սլաքի ուղղությամբ է։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); drawCircle(80,\"coral\",true); draw();"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\ndrawCircle(80,\"coral\",true);\ndraw();"
   },
   {
     "name": "wrap",
@@ -1347,7 +1347,7 @@ export const reference = [
       "tr": "Açılar derece cinsindedir. 0 yukarı, 90 sağdır; pozitif dönüş saat yönündedir.",
       "hy": "Անկյունները աստիճաններով են։ 0-ը վերև է, 90-ը՝ աջ․ դրական պտույտը ժամացույցի սլաքի ուղղությամբ է։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); wrap(true); forward(450);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\nwrap(true);\nforward(450);"
   },
   {
     "name": "redrawOnMove",
@@ -1374,7 +1374,7 @@ export const reference = [
       "tr": "Açılar derece cinsindedir. 0 yukarı, 90 sağdır; pozitif dönüş saat yönündedir.",
       "hy": "Անկյունները աստիճաններով են։ 0-ը վերև է, 90-ը՝ աջ․ դրական պտույտը ժամացույցի սլաքի ուղղությամբ է։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); redrawOnMove(false); forward(80); draw();"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\nredrawOnMove(false);\nforward(80);\ndraw();"
   },
   {
     "name": "getTurtleState",
@@ -1401,7 +1401,7 @@ export const reference = [
       "tr": "Turtle yönünü kullanmaz.",
       "hy": "Չի օգտագործում Turtle-ի ուղղությունը։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); const state=getTurtleState(); writeText(state.x);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\nconst state=getTurtleState();\nwriteText(state.x);"
   },
   {
     "name": "write",
@@ -1428,7 +1428,7 @@ export const reference = [
       "tr": "Açılar derece cinsindedir. 0 yukarı, 90 sağdır; pozitif dönüş saat yönündedir.",
       "hy": "Անկյունները աստիճաններով են։ 0-ը վերև է, 90-ը՝ աջ․ դրական պտույտը ժամացույցի սլաքի ուղղությամբ է։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); write(\"Hello!\");"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\nwrite(\"Hello!\");"
   },
   {
     "name": "setFont",
@@ -1455,7 +1455,7 @@ export const reference = [
       "tr": "Açılar derece cinsindedir. 0 yukarı, 90 sağdır; pozitif dönüş saat yönündedir.",
       "hy": "Անկյունները աստիճաններով են։ 0-ը վերև է, 90-ը՝ աջ․ դրական պտույտը ժամացույցի սլաքի ուղղությամբ է։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); setFont(\"30px sans-serif\"); write(\"Hello!\");"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\nsetFont(\"30px sans-serif\");\nwrite(\"Hello!\");"
   },
   {
     "name": "requestAnimationFrame",
@@ -1482,7 +1482,7 @@ export const reference = [
       "tr": "Turtle yönünü kullanmaz.",
       "hy": "Չի օգտագործում Turtle-ի ուղղությունը։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); requestAnimationFrame(()=>drawCircle(80,\"coral\",true));"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\nrequestAnimationFrame(()=>drawCircle(80,\"coral\",true));"
   },
   {
     "name": "cancelAnimationFrame",
@@ -1509,7 +1509,7 @@ export const reference = [
       "tr": "Turtle yönünü kullanmaz.",
       "hy": "Չի օգտագործում Turtle-ի ուղղությունը։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); const id=requestAnimationFrame(()=>setBackground(\"red\")); cancelAnimationFrame(id); drawCircle(80,\"coral\",true);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\nconst id=requestAnimationFrame(()=>setBackground(\"red\"));\ncancelAnimationFrame(id);\ndrawCircle(80,\"coral\",true);"
   },
   {
     "name": "setTimeout",
@@ -1536,7 +1536,7 @@ export const reference = [
       "tr": "Turtle yönünü kullanmaz.",
       "hy": "Չի օգտագործում Turtle-ի ուղղությունը։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); setTimeout(()=>drawCircle(80,\"coral\",true),100);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\nsetTimeout(()=>drawCircle(80,\"coral\",true),100);"
   },
   {
     "name": "clearTimeout",
@@ -1563,7 +1563,7 @@ export const reference = [
       "tr": "Turtle yönünü kullanmaz.",
       "hy": "Չի օգտագործում Turtle-ի ուղղությունը։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); const id=setTimeout(()=>setBackground(\"red\"),100); clearTimeout(id); drawCircle(80,\"coral\",true);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\nconst id=setTimeout(()=>setBackground(\"red\"),100);\nclearTimeout(id);\ndrawCircle(80,\"coral\",true);"
   },
   {
     "name": "setInterval",
@@ -1590,7 +1590,7 @@ export const reference = [
       "tr": "Turtle yönünü kullanmaz.",
       "hy": "Չի օգտագործում Turtle-ի ուղղությունը։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); setInterval(()=>{clear(); drawCircle(getRandomNumber(20,80),\"coral\",true);},200);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\nsetInterval(()=>{\n  clear();\n  drawCircle(getRandomNumber(20,80),\"coral\",true);},200);"
   },
   {
     "name": "clearInterval",
@@ -1617,7 +1617,7 @@ export const reference = [
       "tr": "Turtle yönünü kullanmaz.",
       "hy": "Չի օգտագործում Turtle-ի ուղղությունը։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); const id=setInterval(()=>setBackground(\"red\"),100); clearInterval(id); drawCircle(80,\"coral\",true);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\nconst id=setInterval(()=>setBackground(\"red\"),100);\nclearInterval(id);\ndrawCircle(80,\"coral\",true);"
   },
   {
     "name": "radToDeg",
@@ -1644,7 +1644,7 @@ export const reference = [
       "tr": "Turtle yönünü kullanmaz.",
       "hy": "Չի օգտագործում Turtle-ի ուղղությունը։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0,0); writeText(radToDeg(Math.PI));"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0,0);\nwriteText(radToDeg(Math.PI));"
   },
   {
     "name": "degToRad",
@@ -1671,7 +1671,7 @@ export const reference = [
       "tr": "Turtle yönünü kullanmaz.",
       "hy": "Չի օգտագործում Turtle-ի ուղղությունը։"
     },
-    "code": "setBackground(\"white\"); hideTurtle(); writeText(degToRad(180));"
+    "code": "setBackground(\"white\");\nhideTurtle();\nwriteText(degToRad(180));"
   }
 ];
 
@@ -1688,7 +1688,7 @@ reference.push(...[
       "tr": "Hareket veya çizim yapmadan yeni bir {x, y} nesnesi döndürür.",
       "hy": "Առանց շարժվելու կամ նկարելու վերադարձնում է նոր {x, y} օբյեկտ։"
     },
-    "code": "const p = position(); writeText(JSON.stringify(p));"
+    "code": "const p = position();\nwriteText(JSON.stringify(p));"
   },
   {
     "name": "heading",
@@ -1701,7 +1701,7 @@ reference.push(...[
       "tr": "Yönü derece olarak döndürür: 0 yukarıdır, pozitif açı saat yönündedir.",
       "hy": "Վերադարձնում է ուղղությունը աստիճաններով․ 0-ը վերև է, դրականը՝ ժամացույցի ուղղությամբ։"
     },
-    "code": "angle(90); writeText(heading());"
+    "code": "angle(90);\nwriteText(heading());"
   },
   {
     "name": "distanceTo",
@@ -1727,7 +1727,7 @@ reference.push(...[
       "tr": "(x, y) yönünü verir. Aynı noktada mevcut yönü korur.",
       "hy": "Վերադարձնում է (x, y)-ի ուղղությունը․ նույն կետում պահում է ընթացիկ ուղղությունը։"
     },
-    "code": "angle(directionTo(100, 0)); forward(100);"
+    "code": "angle(directionTo(100, 0));\nforward(100);"
   },
   {
     "name": "backward",
@@ -1753,7 +1753,7 @@ reference.push(...[
       "tr": "Silmeden veya bağlantı çizgisi çizmeden (0, 0) konumuna döner ve yukarı bakar.",
       "hy": "Առանց ջնջելու կամ միացնող գիծ նկարելու վերադառնում է (0, 0) և նայում վերև։"
     },
-    "code": "goto(100, 80); home();"
+    "code": "goto(100, 80);\nhome();"
   },
   {
     "name": "showTurtle",
@@ -1766,7 +1766,7 @@ reference.push(...[
       "tr": "Konumu veya kalem durumunu değiştirmeden Turtle gösterilir.",
       "hy": "Ցույց է տալիս Turtle-ը՝ առանց դիրքը կամ գրիչի վիճակը փոխելու։"
     },
-    "code": "hideTurtle(); showTurtle();"
+    "code": "hideTurtle();\nshowTurtle();"
   },
   {
     "name": "isVisible",
@@ -1805,7 +1805,7 @@ reference.push(...[
       "tr": "Çizim alanı odaktayken tuşa basınca handler(key) çağrılır. Aboneliği kaldıran işlev döndürür.",
       "hy": "Դաշտն ընտրված լինելիս ստեղնի սեղմումը կանչում է handler(key)։ Վերադարձնում է անջատման ֆունկցիա։"
     },
-    "code": "onKey(\"ArrowRight\", () => { angle(90); forward(20); });"
+    "code": "onKey(\"ArrowRight\", () => { \n  angle(90);\n  forward(20); });"
   },
   {
     "name": "onClick",
@@ -1818,7 +1818,7 @@ reference.push(...[
       "tr": "Birincil tıklamada Turtle koordinatlarıyla handler({x, y}) çağrılır. Aboneliği kaldıran işlev döndürür.",
       "hy": "Հիմնական սեղմումը կանչում է handler({x, y}) Turtle կոորդինատներով։ Վերադարձնում է անջատման ֆունկցիա։"
     },
-    "code": "onClick(({ x, y }) => { goto(x, y); drawCircle(20, \"coral\", true); });"
+    "code": "onClick(({ x, y }) => { \n  goto(x, y);\n  drawCircle(20, \"coral\", true); });"
   }
 ]);
 reference.push({
@@ -1832,7 +1832,7 @@ reference.push({
     "tr": "Mevcut konum ve yönden dairesel bir yol izler. Pozitif yarıçap sola, negatif sağa döner. Açı: -360–360 derece; adım: 3–2000. Kalem yukarıdayken çizmez. drawCircle aksine konum ve yön değişir.",
     "hy": "Շարժվում է շրջանաձև ուղով ընթացիկ դիրքից և ուղղությունից։ Դրական շառավիղը՝ ձախ, բացասականը՝ աջ։ Անկյունը՝ -360–360 աստիճան, քայլերը՝ 3–2000։ Բարձրացված գրիչով չի նկարում։ Ի տարբերություն drawCircle-ի՝ փոխում է դիրքն ու ուղղությունը։"
   },
-  "code": "goto(80, 0); color(\"DeepSkyBlue\"); width(4); circle(80, 270);"
+  "code": "goto(80, 0);\ncolor(\"DeepSkyBlue\");\nwidth(4);\ncircle(80, 270);"
 });
 
 reference.push(...[
@@ -1847,7 +1847,7 @@ reference.push(...[
       "tr": "Mevcut konum ve yönde renkli ok bırakır ve kimliğini verir. Gizli Turtle ile de çalışır. Çizimin üstünde silinebilir katman; en fazla 1000.",
       "hy": "Ընթացիկ դիրքում և ուղղությամբ թողնում է գունավոր սլաք և վերադարձնում նույնացուցիչը, նույնիսկ թաքնված Turtle-ի դեպքում։ Նկարի վերևում ջնջվող շերտ է․ առավելագույնը 1000։"
     },
-    "code": "hideTurtle(); penup(); color(\"coral\"); for(let x=-160;x<=160;x+=80){goto(x,0); angle(x); stamp();}"
+    "code": "hideTurtle();\npenup();\ncolor(\"coral\");\nfor(let x=-160;x<=160;x+=80){\n  goto(x,0);\n  angle(x);\n  stamp();}"
   },
   {
     "name": "clearStamp",
@@ -1860,7 +1860,7 @@ reference.push(...[
       "tr": "Pozitif tam sayı kimliğindeki damgayı siler. Silindiyse true, yoksa false verir. clear() tüm damgaları ve çizimi siler.",
       "hy": "Ջնջում է միայն դրական ամբողջ նույնացուցիչով դրոշմը։ Վերադարձնում է true ջնջելիս, false՝ բացակայելիս։ clear()-ը ջնջում է բոլոր դրոշմներն ու նկարը։"
     },
-    "code": "hideTurtle();color(\"coral\");goto(-60,0);const id=stamp();goto(60,0);stamp();clearStamp(id);"
+    "code": "hideTurtle();\ncolor(\"coral\");\ngoto(-60,0);\nconst id=stamp();\ngoto(60,0);\nstamp();\nclearStamp(id);"
   }
 ]);
 
@@ -1875,7 +1875,7 @@ reference.push({
     "tr": "Tamamlanmış sonlu kaydın görüntülenen bir adımını geri alır, sonraki geçmişi siler. Turtle, çizgi ve damgaları geri yükler; değişkenleri veya editörü değil. Geçmiş yoksa false. Önce kaydedin; değişen kodu yeniden çalıştırın.",
     "hy": "Հետարկում է ավարտված վերջավոր գրանցման ցուցադրված քայլը և հեռացնում հետագա պատմությունը։ Վերականգնում է Turtle-ը, գծերն ու դրոշմները, ոչ փոփոխականները կամ խմբագրիչը։ Պատմության բացակայության դեպքում՝ false։ Նախ գրանցեք, փոխված կոդը նորից գործարկեք։"
   },
-  "code": "const history = recordDrawing(() => {forward(100); right(90); forward(80);}); history.finish(); undo();"
+  "code": "const history = recordDrawing(() => {\n  forward(100);\n  right(90);\n  forward(80);});\nhistory.finish();\nundo();"
 });
 
 const examples = new Set(["drawDino","drawPacman","drawButterfly","drawFish","drawSubmarine","drawRocket","drawFirework","drawJet","drawBomb","drawFireball","drawDog","drawFerrisWheel","drawCloud","drawFlower","jumpHeight","jumpRandom"]);
@@ -1893,7 +1893,7 @@ export const recipes = [
       "hy": "Pacman"
     },
     "shortCode": "drawPacman(85, \"gold\", 60);",
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0, 0);\nangle(90);\ndrawPacman(85, \"gold\", 60);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0, 0);\nangle(90);\ndrawPacman(85, \"gold\", 60);"
   },
   {
     "id": "figur-dino",
@@ -1905,7 +1905,7 @@ export const recipes = [
       "hy": "Դինոզավր"
     },
     "shortCode": "drawDino(120, \"LimeGreen\", 25);",
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0, 0);\ndrawDino(120, \"LimeGreen\", 25);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0, 0);\ndrawDino(120, \"LimeGreen\", 25);"
   },
   {
     "id": "figur-schmetterling",
@@ -1917,7 +1917,7 @@ export const recipes = [
       "hy": "Թիթեռ"
     },
     "shortCode": "drawButterfly(110, \"royalblue\", 35);",
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0, 0);\ndrawButterfly(110, \"royalblue\", 35);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0, 0);\ndrawButterfly(110, \"royalblue\", 35);"
   },
   {
     "id": "figur-fisch",
@@ -1929,7 +1929,7 @@ export const recipes = [
       "hy": "Ձուկ"
     },
     "shortCode": "drawFish(190, \"coral\");\ndraw();",
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0, 0);\ndrawFish(190, \"coral\");"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0, 0);\ndrawFish(190, \"coral\");"
   },
   {
     "id": "figur-uboot",
@@ -1941,7 +1941,7 @@ export const recipes = [
       "hy": "Սուզանավ"
     },
     "shortCode": "drawSubmarine(250, \"gold\");\ndraw();",
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0, 0);\ndrawSubmarine(250, \"gold\");"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0, 0);\ndrawSubmarine(250, \"gold\");"
   },
   {
     "id": "figur-rakete",
@@ -1953,7 +1953,7 @@ export const recipes = [
       "hy": "Հրթիռ"
     },
     "shortCode": "drawRocket(220, \"coral\", 0);\ndraw();",
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0, 0);\ndrawRocket(220, \"coral\", 0);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0, 0);\ndrawRocket(220, \"coral\", 0);"
   },
   {
     "id": "figur-feuerwerk",
@@ -1965,7 +1965,7 @@ export const recipes = [
       "hy": "Հրավառություն"
     },
     "shortCode": "drawFirework(240, \"gold\", 15, 24);\ndraw();",
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0, 0);\ndrawFirework(240, \"gold\", 15, 24);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0, 0);\ndrawFirework(240, \"gold\", 15, 24);"
   },
   {
     "id": "figur-jet",
@@ -1977,7 +1977,7 @@ export const recipes = [
       "hy": "Ինքնաթիռ"
     },
     "shortCode": "drawJet(220);\ndraw();",
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0, 0);\ndrawJet(220);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0, 0);\ndrawJet(220);"
   },
   {
     "id": "figur-sprengkoerper",
@@ -1989,7 +1989,7 @@ export const recipes = [
       "hy": "Մուլտֆիլմի ռումբ"
     },
     "shortCode": "drawBomb(200);\ndraw();",
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0, 0);\ndrawBomb(200);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0, 0);\ndrawBomb(200);"
   },
   {
     "id": "figur-feuerball",
@@ -2001,7 +2001,7 @@ export const recipes = [
       "hy": "Հրե գունդ"
     },
     "shortCode": "drawFireball(240);\ndraw();",
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0, 0);\ndrawFireball(240);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0, 0);\ndrawFireball(240);"
   },
   {
     "id": "figur-hund",
@@ -2013,7 +2013,7 @@ export const recipes = [
       "hy": "Շուն"
     },
     "shortCode": "drawDog(230, \"right\", 15);\ndraw();",
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0, -30);\ndrawDog(230, \"right\", 15);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0, -30);\ndrawDog(230, \"right\", 15);"
   },
   {
     "id": "figur-riesenrad",
@@ -2025,7 +2025,7 @@ export const recipes = [
       "hy": "Դիտանիվ"
     },
     "shortCode": "drawFerrisWheel(280, 20);\ndraw();",
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0, 30);\ndrawFerrisWheel(280, 20);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0, 30);\ndrawFerrisWheel(280, 20);"
   },
   {
     "id": "figur-kreis",
@@ -2037,7 +2037,7 @@ export const recipes = [
       "hy": "Շրջան"
     },
     "shortCode": "drawCircle(90, \"tomato\", true);",
-    "code": "setBackground(\"white\"); hideTurtle(); goto(-60, 0);\nangle(0);\ndrawCircle(90, \"tomato\", true);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(-60, 0);\nangle(0);\ndrawCircle(90, \"tomato\", true);"
   },
   {
     "id": "figur-rechteck",
@@ -2049,7 +2049,7 @@ export const recipes = [
       "hy": "Ուղղանկյուն"
     },
     "shortCode": "drawRect(80, 120, \"cornflowerblue\", true);",
-    "code": "setBackground(\"white\"); hideTurtle(); goto(-60, -40);\nangle(0);\ndrawRect(80, 120, \"cornflowerblue\", true);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(-60, -40);\nangle(0);\ndrawRect(80, 120, \"cornflowerblue\", true);"
   },
   {
     "id": "figur-dreieck",
@@ -2061,7 +2061,7 @@ export const recipes = [
       "hy": "Եռանկյուն"
     },
     "shortCode": "drawTriangle(140, \"orange\", true);",
-    "code": "setBackground(\"white\"); hideTurtle(); goto(-40, -40);\nangle(0);\ndrawTriangle(140, \"orange\", true);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(-40, -40);\nangle(0);\ndrawTriangle(140, \"orange\", true);"
   },
   {
     "id": "figur-stern",
@@ -2073,7 +2073,7 @@ export const recipes = [
       "hy": "Աստղ"
     },
     "shortCode": "drawStar(5, 95, \"gold\", true);",
-    "code": "setBackground(\"white\"); hideTurtle(); goto(-40, -50);\nangle(0);\ndrawStar(5, 95, \"gold\", true);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(-40, -50);\nangle(0);\ndrawStar(5, 95, \"gold\", true);"
   },
   {
     "id": "figur-bogen",
@@ -2085,7 +2085,7 @@ export const recipes = [
       "hy": "Աղեղ"
     },
     "shortCode": "drawArc(80, 90, \"orchid\", false);",
-    "code": "setBackground(\"white\"); hideTurtle(); goto(-40, -40);\nangle(0);\ndrawArc(80, 90, \"orchid\", false);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(-40, -40);\nangle(0);\ndrawArc(80, 90, \"orchid\", false);"
   },
   {
     "id": "figur-halbkreis",
@@ -2097,7 +2097,7 @@ export const recipes = [
       "hy": "Կիսաշրջան"
     },
     "shortCode": "drawHalfCircle(65, \"coral\", true);",
-    "code": "setBackground(\"white\"); hideTurtle(); goto(-65, 0);\nangle(0);\ndrawHalfCircle(65, \"coral\", true);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(-65, 0);\nangle(0);\ndrawHalfCircle(65, \"coral\", true);"
   },
   {
     "id": "figur-oval",
@@ -2109,7 +2109,7 @@ export const recipes = [
       "hy": "Օվալ"
     },
     "shortCode": "drawOvalArc(180, 100, 360, \"turquoise\", true);",
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0, 0);\ndrawOvalArc(180, 100, 360, \"turquoise\", true);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0, 0);\ndrawOvalArc(180, 100, 360, \"turquoise\", true);"
   },
   {
     "id": "figur-halboval",
@@ -2121,7 +2121,7 @@ export const recipes = [
       "hy": "Կիսաօվալ"
     },
     "shortCode": "drawHalfOval(180, 100, \"salmon\", true);",
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0, 0);\ndrawHalfOval(180, 100, \"salmon\", true);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0, 0);\ndrawHalfOval(180, 100, \"salmon\", true);"
   },
   {
     "id": "figur-wolke",
@@ -2133,7 +2133,7 @@ export const recipes = [
       "hy": "Ամպ"
     },
     "shortCode": "setBackground(\"#eaf5ff\");\ndrawCloud(65, \"white\");",
-    "code": "setBackground(\"#eaf5ff\"); hideTurtle(); goto(-25, 0);\nangle(0);\ndrawCloud(65, \"white\");"
+    "code": "setBackground(\"#eaf5ff\");\nhideTurtle();\ngoto(-25, 0);\nangle(0);\ndrawCloud(65, \"white\");"
   },
   {
     "id": "figur-blume",
@@ -2145,7 +2145,7 @@ export const recipes = [
       "hy": "Ծաղիկ"
     },
     "shortCode": "drawFlower(6, 50, \"orchid\", \"gold\");",
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0, 0);\nangle(0);\ndrawFlower(6, 50, \"orchid\", \"gold\");"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0, 0);\nangle(0);\ndrawFlower(6, 50, \"orchid\", \"gold\");"
   },
   {
     "id": "figur-spirale",
@@ -2157,7 +2157,7 @@ export const recipes = [
       "hy": "Պարույր"
     },
     "shortCode": "drawSpiral(65, 61);",
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0, 0);\nangle(0);\ndrawSpiral(65, 61);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0, 0);\nangle(0);\ndrawSpiral(65, 61);"
   },
   {
     "id": "figur-linie",
@@ -2169,7 +2169,7 @@ export const recipes = [
       "hy": "Գիծ"
     },
     "shortCode": "drawLine(-90, -40, 90, 40, \"teal\", 8);",
-    "code": "setBackground(\"white\"); hideTurtle(); drawLine(-90, -40, 90, 40, \"teal\", 8);"
+    "code": "setBackground(\"white\");\nhideTurtle();\ndrawLine(-90, -40, 90, 40, \"teal\", 8);"
   },
   {
     "id": "figur-text",
@@ -2181,7 +2181,7 @@ export const recipes = [
       "hy": "Տեքստ"
     },
     "shortCode": "writeText(\"Hallo Turtle!\", 28, \"navy\");",
-    "code": "setBackground(\"white\"); hideTurtle(); goto(0, 0);\nwriteText(\"Hallo Turtle!\", 28, \"navy\");"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(0, 0);\nwriteText(\"Hallo Turtle!\", 28, \"navy\");"
   },
   {
     "id": "figur-hintergrund",
@@ -2193,7 +2193,7 @@ export const recipes = [
       "hy": "Ֆոն"
     },
     "shortCode": "setBackground(\"MidnightBlue\");",
-    "code": "setBackground(\"white\"); hideTurtle(); setBackground(\"MidnightBlue\");"
+    "code": "setBackground(\"white\");\nhideTurtle();\nsetBackground(\"MidnightBlue\");"
   },
   {
     "id": "figur-landschaft",
@@ -2205,7 +2205,7 @@ export const recipes = [
       "hy": "Երկինք և գետին"
     },
     "shortCode": "setDualBackground(\"skyblue\", \"palegreen\", -70);",
-    "code": "setBackground(\"white\"); hideTurtle(); setDualBackground(\"skyblue\", \"palegreen\", -70);"
+    "code": "setBackground(\"white\");\nhideTurtle();\nsetDualBackground(\"skyblue\", \"palegreen\", -70);"
   },
   {
     "id": "figur-zufallsgroesse",
@@ -2217,7 +2217,7 @@ export const recipes = [
       "hy": "Պատահական չափ"
     },
     "shortCode": "let radius = getRandomNumber(20, 45);\ndrawOvalArc(radius * 2, radius * 2, 360, \"royalblue\", true);",
-    "code": "setBackground(\"white\"); hideTurtle(); for (let x of [-200, -100, 0, 100, 200]) {\n  let radius = getRandomNumber(20, 45);\n  goto(x, 0);\n  drawOvalArc(radius * 2, radius * 2,\n    360, \"royalblue\", true);\n}"
+    "code": "setBackground(\"white\");\nhideTurtle();\nfor (let x of [-200, -100, 0, 100, 200]) {\n  let radius = getRandomNumber(20, 45);\n  goto(x, 0);\n  drawOvalArc(radius * 2, radius * 2,\n    360, \"royalblue\", true);\n}"
   },
   {
     "id": "figur-zufallsfarbe",
@@ -2229,7 +2229,7 @@ export const recipes = [
       "hy": "Պատկերների պատահական գույներ"
     },
     "shortCode": "drawOvalArc(65, 65, 360,\n    getRandomColor(), true);",
-    "code": "setBackground(\"white\"); hideTurtle(); for (let x of [-200, -100, 0, 100, 200]) {\n  goto(x, 0);\n  drawOvalArc(65, 65, 360,\n    getRandomColor(), true);\n}"
+    "code": "setBackground(\"white\");\nhideTurtle();\nfor (let x of [-200, -100, 0, 100, 200]) {\n  goto(x, 0);\n  drawOvalArc(65, 65, 360,\n    getRandomColor(), true);\n}"
   },
   {
     "id": "figur-zufallslinien",
@@ -2241,7 +2241,7 @@ export const recipes = [
       "hy": "Գծերի պատահական գույներ"
     },
     "shortCode": "color(getRandomColor());\nwidth(10);\nforward(120);",
-    "code": "setBackground(\"white\"); hideTurtle(); for (let y of [-160, -80, 0, 80, 160]) {\n  penup();\n  goto(-180, y);\n  angle(90);\n  pendown();\n  color(getRandomColor());\n  width(10);\n  forward(360);\n}"
+    "code": "setBackground(\"white\");\nhideTurtle();\nfor (let y of [-160, -80, 0, 80, 160]) {\n  penup();\n  goto(-180, y);\n  angle(90);\n  pendown();\n  color(getRandomColor());\n  width(10);\n  forward(360);\n}"
   },
   {
     "id": "figur-springen",
@@ -2253,7 +2253,7 @@ export const recipes = [
       "hy": "Պատահական ցատկեր"
     },
     "shortCode": "drawStar(5, 15, \"gold\", true);",
-    "code": "setBackground(\"white\"); hideTurtle(); for (let i = 0; i < 8; i++) {\n  jumpRandom();\n  drawStar(5, 15, \"gold\", true);\n}"
+    "code": "setBackground(\"white\");\nhideTurtle();\nfor (let i = 0; i < 8; i++) {\n  jumpRandom();\n  drawStar(5, 15, \"gold\", true);\n}"
   },
   {
     "id": "figur-fuellen",
@@ -2265,6 +2265,6 @@ export const recipes = [
       "hy": "Լցնել սեփական պատկերը"
     },
     "shortCode": "beginFill(\"tomato\");\nforward(100);\nright(120);\nforward(100);\nright(120);\nforward(100);\nendFill();",
-    "code": "setBackground(\"white\"); hideTurtle(); goto(-60, -40);\nangle(0);\nbeginFill(\"tomato\");\nforward(100);\nright(120);\nforward(100);\nright(120);\nforward(100);\nendFill();"
+    "code": "setBackground(\"white\");\nhideTurtle();\ngoto(-60, -40);\nangle(0);\nbeginFill(\"tomato\");\nforward(100);\nright(120);\nforward(100);\nright(120);\nforward(100);\nendFill();"
   }
 ];
