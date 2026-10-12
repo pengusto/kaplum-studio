@@ -380,6 +380,9 @@ function drawSpiral(steps = 100, turn = 61, paintColor) {
   const originalGoto = window.goto;
   const originalRight = window.right;
   let currentPath = null, fillColor = "black";
+  // Recording must finish helper fills; these hooks are internal, not teaching commands.
+  window.__hasOpenTurtleFill = () => currentPath !== null;
+  window.__resetTurtleFill = () => { currentPath = null; };
   window.forward = function (distance) {
     originalForward(distance);
     if (currentPath) currentPath.push(getTurtleState());

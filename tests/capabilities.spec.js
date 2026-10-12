@@ -33,8 +33,8 @@ test('stamp command renders and removing one stamp keeps another through the wor
 test('Pacman and Dino construction views use maintained source and protect the draft',async({page})=>{
  for(const id of ['figur-pacman','figur-dino']){
   await page.goto('/#figure/'+id);const editor=page.locator('#code');await editor.click();await page.keyboard.press('ControlOrMeta+A');await page.keyboard.insertText('forward(42); // my draft');
-  await page.locator('.example-construction summary').click();await expect(page.locator('.example-construction pre')).toContainText(id==='figur-pacman'?'function drawPacman(':'function drawDino(');
-  await expect(editor).toContainText('my draft');await page.locator('.language-picker select').selectOption('de');await expect(editor).toContainText('my draft');
+  await page.locator('.example-construction summary').click();await expect(page.locator('.example-construction li')).toHaveCount(3);await expect(page.locator('.example-construction pre')).toContainText(id==='figur-pacman'?'function drawPacman(':'function drawDino(');
+  for(const language of ['en','de','ja','tr','hy']){await page.locator('.language-picker select').selectOption(language);await expect(page.locator('.example-construction li')).toHaveCount(3);await expect(page.locator('.example-construction li').last()).toContainText(id==='figur-pacman'?'direction':'legAngle');await expect(editor).toContainText('my draft');}
  }
 });
 

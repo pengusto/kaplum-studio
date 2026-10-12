@@ -65,10 +65,10 @@ Issue #6 remains a design/prototype for actual JavaScript debugging, including l
 
 ## Implementation checkpoint
 
-Implemented: bounded finite trace and playback, removable coloured stamps, native signed-radius circle paths, bounded recorded drawing undo, maintained Pacman/Dino source views and five multilingual course test lessons.
+Implemented: bounded finite trace and playback, removable coloured stamps, native signed-radius circle paths, bounded recorded drawing undo, multilingual Pacman/Dino construction explanations and maintained source views and five multilingual course test lessons.
 
 The lab is at `#course`; each lesson has a protected editable draft, reset, instructions, expected outcome and the existing exact-source ZIP export. Lessons: square replay, pen-up journey, removable stamp pattern, circle path versus static shape and undo-clear.
 
-Deliberate limits: replay and undo require synchronous finite recordings, not timer/input/async programs; checkpoints are drawing updates, not JavaScript lines. Undo discards later drawing history and restores Turtle state but does not reverse JavaScript variables or helper closure state. New runs use Run/Restart. Stamps are a removable overlay above ordinary ink. Native translation review and Safari remain unverified. Multiple turtles, a real JavaScript debugger and p5.js are later issues.
+Deliberate limits: replay and undo require synchronous finite recordings, not timer/input/async programs; checkpoints are drawing updates, not JavaScript lines. Undo discards later drawing history and restores Turtle state but does not reverse JavaScript variables or helper closure state. Unfinished helper fills reject a recording explicitly. New runs use Run/Restart. Stamps are a removable overlay above ordinary ink. Native translation review and Safari remain unverified. Multiple turtles, a real JavaScript debugger and p5.js are later issues.
 
 Verification includes real Chromium/Firefox interaction, five-language narrow/reduced-motion layout, geometry and stamp pixel checks, trace overflow and undo latency samples, draft/reset protection, and network-free execution of stamps/circle/undo from an exported ZIP. Full regression and Pages deployment evidence are recorded after the release gate.

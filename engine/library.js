@@ -223,7 +223,10 @@
     const saved = {};
     const initial = {...state};
     const styles = Object.fromEntries(["strokeStyle","fillStyle","lineWidth","lineCap","lineJoin","miterLimit","font","textAlign","textBaseline","globalAlpha","globalCompositeOperation"].map(key => [key, rawInk[key]]));
+    if (window.__hasOpenTurtleFill?.()) throw Error("Close the fill with endFill() before recording a drawing.");
     const baselineTransform = rawInk.getTransform();
+    const baselineDash = rawInk.getLineDash();
+    const baselineDashOffset = rawInk.lineDashOffset;
     erase(rawInk); stamps.clear();
     trace = {capturing:true, ops:[], steps:[], bytes:0};
     let result;
@@ -233,8 +236,10 @@
       }
       result = program();
       if (result && typeof result.then === "function") throw Error("Drawing replay cannot record asynchronous programs.");
+      if (window.__hasOpenTurtleFill?.()) throw Error("Finish every beginFill() with endFill() in a drawing recording.");
       draw();
     } catch (error) {
+      window.__resetTurtleFill?.();
       trace = null; displayState = null; throw error;
     } finally {
       for (const [name, fn] of Object.entries(saved)) window[name]=fn;
@@ -246,7 +251,7 @@
       while (replayDepth > 0) {rawInk.restore(); replayDepth--;}
       rawInk.setTransform(1,0,0,1,0,0);rawInk.clearRect(0,0,image.width,image.height);rawInk.beginPath();
       for (const [key,value] of Object.entries(styles)) rawInk[key]=value;
-      rawInk.setLineDash([]);
+      rawInk.setLineDash(baselineDash);rawInk.lineDashOffset=baselineDashOffset;
       rawInk.setTransform(baselineTransform.a,baselineTransform.b,baselineTransform.c,baselineTransform.d,baselineTransform.e,baselineTransform.f);
       replayStamps.clear(); operation=0;cursor=0;
     }

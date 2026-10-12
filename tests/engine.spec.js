@@ -192,3 +192,19 @@ test('trace checkpoint overflow is explicit and redraw cost stays bounded',async
   return {message,latency,bytes:h.bytes,total:h.length};
  });expect(result.message).toContain('10,000 steps');expect(result.bytes).toBeLessThan(4000000);expect(result.latency).toBeLessThan(2000);await testInfo.attach('drawing-undo-sample',{body:JSON.stringify(result),contentType:'application/json'});
 });
+
+
+test('undo restores initial styles and pen; unfinished helper fills reject recording and clean up',async({page})=>{
+ await load(page);await page.evaluate(helpers);
+ const result=await page.evaluate(()=>{
+  wrap(false);hideTurtle();const ctx=document.getElementById('imagecanvas').getContext('2d');
+  ctx.setLineDash([4,2]);ctx.lineDashOffset=3;color('blue');width(7);ctx.font='18px serif';
+  let message;try{recordDrawing(()=>{beginFill('gold');forward(20);});}catch(e){message=e.message;}
+  const openAfterFailure=__hasOpenTurtleFill();goto(0,0);color('blue');width(7);
+  const h=recordDrawing(()=>{color('red');width(20);ctx.font='30px monospace';penup();forward(30);pendown();forward(30);});
+  h.finish();undo();undo();const pen=isPenDown();while(undo()){}
+  return {message,openAfterFailure,pen,initialPen:isPenDown(),stroke:ctx.strokeStyle,width:ctx.lineWidth,font:ctx.font,dash:ctx.getLineDash(),offset:ctx.lineDashOffset};
+ });
+ expect(result.message).toContain('endFill()');expect(result.openAfterFailure).toBe(false);expect(result.pen).toBe(false);expect(result.initialPen).toBe(true);
+ expect(result.stroke).toBe('#0000ff');expect(result.width).toBe(7);expect(result.font).toBe('18px serif');expect(result.dash).toEqual([4,2]);expect(result.offset).toBe(3);
+});
