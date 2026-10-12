@@ -726,3 +726,39 @@ test("Quiet catalogue cards and React Bits filters support keyboard, search and 
   await expect(page.locator(".library-toggle")).not.toBeVisible();
   expect(errors).toEqual([]);
 });
+
+test("Retina catalogue renders sharp geometry and refits after changing Pacman radius", async ({ browser }) => {
+  const context = await browser.newContext({ viewport: { width: 1900, height: 1100 }, deviceScaleFactor: 2 });
+  const page = await context.newPage();
+  try {
+    await page.goto('/#figures');
+    await page.getByRole('searchbox').fill('drawPacman');
+    const card = page.locator('.example-card');
+    const canvas = card.locator('canvas');
+    await expect(card.locator('.catalogue-preview')).toHaveAttribute('data-drawn', 'true');
+    const geometry = () => canvas.evaluate(c => {
+      const { width, height } = c;
+      const pixels = c.getContext('2d').getImageData(0, 0, width, height).data;
+      let left = width, right = -1, top = height, bottom = -1;
+      for (let y=0; y<height; y++) for (let x=0; x<width; x++) if(pixels[(y*width+x)*4+3]>20) {
+        left=Math.min(left,x);right=Math.max(right,x);top=Math.min(top,y);bottom=Math.max(bottom,y);
+      }
+      let partial=0, occupied=0;
+      const y=Math.round(height*.36);
+      for(let x=0;x<width;x++) {const alpha=pixels[(y*width+x)*4+3]; if(alpha>0) occupied++; if(alpha>0 && alpha<255)partial++;}
+      return { width, css: c.getBoundingClientRect().width, left, right, top, bottom, partial, occupied };
+    });
+    let first=await geometry();
+    expect(first.width).toBeGreaterThanOrEqual(Math.ceil(first.css*2));
+    expect(first.partial).toBeLessThanOrEqual(6);
+    expect(first.occupied).toBeGreaterThan(first.width*.3);
+    await card.getByRole('slider', {name:'radius slider', exact:true}).fill('120');
+    await expect(card.locator('.example-call')).toContainText('drawPacman(120,');
+    await expect(card.locator('.catalogue-preview')).toHaveAttribute('data-drawn', 'true');
+    await expect.poll(async () => {
+      const next = await geometry();
+      return next.left > next.width*.1 && next.top > next.width*.1 && next.right < next.width*.9 && next.bottom < next.width*.9;
+    }).toBe(true);
+    await expect(card.locator('.example-call')).toContainText('drawPacman(120,');
+  } finally { await context.close(); }
+});

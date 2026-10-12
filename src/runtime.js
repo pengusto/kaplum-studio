@@ -15,7 +15,7 @@ export class Preview {
     this.receive = null;
     this.onStatus({ type: "stopped" });
   }
-  async run(code) {
+  async run(code, render) {
     this.stop();
     const run = this.sequence;
     this.onStatus({ type: "running" });
@@ -38,7 +38,7 @@ export class Preview {
       frame.hidden = true;
       frame.setAttribute("sandbox", "allow-scripts");
       frame.title = "Isolated program";
-      const bridge = `let worker; onmessage=e=>{if(e.source!==parent||!e.data.start)return; const blob=new Blob([e.data.worker],{type:'text/javascript'}); const url=URL.createObjectURL(blob); worker=new Worker(url); URL.revokeObjectURL(url); worker.onmessage=event=>{const d=event.data;if(d.type==='error')worker.terminate();parent.postMessage(d,'*',d.bitmap?[d.bitmap]:[]);}; worker.onerror=event=>parent.postMessage({type:'error',message:event.message},'*'); worker.postMessage({code:e.data.code,engine:e.data.engine});}; parent.postMessage({type:'ready'},'*');`;
+      const bridge = `let worker; onmessage=e=>{if(e.source!==parent||!e.data.start)return; const blob=new Blob([e.data.worker],{type:'text/javascript'}); const url=URL.createObjectURL(blob); worker=new Worker(url); URL.revokeObjectURL(url); worker.onmessage=event=>{const d=event.data;if(d.type==='error')worker.terminate();parent.postMessage(d,'*',d.bitmap?[d.bitmap]:[]);}; worker.onerror=event=>parent.postMessage({type:'error',message:event.message},'*'); worker.postMessage({code:e.data.code,engine:e.data.engine,render:e.data.render});}; parent.postMessage({type:'ready'},'*');`;
       frame.srcdoc = `<!doctype html><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval'; worker-src blob:; connect-src 'none'"><script>${bridge}<\/script>`;
       const receive = (event) => {
         if (event.source !== frame.contentWindow) return;
@@ -55,15 +55,20 @@ export class Preview {
               worker: sources[2],
               engine: sources[3] + "\n" + sources[0] + "\n" + sources[1],
               code,
+              render,
             },
             "*",
           );
         else if (data.type === "frame" && data.bitmap) {
+          if (this.canvas.width !== data.bitmap.width || this.canvas.height !== data.bitmap.height) {
+            this.canvas.width = data.bitmap.width;
+            this.canvas.height = data.bitmap.height;
+          }
           const context = this.canvas.getContext("2d");
-          context.clearRect(0, 0, 700, 700);
+          context.clearRect(0, 0, this.canvas.width, this.canvas.height);
           context.drawImage(data.bitmap, 0, 0);
           data.bitmap.close();
-          this.onFrame?.();
+          this.onFrame?.({ render });
         } else if (data.type === "executing")
           this.onStatus({ type: "executing" });
         else if (data.type === "error") {

@@ -1,11 +1,42 @@
 // Browser-only drawing adapter. It exposes no host DOM or storage.
 self.window = self;
-const canvases = {
-  imagecanvas: new OffscreenCanvas(700, 700),
-  turtlecanvas: new OffscreenCanvas(700, 700),
-};
-for (const canvas of Object.values(canvases))
-  canvas.addEventListener = () => {};
+let canvases;
+// The teaching surface stays 700 units wide. A render camera changes only
+// raster resolution and framing, never coordinates, sizes or wrapping.
+function drawingCanvas(render) {
+  const side = render?.side || 700;
+  const size = Math.max(700, Math.min(1600, Math.round(render?.size || 700)));
+  const x = render?.x || 0, y = render?.y || 0;
+  const surface = new OffscreenCanvas(size, size);
+  const context = surface.getContext("2d");
+  const scale = size / side;
+  const transform = (a, b, c, d, e, f) =>
+    context.setTransform(a * scale, b * scale, c * scale, d * scale,
+      (e - x) * scale, (f - y) * scale);
+  transform(1, 0, 0, 1, 0, 0);
+  const logical = {
+    width: 700, height: 700, surface,
+    addEventListener() {},
+    getContext() { return adapted; },
+  };
+  const adapted = new Proxy(context, {
+    get(target, property) {
+      if (property === "canvas") return logical;
+      if (property === "setTransform") return transform;
+      if (property === "resetTransform") return () => transform(1, 0, 0, 1, 0, 0);
+      if (property === "drawImage") return (image, ...args) => {
+        if (image?.surface && args.length === 2) {
+          // The stored image already contains this camera's region.
+          target.drawImage(image.surface, args[0] + x, args[1] + y, side, side);
+        } else target.drawImage(image?.surface || image, ...args);
+      };
+      const value = Reflect.get(target, property, target);
+      return typeof value === "function" ? value.bind(target) : value;
+    },
+    set(target, property, value) { Reflect.set(target, property, value, target); return true; },
+  });
+  return logical;
+}
 self.HTMLCanvasElement = OffscreenCanvas;
 self.document = {
   getElementById: (id) => canvases[id] || { innerHTML: "", className: "" },
@@ -45,6 +76,7 @@ self.addEventListener("unhandledrejection", (event) => {
 });
 onmessage = async (event) => {
   try {
+    canvases = { imagecanvas: drawingCanvas(event.data.render), turtlecanvas: drawingCanvas(event.data.render) };
     (0, eval)(event.data.engine);
     // Sequential snapshots never clear drawing state and cannot flood the host.
     let sending = false;
@@ -52,7 +84,7 @@ onmessage = async (event) => {
       if (sending) return;
       sending = true;
       try {
-        const bitmap = await createImageBitmap(canvases.turtlecanvas);
+        const bitmap = await createImageBitmap(canvases.turtlecanvas.surface);
         postMessage({ type: "frame", bitmap }, [bitmap]);
       } finally {
         sending = false;
