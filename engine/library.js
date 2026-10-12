@@ -3,7 +3,34 @@
 (function () {
   const image = document.getElementById("imagecanvas");
   const display = document.getElementById("turtlecanvas");
-  const ink = image.getContext("2d");
+  const rawInk = image.getContext("2d");
+  let trace = null, displayState = null, replayDepth = 0;
+  const drawingMethods = new Set(["save","restore","setTransform","resetTransform","translate","rotate","scale","transform","beginPath","closePath","moveTo","lineTo","arc","ellipse","rect","roundRect","bezierCurveTo","quadraticCurveTo","fill","stroke","clearRect","fillRect","strokeRect","fillText","strokeText","setLineDash"]);
+  const readMethods = new Set(["getTransform","getLineDash","measureText","isPointInPath","isPointInStroke","getImageData"]);
+  function record(op) {
+    if (!trace?.capturing) return;
+    if (op.args?.some(value => !["number","string","boolean","undefined"].includes(typeof value) && value !== null)) throw Error("Drawing replay does not support object-valued canvas arguments.");
+    const bytes = JSON.stringify(op).length;
+    if (trace.ops.length >= 100000 || trace.bytes + bytes > 4000000) throw Error("Drawing trace limit exceeded (100,000 operations / 4 MB). Use a smaller drawing.");
+    trace.bytes += bytes; trace.ops.push(op);
+  }
+  const ink = new Proxy(rawInk, {
+    get(target, property) {
+      const value = target[property];
+      if (typeof value !== "function") return value;
+      return (...args) => {
+        if (trace?.capturing && !drawingMethods.has(property) && !readMethods.has(property)) throw Error(`Canvas operation ${String(property)} is not supported in drawing replay.`);
+        if (drawingMethods.has(property)) record({kind:"call", name:property, args});
+        return value.apply(target, args);
+      };
+    },
+    set(target, property, value) {
+      record({kind:"set", name:property, args:[value]}); target[property] = value; return true;
+    }
+  });
+  // Helpers and core must observe the same recording context.
+  const originalContext = image.getContext.bind(image);
+  image.getContext = (type, ...args) => type === "2d" ? ink : originalContext(type, ...args);
   const screen = display.getContext("2d");
   const state = { x: 0, y: 0, heading: 0, pen: true, visible: true, wrap: true, redraw: true };
   const radians = (degrees) => degrees * Math.PI / 180;
@@ -23,14 +50,24 @@
     context.restore();
   }
   function draw() {
+    if (trace?.capturing) {
+      const checkpoint = {...state};
+      const previous = trace.steps.at(-1);
+      if (!previous || previous.end !== trace.ops.length || JSON.stringify(previous.state) !== JSON.stringify(checkpoint)) {
+        if (trace.steps.length >= 10000) throw Error("Drawing trace limit exceeded (10,000 steps).");
+        trace.steps.push({end:trace.ops.length, state:checkpoint});
+      }
+      return;
+    }
+    const shown = displayState || state;
     erase(screen);
     screen.save();
     screen.globalCompositeOperation = "source-over";
     screen.drawImage(image, 0, 0);
-    if (state.visible) {
+    if (shown.visible) {
       centred(screen);
-      screen.translate(state.x, state.y);
-      screen.rotate(-radians(state.heading));
+      screen.translate(shown.x, shown.y);
+      screen.rotate(-radians(shown.heading));
       screen.beginPath();
       screen.moveTo(-5, 0);
       screen.lineTo(5, 0);
@@ -140,8 +177,66 @@
     ink.restore();
     drawIf();
   }
+  function recordDrawing(program) {
+    if (typeof program !== "function" || trace?.capturing) throw Error("recordDrawing needs a synchronous drawing function.");
+    if (trace) throw Error("Restart the program before recording another drawing.");
+    const saved = {};
+    const initial = {...state};
+    const styles = Object.fromEntries(["strokeStyle","fillStyle","lineWidth","lineCap","lineJoin","miterLimit","font","textAlign","textBaseline","globalAlpha","globalCompositeOperation"].map(key => [key, rawInk[key]]));
+    const baselineTransform = rawInk.getTransform();
+    erase(rawInk);
+    trace = {capturing:true, ops:[], steps:[], bytes:0};
+    let result;
+    try {
+      for (const name of ["setTimeout","setInterval","requestAnimationFrame","onKey","onClick","beiTaste","beiKlick","naechstesBild","verzoegere","wiederholeZeitlich"]) {
+        if (typeof window[name] === "function") { saved[name]=window[name]; window[name]=()=>{throw Error("Drawing replay supports synchronous finite drawings only; timers and input handlers need immediate mode.");}; }
+      }
+      result = program();
+      if (result && typeof result.then === "function") throw Error("Drawing replay cannot record asynchronous programs.");
+      draw();
+    } catch (error) {
+      trace = null; displayState = null; throw error;
+    } finally {
+      for (const [name, fn] of Object.entries(saved)) window[name]=fn;
+      if (trace) trace.capturing=false;
+    }
+    const data = trace;
+    let cursor = 0, operation = 0;
+    function resetSurface() {
+      while (replayDepth > 0) {rawInk.restore(); replayDepth--;}
+      rawInk.setTransform(1,0,0,1,0,0);rawInk.clearRect(0,0,image.width,image.height);rawInk.beginPath();
+      for (const [key,value] of Object.entries(styles)) rawInk[key]=value;
+      rawInk.setLineDash([]);
+      rawInk.setTransform(baselineTransform.a,baselineTransform.b,baselineTransform.c,baselineTransform.d,baselineTransform.e,baselineTransform.f);
+      operation=0;cursor=0;
+    }
+    function seek(value) {
+      if (!Number.isInteger(value) || value < 0 || value > data.steps.length) throw Error("Replay step is out of range.");
+      if (value < cursor || operation === 0) resetSurface();
+      const end = value ? data.steps[value-1].end : 0;
+      while (operation < end) {
+        const op = data.ops[operation++];
+        if (op.kind === "set") rawInk[op.name]=op.args[0];
+        else {
+          rawInk[op.name](...op.args);
+          if (op.name === "save") replayDepth++;
+          if (op.name === "restore") replayDepth=Math.max(0,replayDepth-1);
+        }
+      }
+      cursor=value;displayState={...(value ? data.steps[value-1].state : initial)};draw();
+      return cursor;
+    }
+    resetSurface();displayState=initial;draw();
+    const controller = Object.freeze({
+      get length(){return data.steps.length;}, get step(){return cursor;}, get bytes(){return data.bytes;},
+      next:()=>seek(Math.min(data.steps.length,cursor+1)), back:()=>seek(Math.max(0,cursor-1)),
+      reset:()=>seek(0), finish:()=>seek(data.steps.length), seek,
+    });
+    return controller;
+  }
+  window.__displayTurtleState = () => { const shown=displayState || state;return {x:shown.x,y:shown.y,angleDeg:shown.heading,pen:shown.pen,visible:shown.visible}; };
   Object.assign(window, {
-    forward, color, goto, width, write, draw, drawIf, onKey, onClick,
+    forward, color, goto, width, write, draw, drawIf, onKey, onClick, recordDrawing,
     position: () => ({ x: state.x, y: state.y }),
     heading: () => state.heading,
     distanceTo: (x, y) => Math.hypot(finite(x, "X") - state.x, finite(y, "Y") - state.y),

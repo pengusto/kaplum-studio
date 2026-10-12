@@ -23,6 +23,7 @@ function drawingCanvas(render) {
   const adapted = new Proxy(context, {
     get(target, property) {
       if (property === "canvas") return logical;
+      if (property === "getTransform") return () => { const m=target.getTransform(); return {a:m.a/scale,b:m.b/scale,c:m.c/scale,d:m.d/scale,e:m.e/scale+x,f:m.f/scale+y}; };
       if (property === "setTransform") return transform;
       if (property === "resetTransform") return () => transform(1, 0, 0, 1, 0, 0);
       if (property === "drawImage") return (image, ...args) => {

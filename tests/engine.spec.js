@@ -112,3 +112,18 @@ test("native input uses logical coordinates, focus and unsubscribe", async ({ pa
   await page.evaluate(()=>off()); await page.keyboard.press('ArrowRight'); expect(await page.evaluate(()=>window.inputCount)).toBe(1);
   await canvas.click({position:{x:350,y:350}}); expect(await page.evaluate(()=>position())).toEqual({x:0,y:0});
 });
+
+test('finite drawing trace preserves pixels and synchronous state while replay steps move the display',async({page})=>{
+ await load(page);await page.evaluate(helpers);
+ const result=await page.evaluate(()=>{
+  const program=()=>{hideTurtle();goto(-70,-70);color('coral');width(4);beginFill('gold');for(let i=0;i<4;i++){forward(140);right(90);}endFill();drawPacman(35,'blue',60);};
+  program();const ctx=document.getElementById('imagecanvas').getContext('2d');const expected=[...ctx.getImageData(0,0,700,700).data];clear();goto(0,0);angle(0);
+  window.replay=recordDrawing(program);const logical=getTurtleState();const start=__displayTurtleState();const length=replay.length;
+  replay.next();const step=replay.step;replay.finish();const actual=[...ctx.getImageData(0,0,700,700).data];const final=__displayTurtleState();replay.back();const back=replay.step;replay.reset();
+  return {same:expected.every((x,i)=>x===actual[i]),logical,start,final,length,step,back,reset:replay.step,bytes:replay.bytes};
+ });
+ expect(result.same).toBe(true);expect(result.length).toBeGreaterThan(8);expect(result.step).toBe(1);expect(result.back).toBe(result.length-1);expect(result.reset).toBe(0);expect(result.final.x).toBeCloseTo(result.logical.x);expect(result.bytes).toBeLessThan(4000000);
+});
+test('recording rejects timer/input programs explicitly and restores normal APIs',async({page})=>{
+ await load(page);const result=await page.evaluate(()=>{let message;try{recordDrawing(()=>onKey('x',()=>{}));}catch(e){message=e.message;}const off=onKey('x',()=>{});off();return {message,state:getTurtleState()};});expect(result.message).toContain('synchronous finite');
+});
