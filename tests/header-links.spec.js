@@ -20,6 +20,18 @@ for (const width of [320, 390, 700, 850, 1073, 1150, 1536]) {
         expect(bounds.hit).toBe(true);
       }
     }
+    if (width > 700) {
+      const alignment = await page.evaluate(() => {
+        const header = document.querySelector('header');
+        const h = header.getBoundingClientRect();
+        const tools = header.querySelector('.header-tools').getBoundingClientRect();
+        const links = header.querySelector('.release-links').getBoundingClientRect();
+        return { rightGap: h.right - tools.right, groupGap: tools.left - links.right };
+      });
+      expect(alignment.rightGap).toBeLessThanOrEqual(25);
+      expect(alignment.groupGap).toBeGreaterThanOrEqual(0);
+      expect(alignment.groupGap).toBeLessThanOrEqual(23);
+    }
     await expect(page.locator('header .release-links a[aria-label="GitHub"]')).toHaveAttribute('href', 'https://github.com/pengusto/kaplum-studio');
   });
 }
