@@ -1,4 +1,6 @@
 export const germanCommands = {
+  stamp: "stemple",
+  clearStamp: "loescheStempel",
   circle: "kreisPfad",
   position: "liesPosition",
   heading: "liesRichtung",

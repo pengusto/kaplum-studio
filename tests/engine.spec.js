@@ -147,3 +147,29 @@ test('turtle circle follows tangent, signed radius, pen and fill contracts', asy
  expect(result.full.x).toBeCloseTo(0);expect(result.full.y).toBeCloseTo(0);expect(result.full.angleDeg).toBeCloseTo(-360);
  expect(result.blank).toBe(0);expect(result.filled).toEqual([255,215,0,255]);expect(result.errors).toHaveLength(5);
 });
+
+test('stamps retain colour and direction and can be removed without erasing ink',async({page})=>{
+ await load(page);await page.evaluate(helpers);
+ const result=await page.evaluate(()=>{
+  hideTurtle();wrap(false);color('blue');width(4);forward(80);
+  goto(-60,0);color('red');const first=stamp();goto(60,0);color('gold');const second=stemple();
+  const pixel=x=>[...document.getElementById('turtlecanvas').getContext('2d').getImageData(350+x,350,1,1).data];
+  const before=[pixel(-60),pixel(60)];const removed=clearStamp(first);const after=[pixel(-60),pixel(60),[...document.getElementById("turtlecanvas").getContext("2d").getImageData(350,310,1,1).data]];
+  const missing=clearStamp(first);clear();const blank=pixel(60);
+  const replay=recordDrawing(()=>{goto(-60,0);color('red');const id=stamp();goto(60,0);stamp();clearStamp(id);});
+  replay.finish();const final=[pixel(-60),pixel(60)];replay.reset();const reset=pixel(60);replay.finish();
+  return {first,second,before,removed,after,missing,blank,final,reset};
+ });
+ expect(result.first).not.toBe(result.second);expect(result.before[0]).toEqual([255,0,0,255]);expect(result.before[1]).toEqual([255,215,0,255]);
+ expect(result.removed).toBe(true);expect(result.missing).toBe(false);expect(result.after[0][3]).toBe(0);expect(result.after[1]).toEqual(result.before[1]);expect(result.after[2]).toEqual([0,0,255,255]);
+ expect(result.blank[3]).toBe(0);expect(result.final[0][3]).toBe(0);expect(result.final[1]).toEqual([255,0,0,255]);expect(result.reset[3]).toBe(0);
+});
+
+test('stamp IDs are validated and storage is bounded without reusing cleared IDs',async({page})=>{
+ await load(page);const result=await page.evaluate(()=>{
+  redrawOnMove(false);const ids=[];for(let i=0;i<1000;i++)ids.push(stamp());
+  let limit;try{stamp();}catch(e){limit=e.message;}
+  const errors=[];for(const id of [0,-1,1.2,'1',Infinity]){try{clearStamp(id);}catch(e){errors.push(e.message);}}
+  clear();const after=stamp();return {limit,errors,after,last:ids.at(-1)};
+ });expect(result.limit).toContain('1,000');expect(result.errors).toHaveLength(5);expect(result.after).toBeGreaterThan(result.last);
+});

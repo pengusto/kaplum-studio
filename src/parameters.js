@@ -1,6 +1,7 @@
 import { parser } from "@lezer/javascript";
 // Meanings follow positional arguments in the maintained function signatures.
 const labels = {
+  stampId: ["Stamp identifier", "Stempelkennung", "スタンプID", "Damga kimliği", "Դրոշմի նույնացուցիչ"],
   extent: ["Arc angle in degrees", "Bogenwinkel in Grad", "円弧の角度", "Yay açısı (derece)", "Աղեղի անկյունը աստիճաններով"],
   key: ["Keyboard key", "Taste", "キー", "Tuş", "Ստեղն"],
   handler: ["Callback function", "Rückruffunktion", "コールバック関数", "Geri çağırma işlevi", "Հետադարձ կանչի ֆունկցիա"],

@@ -1835,6 +1835,35 @@ reference.push({
   "code": "goto(80, 0); color(\"DeepSkyBlue\"); width(4); circle(80, 270);"
 });
 
+reference.push(...[
+  {
+    "name": "stamp",
+    "alias": "stemple",
+    "signature": "stamp()",
+    "text": {
+      "en": "Leaves a coloured arrow impression at the current position and direction, even when the turtle is hidden. Returns its ID. Stamps form a removable layer above ordinary drawing; maximum 1000.",
+      "de": "Setzt einen farbigen Pfeilstempel an Position und Richtung, auch bei versteckter Turtle. Gibt seine Kennung zurück. Stempel liegen als löschbare Ebene über der Zeichnung; maximal 1000.",
+      "ja": "現在の位置と向きに色付き矢印を残し、IDを返します。タートルが非表示でも使えます。描画の上に独立した層として表示。最大1000個。",
+      "tr": "Mevcut konum ve yönde renkli ok bırakır ve kimliğini verir. Gizli Turtle ile de çalışır. Çizimin üstünde silinebilir katman; en fazla 1000.",
+      "hy": "Ընթացիկ դիրքում և ուղղությամբ թողնում է գունավոր սլաք և վերադարձնում նույնացուցիչը, նույնիսկ թաքնված Turtle-ի դեպքում։ Նկարի վերևում ջնջվող շերտ է․ առավելագույնը 1000։"
+    },
+    "code": "hideTurtle(); penup(); color(\"coral\"); for(let x=-160;x<=160;x+=80){goto(x,0); angle(x); stamp();}"
+  },
+  {
+    "name": "clearStamp",
+    "alias": "loescheStempel",
+    "signature": "clearStamp(stampId)",
+    "text": {
+      "en": "Removes only the stamp with this positive integer ID. Returns true if removed, false if missing. clear() removes all stamps and ordinary ink.",
+      "de": "Entfernt nur den Stempel mit dieser positiven ganzzahligen Kennung. Gibt true bei Löschung zurück, sonst false. clear() entfernt alle Stempel und die Zeichnung.",
+      "ja": "正の整数IDのスタンプだけを削除。削除したらtrue、存在しなければfalse。clear()は全スタンプと描画を消します。",
+      "tr": "Pozitif tam sayı kimliğindeki damgayı siler. Silindiyse true, yoksa false verir. clear() tüm damgaları ve çizimi siler.",
+      "hy": "Ջնջում է միայն դրական ամբողջ նույնացուցիչով դրոշմը։ Վերադարձնում է true ջնջելիս, false՝ բացակայելիս։ clear()-ը ջնջում է բոլոր դրոշմներն ու նկարը։"
+    },
+    "code": "hideTurtle();color(\"coral\");goto(-60,0);const id=stamp();goto(60,0);stamp();clearStamp(id);"
+  }
+]);
+
 const examples = new Set(["drawDino","drawPacman","drawButterfly","drawFish","drawSubmarine","drawRocket","drawFirework","drawJet","drawBomb","drawFireball","drawDog","drawFerrisWheel","drawCloud","drawFlower","jumpHeight","jumpRandom"]);
 const drawingHelpers = new Set(["setBackground","setDualBackground","setTiltedBackground","setTextColor","setTextSize","writeText","drawCircle","drawHalfCircle","drawOvalArc","drawHalfOval","drawRect","drawTriangle","drawStar","drawLine","drawArc","drawSpiral","getRandomNumber","getRandomColor"]);
 for (const item of reference) item.category = examples.has(item.name) ? "example" : drawingHelpers.has(item.name) ? "drawing" : "turtle";

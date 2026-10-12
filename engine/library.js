@@ -32,6 +32,8 @@
   const originalContext = image.getContext.bind(image);
   image.getContext = (type, ...args) => type === "2d" ? ink : originalContext(type, ...args);
   const screen = display.getContext("2d");
+  const stamps = new Map(), replayStamps = new Map();
+  let nextStamp = 1;
   const state = { x: 0, y: 0, heading: 0, pen: true, visible: true, wrap: true, redraw: true };
   const radians = (degrees) => degrees * Math.PI / 180;
   const finite = (value, label) => {
@@ -64,6 +66,12 @@
     screen.save();
     screen.globalCompositeOperation = "source-over";
     screen.drawImage(image, 0, 0);
+    for (const impression of (displayState ? replayStamps : stamps).values()) {
+      screen.save(); centred(screen); screen.translate(impression.x, impression.y);
+      screen.rotate(-radians(impression.heading));
+      screen.beginPath(); screen.moveTo(-8, -5); screen.lineTo(8, -5); screen.lineTo(0, 18); screen.closePath();
+      screen.fillStyle = impression.color; screen.fill(); screen.restore();
+    }
     if (shown.visible) {
       centred(screen);
       screen.translate(shown.x, shown.y);
@@ -179,6 +187,21 @@
   }
   // Positive radius curves to the left, negative radius to the right.
   // Chord endpoints lie on the requested circle; the heading follows its tangent.
+  function stamp() {
+    if (stamps.size >= 1000) throw Error("Stamp limit exceeded (1,000 impressions). Clear stamps before adding more.");
+    const id = nextStamp++;
+    const impression = {x:state.x, y:state.y, heading:state.heading, color:ink.strokeStyle};
+    record({kind:"stamp", args:[id, impression.x, impression.y, impression.heading, impression.color]});
+    stamps.set(id, impression); drawIf(); return id;
+  }
+  function clearStamp(id) {
+    if (!Number.isInteger(id) || id < 1) throw Error("Stamp ID must be a positive integer.");
+    record({kind:"clearStamp", args:[id]});
+    const removed = stamps.delete(id); drawIf(); return removed;
+  }
+  function clearDrawing() {
+    erase(ink); record({kind:"clearStamps", args:[]}); stamps.clear(); drawIf();
+  }
   function circle(radius, extent = 360, steps) {
     radius = finite(radius, "Radius"); extent = finite(extent, "Extent");
     if (radius === 0 || Math.abs(extent) > 360) throw Error("Circle needs a nonzero radius and an extent between -360 and 360 degrees.");
@@ -201,7 +224,7 @@
     const initial = {...state};
     const styles = Object.fromEntries(["strokeStyle","fillStyle","lineWidth","lineCap","lineJoin","miterLimit","font","textAlign","textBaseline","globalAlpha","globalCompositeOperation"].map(key => [key, rawInk[key]]));
     const baselineTransform = rawInk.getTransform();
-    erase(rawInk);
+    erase(rawInk); stamps.clear();
     trace = {capturing:true, ops:[], steps:[], bytes:0};
     let result;
     try {
@@ -225,7 +248,7 @@
       for (const [key,value] of Object.entries(styles)) rawInk[key]=value;
       rawInk.setLineDash([]);
       rawInk.setTransform(baselineTransform.a,baselineTransform.b,baselineTransform.c,baselineTransform.d,baselineTransform.e,baselineTransform.f);
-      operation=0;cursor=0;
+      replayStamps.clear(); operation=0;cursor=0;
     }
     function seek(value) {
       if (!Number.isInteger(value) || value < 0 || value > data.steps.length) throw Error("Replay step is out of range.");
@@ -233,7 +256,10 @@
       const end = value ? data.steps[value-1].end : 0;
       while (operation < end) {
         const op = data.ops[operation++];
-        if (op.kind === "set") rawInk[op.name]=op.args[0];
+        if (op.kind === "stamp") {const [id,x,y,heading,color]=op.args;replayStamps.set(id,{x,y,heading,color});}
+        else if (op.kind === "clearStamp") replayStamps.delete(op.args[0]);
+        else if (op.kind === "clearStamps") replayStamps.clear();
+        else if (op.kind === "set") rawInk[op.name]=op.args[0];
         else {
           rawInk[op.name](...op.args);
           if (op.name === "save") replayDepth++;
@@ -253,7 +279,7 @@
   }
   window.__displayTurtleState = () => { const shown=displayState || state;return {x:shown.x,y:shown.y,angleDeg:shown.heading,pen:shown.pen,visible:shown.visible}; };
   Object.assign(window, {
-    forward, color, goto, width, write, draw, drawIf, onKey, onClick, recordDrawing, circle,
+    forward, color, goto, width, write, draw, drawIf, onKey, onClick, recordDrawing, circle, stamp, clearStamp,
     position: () => ({ x: state.x, y: state.y }),
     heading: () => state.heading,
     distanceTo: (x, y) => Math.hypot(finite(x, "X") - state.x, finite(y, "Y") - state.y),
@@ -274,7 +300,7 @@
     showTurtle: () => { state.visible = true; drawIf(); },
     wrap: (enabled) => { state.wrap = Boolean(enabled); },
     redrawOnMove: (enabled) => { state.redraw = Boolean(enabled); },
-    clear: () => { erase(ink); drawIf(); },
+    clear: clearDrawing,
     getTurtleState: () => ({ x: state.x, y: state.y, angleDeg: state.heading }),
     setFont: (font) => { ink.font = font; },
     degToRad: radians,

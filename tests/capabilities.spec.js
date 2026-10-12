@@ -23,3 +23,9 @@ test('drawing playback pauses, steps, rewinds and stops through the worker',asyn
  await page.getByRole('button',{name:'Play',exact:true}).click();await expect(page.getByRole('button',{name:'Pause',exact:true})).toBeVisible();await page.getByRole('button',{name:'Pause',exact:true}).click();const paused=await group.locator('output').first().textContent();await page.waitForTimeout(400);await expect(group.locator('output').first()).toHaveText(paused);
  await page.getByRole('button',{name:'Reset playback',exact:true}).click();await expect(group.locator('output').first()).toContainText('0 /');await page.getByRole('button',{name:'Stop',exact:true}).click();await expect(group).toHaveCount(0);
 });
+
+test('stamp command renders and removing one stamp keeps another through the worker',async({page})=>{
+ await page.goto('/#command/clearStamp');await expect(page.locator('#status')).not.toHaveAttribute('data-state','error');
+ await expect.poll(()=>page.locator('#canvas').evaluate(c=>c.getContext('2d').getImageData(410,350,1,1).data[3])).toBe(255);
+ await expect.poll(()=>page.locator('#canvas').evaluate(c=>c.getContext('2d').getImageData(290,350,1,1).data[3])).toBe(0);
+});

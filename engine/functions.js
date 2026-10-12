@@ -735,5 +735,7 @@ window.istStiftUnten = window.isPenDown;
 window.beiTaste = window.onKey;
 window.beiKlick = window.onClick;
 window.kreisPfad = window.circle;
+window.stemple = window.stamp;
+window.loescheStempel = window.clearStamp;
 for (const obsolete of ["setSpeed","showGrid","strangeSquare","strangeGalaxy","strangeCircle","strangeLine","colour","randomColor_h","drawIf"]) delete window[obsolete];
 })();
