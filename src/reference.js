@@ -1675,6 +1675,156 @@ export const reference = [
   }
 ];
 
+
+reference.push(...[
+  {
+    "name": "position",
+    "alias": "liesPosition",
+    "signature": "position()",
+    "text": {
+      "en": "Returns a new {x, y} object without moving or drawing.",
+      "de": "Gibt ein neues {x, y}-Objekt zurück, ohne zu bewegen oder zu zeichnen.",
+      "ja": "移動や描画をせず、新しい{x, y}を返します。",
+      "tr": "Hareket veya çizim yapmadan yeni bir {x, y} nesnesi döndürür.",
+      "hy": "Առանց շարժվելու կամ նկարելու վերադարձնում է նոր {x, y} օբյեկտ։"
+    },
+    "code": "const p = position(); writeText(JSON.stringify(p));"
+  },
+  {
+    "name": "heading",
+    "alias": "liesRichtung",
+    "signature": "heading()",
+    "text": {
+      "en": "Returns the current direction in degrees: 0 is up, positive turns clockwise.",
+      "de": "Liest die aktuelle Richtung in Grad: 0 ist oben, positive Winkel drehen im Uhrzeigersinn.",
+      "ja": "現在の向きを度で返します。0は上、正の角度は時計回りです。",
+      "tr": "Yönü derece olarak döndürür: 0 yukarıdır, pozitif açı saat yönündedir.",
+      "hy": "Վերադարձնում է ուղղությունը աստիճաններով․ 0-ը վերև է, դրականը՝ ժամացույցի ուղղությամբ։"
+    },
+    "code": "angle(90); writeText(heading());"
+  },
+  {
+    "name": "distanceTo",
+    "alias": "abstandZu",
+    "signature": "distanceTo(x, y)",
+    "text": {
+      "en": "Returns the straight-line distance to (x, y), without moving.",
+      "de": "Liest den direkten Abstand zu (x, y), ohne die Turtle zu bewegen.",
+      "ja": "移動せずに(x, y)までの直線距離を返します。",
+      "tr": "Hareket etmeden (x, y) noktasına olan düz mesafeyi verir.",
+      "hy": "Առանց շարժվելու վերադարձնում է ուղիղ հեռավորությունը մինչև (x, y)։"
+    },
+    "code": "writeText(distanceTo(30, 40));"
+  },
+  {
+    "name": "directionTo",
+    "alias": "richtungZu",
+    "signature": "directionTo(x, y)",
+    "text": {
+      "en": "Returns the direction towards (x, y). At the current point, keeps the current heading.",
+      "de": "Liest die Richtung zu (x, y). Am aktuellen Punkt gilt die bisherige Richtung.",
+      "ja": "(x, y)への向きを返します。同じ位置では現在の向きを返します。",
+      "tr": "(x, y) yönünü verir. Aynı noktada mevcut yönü korur.",
+      "hy": "Վերադարձնում է (x, y)-ի ուղղությունը․ նույն կետում պահում է ընթացիկ ուղղությունը։"
+    },
+    "code": "angle(directionTo(100, 0)); forward(100);"
+  },
+  {
+    "name": "backward",
+    "alias": "rueckwaerts",
+    "signature": "backward(distance)",
+    "text": {
+      "en": "Moves backwards by distance; draws only when the pen is down.",
+      "de": "Bewegt sich um distance rückwärts; zeichnet nur mit gesenktem Stift.",
+      "ja": "distanceだけ後退します。ペンが下りている場合のみ描画します。",
+      "tr": "distance kadar geri gider; yalnızca kalem aşağıdaysa çizer.",
+      "hy": "Հետ է շարժվում distance չափով․ նկարում է միայն իջեցված գրիչով։"
+    },
+    "code": "backward(100);"
+  },
+  {
+    "name": "home",
+    "alias": "zurMitte",
+    "signature": "home()",
+    "text": {
+      "en": "Teleports to (0, 0) and faces up, without erasing or drawing a connecting line.",
+      "de": "Springt nach (0, 0) und schaut nach oben, ohne zu löschen oder eine Verbindungslinie zu zeichnen.",
+      "ja": "線を引いたり消したりせず、(0, 0)に移動して上を向きます。",
+      "tr": "Silmeden veya bağlantı çizgisi çizmeden (0, 0) konumuna döner ve yukarı bakar.",
+      "hy": "Առանց ջնջելու կամ միացնող գիծ նկարելու վերադառնում է (0, 0) և նայում վերև։"
+    },
+    "code": "goto(100, 80); home();"
+  },
+  {
+    "name": "showTurtle",
+    "alias": "zeigeTurtle",
+    "signature": "showTurtle()",
+    "text": {
+      "en": "Shows the turtle without changing position or pen state.",
+      "de": "Zeigt die Turtle, ohne Position oder Stiftzustand zu ändern.",
+      "ja": "位置やペンの状態を変えずにタートルを表示します。",
+      "tr": "Konumu veya kalem durumunu değiştirmeden Turtle gösterilir.",
+      "hy": "Ցույց է տալիս Turtle-ը՝ առանց դիրքը կամ գրիչի վիճակը փոխելու։"
+    },
+    "code": "hideTurtle(); showTurtle();"
+  },
+  {
+    "name": "isVisible",
+    "alias": "istSichtbar",
+    "signature": "isVisible()",
+    "text": {
+      "en": "Returns true when the turtle is visible, otherwise false.",
+      "de": "Gibt true zurück, wenn die Turtle sichtbar ist, sonst false.",
+      "ja": "タートルが見える場合はtrue、それ以外はfalseです。",
+      "tr": "Turtle görünürse true, değilse false döndürür.",
+      "hy": "Վերադարձնում է true, եթե Turtle-ը տեսանելի է, այլապես false։"
+    },
+    "code": "writeText(isVisible());"
+  },
+  {
+    "name": "isPenDown",
+    "alias": "istStiftUnten",
+    "signature": "isPenDown()",
+    "text": {
+      "en": "Returns true when movement draws a line, otherwise false.",
+      "de": "Gibt true zurück, wenn Bewegungen eine Linie zeichnen, sonst false.",
+      "ja": "移動時に線を描く場合はtrue、それ以外はfalseです。",
+      "tr": "Hareket çizgi çiziyorsa true, değilse false döndürür.",
+      "hy": "Վերադարձնում է true, եթե շարժումը գիծ է նկարում, այլապես false։"
+    },
+    "code": "writeText(isPenDown());"
+  },
+  {
+    "name": "onKey",
+    "alias": "beiTaste",
+    "signature": "onKey(key, handler)",
+    "text": {
+      "en": "Calls handler(key) on a key press while the canvas is focused. Returns an unsubscribe function.",
+      "de": "Ruft handler(key) bei einem Tastendruck auf der fokussierten Zeichenfläche auf. Gibt eine Abmeldefunktion zurück.",
+      "ja": "描画領域にフォーカスがある時、キーでhandler(key)を呼びます。解除関数を返します。",
+      "tr": "Çizim alanı odaktayken tuşa basınca handler(key) çağrılır. Aboneliği kaldıran işlev döndürür.",
+      "hy": "Դաշտն ընտրված լինելիս ստեղնի սեղմումը կանչում է handler(key)։ Վերադարձնում է անջատման ֆունկցիա։"
+    },
+    "code": "onKey(\"ArrowRight\", () => { angle(90); forward(20); });"
+  },
+  {
+    "name": "onClick",
+    "alias": "beiKlick",
+    "signature": "onClick(handler)",
+    "text": {
+      "en": "Calls handler({x, y}) on a primary pointer press, in logical turtle coordinates. Returns an unsubscribe function.",
+      "de": "Ruft handler({x, y}) beim primären Klick mit logischen Turtle-Koordinaten auf. Gibt eine Abmeldefunktion zurück.",
+      "ja": "主ボタンで押すと、タートル座標でhandler({x, y})を呼びます。解除関数を返します。",
+      "tr": "Birincil tıklamada Turtle koordinatlarıyla handler({x, y}) çağrılır. Aboneliği kaldıran işlev döndürür.",
+      "hy": "Հիմնական սեղմումը կանչում է handler({x, y}) Turtle կոորդինատներով։ Վերադարձնում է անջատման ֆունկցիա։"
+    },
+    "code": "onClick(({ x, y }) => { goto(x, y); drawCircle(20, \"coral\", true); });"
+  }
+]);
+const examples = new Set(["drawDino","drawPacman","drawButterfly","drawFish","drawSubmarine","drawRocket","drawFirework","drawJet","drawBomb","drawFireball","drawDog","drawFerrisWheel","drawCloud","drawFlower","jumpHeight","jumpRandom"]);
+const drawingHelpers = new Set(["setBackground","setDualBackground","setTiltedBackground","setTextColor","setTextSize","writeText","drawCircle","drawHalfCircle","drawOvalArc","drawHalfOval","drawRect","drawTriangle","drawStar","drawLine","drawArc","drawSpiral","getRandomNumber","getRandomColor"]);
+for (const item of reference) item.category = examples.has(item.name) ? "example" : drawingHelpers.has(item.name) ? "drawing" : "turtle";
+
 export const recipes = [
   {
     "id": "figur-pacman",

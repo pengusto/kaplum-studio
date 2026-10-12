@@ -7,10 +7,12 @@ import { parameterMeanings } from "../src/parameters";
 import { assetUrl } from "../src/asset-url";
 import { messages, languages } from "./messages";
 import { legalCopy } from "../src/legal";
+import { capabilityLabels } from "../src/capability-labels";
 import CataloguePreview from "./CataloguePreview";
 const repository = "https://github.com/pengusto/kaplum-studio";
 export default function Documentation() {
   const [locale, setLocale] = useState("en"), [theme, setTheme] = useState("dark");
+  const [category, setCategory] = useState("all");
   const [query, setQuery] = useState(""), [selected, setSelected] = useState("forward");
   const paused = useRef(new Set());
   useEffect(() => {
@@ -29,7 +31,7 @@ export default function Documentation() {
   const d = docsCopy[locale], t = messages(locale);
   const entry = reference.find(item => item.name === selected);
   const params = parameterMeanings(entry, locale);
-  const filtered = reference.filter(item => `${item.name} ${item.alias} ${item.text[locale]}`.toLowerCase().includes(query.toLowerCase()));
+  const filtered = reference.filter(item => (category === "all" || item.category === category) && `${item.name} ${item.alias} ${item.text[locale]}`.toLowerCase().includes(query.toLowerCase()));
   const sections = ["start", "parameters", "coordinates", "reference", "offline", "about"];
   return <div className="documentation">
     <div className="docs-topbar">
@@ -47,8 +49,9 @@ export default function Documentation() {
         {['start','parameters','coordinates'].map(id => <section id={id} key={id}><h2>{d[id]}</h2><p>{d[id+'Text']}</p>{id === 'parameters' && <pre><code>drawDino(size, paintColor, legAngle);{"\n"}drawDino(120, "LimeGreen", 25);</code></pre>}</section>)}
         <section id="reference"><h2>{d.reference} <small>{reference.length}</small></h2>
           <label className="docs-search"><Search size={18}/><input type="search" aria-label={d.search} placeholder={d.search} value={query} onChange={e => setQuery(e.target.value)}/></label>
+          <select aria-label={d.reference} value={category} onChange={e => setCategory(e.target.value)}>{["all","turtle","drawing","example"].map(group => <option key={group} value={group}>{capabilityLabels[locale][group]}</option>)}</select>
           <div className="docs-reference">
-            <nav className="docs-command-list" aria-label={d.reference}>{filtered.map(item => <button key={item.name} aria-pressed={selected === item.name} onClick={() => setSelected(item.name)}>{item.name}()</button>)}{!filtered.length && <p>{d.empty}</p>}</nav>
+            <nav className="docs-command-list" aria-label={d.reference}>{filtered.map(item => <button key={item.name} aria-pressed={selected === item.name} onClick={() => setSelected(item.name)}>{item.name}() <small>{capabilityLabels[locale][item.category]}</small></button>)}{!filtered.length && <p>{d.empty}</p>}</nav>
             <article className="docs-command" aria-label={entry.name}>
               <h3>{entry.name}()</h3><pre><code>{entry.signature}</code></pre><p>{entry.text[locale]}</p>
               {params.length > 0 && <div className="docs-table-wrap"><table><thead><tr><th>{d.parameters}</th><th>{d.meaning}</th><th>{d.defaultValue}</th></tr></thead><tbody>{params.map((p,i) => <tr key={p.name}><td><code>{i+1}. {p.name}</code></td><td>{p.meaning}</td><td><code>{p.value ?? "—"}</code></td></tr>)}</tbody></table></div>}

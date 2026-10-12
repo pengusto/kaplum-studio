@@ -31,3 +31,7 @@ All five UI dictionaries and existing teaching translations are selectable and p
 ## Documentation and release navigation
 
 The public `/docs/` guide shares the maintained command reference, parameter meanings and sandbox previews with Studio. It covers getting started, coordinates, parameters and offline exports in all five UI languages. The Studio header links to documentation and the public repository. Contribution guidance and bug/learning-improvement templates live in the repository. Translation review, Safari testing and curriculum validation remain outstanding; this remains an early-development release.
+
+## General Turtle capabilities — 2026-10-12
+
+The command library and documentation distinguish Turtle commands, general drawing helpers and example figures. Eleven newly documented commands add synchronous position/direction/distance queries, backward/home, visibility/pen checks and focused keyboard/pointer callbacks. Workspace state, coordinate grid and copyable pointer coordinates are included. Input uses the existing isolated worker bridge and standalone exports; no external Turtle engine dependency added. Replay/speed, stamps, undo and multiple turtles remain planned. New translations are AI-assisted and unreviewed.

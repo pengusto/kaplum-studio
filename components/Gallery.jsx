@@ -1,5 +1,6 @@
 "use client";
 import { assetUrl } from "../src/asset-url";
+import { capabilityLabels } from "../src/capability-labels";
 import CataloguePreview from "./CataloguePreview";
 import { useState } from "react";
 import { Search, ArrowUpRight, RotateCcw, X, Shapes, PawPrint, LayoutGrid } from "lucide-react";
@@ -15,6 +16,7 @@ export default function Gallery({ section, preferences, t, selectedRoute, overvi
   const [search, setSearch] = useState(""),
     [category, setCategory] = useState("all");
   const locale = preferences.locale;
+  const labels = capabilityLabels[locale];
   const items =
     section === "animations"
       ? examples
@@ -32,6 +34,7 @@ export default function Gallery({ section, preferences, t, selectedRoute, overvi
       `${title} ${item.name || ""} ${item.shortCode || ""}`
         .toLowerCase()
         .includes(search.toLowerCase()) &&
+      (section !== "commands" || category === "all" || item.category === category) &&
       (section !== "figures" ||
         category === "all" ||
         (category === "animals") ===
@@ -58,6 +61,7 @@ export default function Gallery({ section, preferences, t, selectedRoute, overvi
           />
           {search && <button type="button" className="clear-search" aria-label={t("clearSearch")} onClick={() => setSearch("")}><X size={16} aria-hidden="true" /></button>}
         </label>
+        {section === "commands" && <select aria-label={t("commands")} value={category} onChange={e => setCategory(e.target.value)}>{["all","turtle","drawing","example"].map(group => <option key={group} value={group}>{labels[group]}</option>)}</select>}
         {section === "figures" && (
           <RubberSegment className="catalogue-categories" aria-label={t("figures")}
             items={[{ value: "all", label: t("all"), icon: <LayoutGrid size={15} aria-hidden="true" /> }, { value: "animals", label: t("animals"), icon: <PawPrint size={15} aria-hidden="true" /> }, { value: "shapes", label: t("shapes"), icon: <Shapes size={15} aria-hidden="true" /> }]}
@@ -103,6 +107,7 @@ function GalleryCard({ item, isCommand, section, source, title, entry, href, ove
 
               className={`example-card ${selectedRoute === href.slice(1) || (selectedRoute === "figures" && item.id === "figur-dino") ? "is-selected" : ""}`}
             >
+              {isCommand && <small className="command-category">{capabilityLabels[locale][item.category]}</small>}
               <h2>
                 <a href={overview ? studioHref : href}>{title}</a>
               </h2>

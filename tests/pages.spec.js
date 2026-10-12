@@ -98,3 +98,18 @@ test("legal pages expose confirmed contact and privacy in all five languages", a
   await expect(page.locator('.studio-legal-links a')).toHaveCount(2);
   await expect(page.locator('.studio-legal-links a').first()).toHaveAttribute('href',`${base}/legal/#en`);
 });
+
+test('exported keyboard and pointer controls work offline in logical coordinates', async ({page,browser})=>{
+  await page.goto(`${base}/#personal`);
+  const source='onKey("ArrowRight",()=>{angle(90);forward(25);}); onClick(({x,y})=>goto(x,y));';
+  await page.locator('#code').click();await page.keyboard.press('ControlOrMeta+A');await page.keyboard.insertText(source);
+  const download=page.waitForEvent('download');await page.getByRole('button',{name:'Download project ZIP',exact:true}).click();
+  const dir=await mkdtemp(join(tmpdir(),'kaplum-input-export-'));
+  try{
+    await (await download).saveAs(join(dir,'project.zip'));execFileSync('unzip',['-q',join(dir,'project.zip'),'-d',dir]);
+    const offline=await browser.newPage();await offline.goto(pathToFileURL(join(dir,'index.html')).href);
+    const canvas=offline.locator('#turtlecanvas');await canvas.focus();await offline.keyboard.press('ArrowRight');expect(await offline.evaluate(()=>position().x)).toBeCloseTo(25);
+    const box=await canvas.boundingBox();await canvas.click({position:{x:box.width/2,y:box.height/2}});const position=await offline.evaluate(()=>window.position());expect(position.x).toBeCloseTo(0,0);expect(position.y).toBeCloseTo(0,0);
+    await offline.close();
+  }finally{await rm(dir,{recursive:true,force:true});}
+});

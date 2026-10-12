@@ -81,6 +81,10 @@ self.addEventListener("unhandledrejection", (event) => {
 });
 onmessage = async (event) => {
   try {
+    if (event.data?.input) {
+      if (typeof self.__dispatchTurtleInput === "function") self.__dispatchTurtleInput(event.data.input);
+      return;
+    }
     canvases = { imagecanvas: drawingCanvas(event.data.render), turtlecanvas: drawingCanvas(event.data.render) };
     (0, eval)(event.data.engine);
     // Sequential snapshots never clear drawing state and cannot flood the host.
@@ -91,7 +95,7 @@ onmessage = async (event) => {
       sentRevision = canvases.turtlecanvas.revision;
       try {
         const bitmap = await createImageBitmap(canvases.turtlecanvas.surface);
-        postMessage({ type: "frame", bitmap }, [bitmap]);
+        postMessage({ type: "frame", bitmap, keys: __turtleInputKeys(), state: { ...getTurtleState(), pen: isPenDown(), visible: isVisible() } }, [bitmap]);
       } finally {
         sending = false;
       }

@@ -19,6 +19,7 @@ import EditorPane from "./EditorPane";
 import StatusMark from "./react-bits/StatusMark";
 import RubberSegment from "./react-bits/RubberSegment";
 import Parameters, { findEntry } from "./Parameters";
+import { capabilityLabels } from "../src/capability-labels";
 import { Preview } from "../src/runtime";
 import { projectFiles, download } from "../src/exports";
 import { storedZip } from "../src/zip";
@@ -50,7 +51,8 @@ export default function Workspace({ route, preferences, t, drafts }) {
     editor = useRef(null),
     canvas = useRef(null),
     preview = useRef(null),
-    helperDialog = useRef(null);
+    helperDialog = useRef(null),
+    pointerFrame = useRef(null), pointerSample = useRef(null);
   const entry =
     kind === "command"
       ? item
@@ -66,6 +68,8 @@ export default function Workspace({ route, preferences, t, drafts }) {
     [showVault, setShowVault] = useState(false),
     [selected, setSelected] = useState(new Set(entry ? [entry.name] : []));
   const locale = preferences.locale;
+  const labels = capabilityLabels[locale];
+  const [turtleState, setTurtleState] = useState(null), [grid, setGrid] = useState(false), [pointer, setPointer] = useState(null), [copyError, setCopyError] = useState(false);
   const title =
     kind === "course"
       ? t("lesson")
@@ -77,7 +81,7 @@ export default function Workspace({ route, preferences, t, drafts }) {
             ? locales[locale].activities[id]?.title
             : item?.name;
   useEffect(() => {
-    const instance = new Preview(canvas.current, setStatus);
+    const instance = new Preview(canvas.current, setStatus, null, setTurtleState);
     preview.current = instance;
     const visibility = () => {
       if (document.hidden) instance.stop();
@@ -93,6 +97,7 @@ export default function Workspace({ route, preferences, t, drafts }) {
       instance.run(code.current);
     return () => {
       instance.stop();
+      if (pointerFrame.current !== null) cancelAnimationFrame(pointerFrame.current);
       document.removeEventListener("visibilitychange", visibility);
       preview.current = null;
     };
@@ -280,14 +285,25 @@ export default function Workspace({ route, preferences, t, drafts }) {
                 {statusText}
               </span>
             </div>
-            <div className="canvas-surface" data-canvas={preferences.canvas}>
+            <div className="canvas-surface" data-grid={grid} data-canvas={preferences.canvas}>
               <canvas
                 ref={canvas}
                 id="canvas"
+                tabIndex={0}
+                onPointerMove={event => { const rect = event.currentTarget.getBoundingClientRect(); pointerSample.current = {x: Math.round((event.clientX - rect.left) * 700 / rect.width - 350), y: Math.round(350 - (event.clientY - rect.top) * 700 / rect.height)}; if (pointerFrame.current === null) pointerFrame.current = requestAnimationFrame(() => { pointerFrame.current = null; setPointer(previous => previous?.x === pointerSample.current.x && previous?.y === pointerSample.current.y ? previous : pointerSample.current); }); }}
+
                 width="700"
                 height="700"
                 aria-label={t("preview")}
               />
+            </div>
+            <div className="turtle-state" aria-label={labels.state}>
+              <span>{turtleState ? `x: ${turtleState.x.toFixed(1)} · y: ${turtleState.y.toFixed(1)} · ${turtleState.angleDeg.toFixed(1)}° · ${labels.pen}: ${turtleState.pen ? "✓" : "—"}` : `${labels.state}: —`}</span>
+              <label><input type="checkbox" checked={grid} onChange={e => setGrid(e.target.checked)}/>{labels.grid}</label>
+              {pointer && <span>{labels.pointer}: {pointer.x}, {pointer.y}</span>}
+              {pointer && <button type="button" className="button secondary" onClick={async () => { try { await navigator.clipboard.writeText(`goto(${pointer.x}, ${pointer.y});`); setCopyError(false); } catch { setCopyError(true); } }}>{labels.copy}</button>}
+              {copyError && <code>{pointer && `goto(${pointer.x}, ${pointer.y});`}</code>}
+              <small>{labels.focus}</small>
             </div>
             <div className="playback">
               <button className="button primary" onClick={run}>

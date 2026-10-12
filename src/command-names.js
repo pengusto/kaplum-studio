@@ -1,4 +1,16 @@
 export const germanCommands = {
+  position: "liesPosition",
+  heading: "liesRichtung",
+  distanceTo: "abstandZu",
+  directionTo: "richtungZu",
+  backward: "rueckwaerts",
+  home: "zurMitte",
+  showTurtle: "zeigeTurtle",
+  isVisible: "istSichtbar",
+  isPenDown: "istStiftUnten",
+  onKey: "beiTaste",
+  onClick: "beiKlick",
+
   setBackground: "setzeHintergrund",
   setDualBackground: "setzeZweiFarbenHintergrund",
   setTiltedBackground: "setzeGedrehtenHintergrund",

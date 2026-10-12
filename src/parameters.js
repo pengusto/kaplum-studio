@@ -1,6 +1,8 @@
 import { parser } from "@lezer/javascript";
 // Meanings follow positional arguments in the maintained function signatures.
 const labels = {
+  key: ["Keyboard key", "Taste", "キー", "Tuş", "Ստեղն"],
+  handler: ["Callback function", "Rückruffunktion", "コールバック関数", "Geri çağırma işlevi", "Հետադարձ կանչի ֆունկցիա"],
   radius: ["Radius", "Radius", "半径", "Yarıçap", "Շառավիղ"],
   size: ["Size", "Größe", "大きさ", "Boyut", "Չափ"],
   paintColor: ["Color", "Farbe", "色", "Renk", "Գույն"],

@@ -1,3 +1,4 @@
+import { reference } from "../src/reference.js";
 import { test, expect } from "@playwright/test";
 import { execFileSync } from "node:child_process";
 import { mkdtemp, readFile, rm } from "node:fs/promises";
@@ -33,7 +34,7 @@ test("React gallery keeps complete inventory, navigation, search and explanation
   await expect(page.locator("h1")).toHaveText("Dinosaur");
   await expect(page.locator(".explanation-pane")).toContainText("legAngle");
   await page.getByRole("link", { name: "Basic commands", exact: true }).click();
-  await expect(page.locator(".example-card")).toHaveCount(62);
+  await expect(page.locator(".example-card")).toHaveCount(reference.length);
   await page.getByRole("link", { name: "Animations", exact: true }).click();
   await expect(page.locator(".example-card")).toHaveCount(26);
   expect(errors).toEqual([]);
@@ -457,7 +458,7 @@ test("Narrow Atlas library can be opened and examples stay editable", async ({
     .locator(".studio-dock")
     .getByRole("link", { name: "Basic commands", exact: true })
     .click();
-  await expect(page.locator(".catalogue-page .example-card")).toHaveCount(62);
+  await expect(page.locator(".catalogue-page .example-card")).toHaveCount(reference.length);
   await page.goto("/#command/forward");
   await page.getByRole("radio", { name: "Code", exact: true }).click();
   await expect(page.locator("#code")).toBeVisible();
@@ -563,7 +564,7 @@ test("Full catalogues explain parameters and live configurator renders angle and
   await page.getByRole("link", { name: "Open in Studio", exact: true }).click();
   await expect(page.locator("#code")).toContainText("-40");
   await page.goto("/#commands");
-  await expect(page.locator(".catalogue-page .example-card")).toHaveCount(62);
+  await expect(page.locator(".catalogue-page .example-card")).toHaveCount(reference.length);
   await page.goto("/#inspect-command/penup");
   await expect(page.locator(".configurator-controls")).toContainText("This command has no parameters");
   await expect.poll(() => page.locator(".configurator-preview canvas").evaluate(el => el.getContext("2d").getImageData(0, 0, 700, 700).data.some(v => v > 0))).toBe(true);
@@ -593,7 +594,7 @@ test("Dock opens each full catalogue and cards keep readable borders in both the
     await page.goto("/#commands");
     const dock = page.locator(".studio-dock");
     await expect(dock.getByRole("link")).toHaveCount(5);
-    for (const [label, heading, count] of [["Figures", "Figures", 32], ["Basic commands", "Basic commands", 62], ["Animations", "Animations", 26]]) {
+    for (const [label, heading, count] of [["Figures", "Figures", 32], ["Basic commands", "Basic commands", reference.length], ["Animations", "Animations", 26]]) {
       const link = dock.getByRole("link", { name: label, exact: true });
       await link.click();
       await expect(page.locator("h1")).toHaveText(heading);

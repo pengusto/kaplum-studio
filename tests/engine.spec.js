@@ -91,3 +91,24 @@ test("Teaching clock sleeps without callbacks and cancellation leaves no pending
   expect(timestamps[2]).toBeCloseTo(50);
   expect(timers.size).toBe(0);
 });
+
+test("position queries, home and backwards preserve state contracts", async ({ page }) => {
+  await load(page);
+  const result = await page.evaluate(() => {
+    goto(-30, -40); angle(450); const before=getTurtleState(); const p=position(); p.x=999;
+    const distances=[distanceTo(0,0),directionTo(-30,60),directionTo(70,-40),directionTo(-30,-140),directionTo(-130,-40),directionTo(-30,-40)];
+    const after=getTurtleState(); penup(); backward(10); const back=position(); hideTurtle(); const hidden=isVisible(); showTurtle(); home();
+    return {before,after,distances,back,hidden,visible:isVisible(),pen:isPenDown(),home:getTurtleState()};
+  });
+  expect(result.before).toEqual(result.after); expect(result.distances).toEqual([50,0,90,180,270,450]);
+  expect(result.back.x).toBeCloseTo(-40); expect(result.hidden).toBe(false); expect(result.visible).toBe(true); expect(result.pen).toBe(false);
+  expect(result.home).toEqual({x:0,y:0,angleDeg:0});
+});
+test("native input uses logical coordinates, focus and unsubscribe", async ({ page }) => {
+  await load(page);
+  await page.evaluate(() => { window.inputCount=0; window.off=onKey('ArrowRight',()=>{window.inputCount++;angle(90);forward(20);}); onClick(({x,y})=>goto(x,y)); });
+  const canvas=page.locator('#turtlecanvas'); await canvas.focus(); await page.keyboard.press('ArrowRight');
+  expect(await page.evaluate(()=>position().x)).toBeCloseTo(20);
+  await page.evaluate(()=>off()); await page.keyboard.press('ArrowRight'); expect(await page.evaluate(()=>window.inputCount)).toBe(1);
+  await canvas.click({position:{x:350,y:350}}); expect(await page.evaluate(()=>position())).toEqual({x:0,y:0});
+});

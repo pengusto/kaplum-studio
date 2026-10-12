@@ -14,7 +14,7 @@ It grew out of teaching beginner programming courses, where the hardest part was
 
 ## What it does
 
-- **Example library.** 32 figures, 62 basic commands and 26 animations, each with a real preview rendered by the engine.
+- **Example library.** 32 figures, 73 commands and helpers and 26 animations, each with a real preview rendered by the engine.
 - **Code and result together.** A CodeMirror editor sits above the canvas, with Run, Restart and Stop next to the result. Animations start automatically, except when reduced motion is requested.
 - **Parameters made visible.** Each argument in the code gets a number that matches a row in the inspector: parameter name, current value and plain-language meaning. Figure and command catalogue cards expose numeric controls, colours and boolean choices directly, updating the live preview and displayed call. Expressions remain read-only; existing Studio drafts are preserved.
 - **Safe execution.** Learner code runs in a Web Worker inside a sandboxed iframe. Stop, navigation and hidden tabs terminate it, so an infinite loop cannot freeze the page.
@@ -95,3 +95,5 @@ NEXT_PUBLIC_BASE_PATH=/kaplum-studio bunx playwright test tests/pages.spec.js
 ```
 
 The interface, parameter explanations, figure descriptions and activities are available in English, German, Japanese, Turkish and Armenian. Function names and learner code remain English; changing language never translates an edited program.
+
+Commands distinguish Turtle primitives, general drawing helpers and example figures. The workspace includes live position/direction/pen state, an optional coordinate grid and pointer-coordinate copying. Focus the canvas for `onKey`; `onClick` receives logical coordinates. Both support unsubscribing and standalone exports. See [Teaching API](docs/teaching-api.md) for the contracts.

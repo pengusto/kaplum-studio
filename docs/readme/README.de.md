@@ -14,7 +14,7 @@ Es ist aus dem Unterricht in Programmier-Anfängerkursen entstanden. Dort war se
 
 ## Was es kann
 
-- **Beispielbibliothek.** 32 Figuren, 62 Grundbefehle und 26 Animationen, jeweils mit einer echten, von der Engine gezeichneten Vorschau.
+- **Beispielbibliothek.** 32 Figuren, 73 Befehle und Helfer und 26 Animationen, jeweils mit einer echten, von der Engine gezeichneten Vorschau.
 - **Code und Ergebnis zusammen.** Ein CodeMirror-Editor steht über dem Canvas, Run, Restart und Stop direkt beim Ergebnis. Animationen starten automatisch, außer wenn reduzierte Bewegung eingestellt ist.
 - **Sichtbare Parameter.** Jedes Argument im Code bekommt eine Nummer, die zu einer Zeile in der Übersicht passt: Parametername, aktueller Wert und eine verständliche Erklärung. Beim Dinosaurier lassen sich die Werte in beschrifteten Feldern ändern und gezielt übernehmen. Dabei wird nur dieser eine Aufruf geändert, der übrige Code bleibt unverändert.
 - **Sichere Ausführung.** Der Code der Lernenden läuft in einem Web Worker innerhalb eines abgeschotteten iframes. Stop, Navigation und ausgeblendete Tabs beenden ihn, sodass eine Endlosschleife die Seite nicht einfriert.
@@ -84,3 +84,5 @@ Die aktuelle Canvas-Engine und die vom Autor mit Codex erstellten Zeichenhelfer 
 ## Live-Seite
 
 [Kaplum Studio auf GitHub Pages](https://pengusto.github.io/kaplum-studio/). Der Workflow prüft den Build unter `/kaplum-studio`, bevor er veröffentlicht wird.
+
+Die Befehle unterscheiden Turtle-Grundfunktionen, allgemeine Zeichenhelfer und Beispiel-Figuren. Das Studio zeigt Position, Richtung und Stiftzustand sowie optional Raster und kopierbare Mauskoordinaten. `onKey` gilt nur auf der fokussierten Zeichenfläche; `onClick` liefert logische Koordinaten. Beide unterstützen Abmeldung und Offline-Export. Verträge stehen in der [Teaching API](../teaching-api.md).

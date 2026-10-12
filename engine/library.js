@@ -42,6 +42,40 @@
     screen.restore();
   }
   const drawIf = () => { if (state.redraw) draw(); };
+  const keys = new Map(), clicks = new Set();
+  function onKey(key, handler) {
+    if (typeof key !== "string" || !key || key.length > 64 || typeof handler !== "function") throw Error("onKey needs a key and a function.");
+    const handlers = keys.get(key) || new Set(); keys.set(key, handlers); handlers.add(handler); drawIf();
+    return () => { handlers.delete(handler); if (!handlers.size) keys.delete(key); drawIf(); };
+  }
+  function onClick(handler) {
+    if (typeof handler !== "function") throw Error("onClick needs a function.");
+    clicks.add(handler); return () => clicks.delete(handler);
+  }
+  function input(event) {
+    if (event?.kind === "key" && typeof event.key === "string") {
+      for (const handler of [...(keys.get(event.key) || [])]) handler(event.key);
+    } else if (event?.kind === "click" && Number.isFinite(event.x) && Number.isFinite(event.y)) {
+      for (const handler of [...clicks]) handler({ x: event.x, y: event.y });
+    }
+  }
+  // Worker adapter uses this internal entry; standalone projects use native events.
+  window.__dispatchTurtleInput = input;
+  window.__turtleInputKeys = () => [...keys.keys()];
+  if (display instanceof HTMLCanvasElement && typeof display.focus === "function") {
+    display.tabIndex = 0;
+    display.addEventListener("keydown", event => {
+      if (event.repeat || event.ctrlKey || event.metaKey || event.altKey || !keys.has(event.key)) return;
+      event.preventDefault(); input({ kind: "key", key: event.key });
+    });
+    display.addEventListener("pointerdown", event => {
+      if (event.button !== 0) return;
+      display.focus(); const rect = display.getBoundingClientRect();
+      input({kind: "click", x: (event.clientX - rect.left) * display.width / rect.width - display.width / 2,
+        y: display.height / 2 - (event.clientY - rect.top) * display.height / rect.height});
+    });
+  }
+
 
   // Split a journey at the closest edge; start the next segment at the opposite edge.
   // This also handles negative distances and exact edge/corner crossings.
@@ -107,12 +141,23 @@
     drawIf();
   }
   Object.assign(window, {
-    forward, color, goto, width, write, draw, drawIf,
+    forward, color, goto, width, write, draw, drawIf, onKey, onClick,
+    position: () => ({ x: state.x, y: state.y }),
+    heading: () => state.heading,
+    distanceTo: (x, y) => Math.hypot(finite(x, "X") - state.x, finite(y, "Y") - state.y),
+    directionTo: (x, y) => {
+      const dx = finite(x, "X") - state.x, dy = finite(y, "Y") - state.y;
+      return dx === 0 && dy === 0 ? state.heading : (Math.atan2(dx, dy) * 180 / Math.PI + 360) % 360;
+    },
+    backward: (distance) => forward(-finite(distance, "Distance")),
+    home: () => { state.x = 0; state.y = 0; state.heading = 0; drawIf(); },
+    isVisible: () => state.visible,
+    isPenDown: () => state.pen,
     angle: (value) => { state.heading = finite(value, "Angle"); drawIf(); },
     right: (value) => { state.heading += finite(value, "Angle"); drawIf(); },
     left: (value) => { state.heading -= finite(value, "Angle"); drawIf(); },
-    penup: () => { state.pen = false; },
-    pendown: () => { state.pen = true; },
+    penup: () => { state.pen = false; drawIf(); },
+    pendown: () => { state.pen = true; drawIf(); },
     hideTurtle: () => { state.visible = false; drawIf(); },
     showTurtle: () => { state.visible = true; drawIf(); },
     wrap: (enabled) => { state.wrap = Boolean(enabled); },
