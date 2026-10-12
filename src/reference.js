@@ -1864,6 +1864,20 @@ reference.push(...[
   }
 ]);
 
+reference.push({
+  "name": "undo",
+  "alias": "zeichenschrittZurueck",
+  "signature": "undo()",
+  "text": {
+    "en": "Undoes one displayed checkpoint in a completed finite recording and discards later drawing history. Restores Turtle state, ink and stamps; never JavaScript variables or editor text. Returns false with no history. Record a drawing first. Restart to run changed code.",
+    "de": "Macht einen angezeigten Schritt einer fertigen endlichen Aufzeichnung rückgängig und verwirft spätere Zeichenschritte. Stellt Turtle, Linien und Stempel wieder her, keine JavaScript-Variablen oder Editor-Texte. Ohne Verlauf false. Erst aufzeichnen; geänderten Code neu starten.",
+    "ja": "完了した有限描画の表示ステップを取り消し、後の履歴を破棄します。位置、線、スタンプを復元。変数やエディターは戻しません。履歴がなければfalse。変更したコードは再実行してください。",
+    "tr": "Tamamlanmış sonlu kaydın görüntülenen bir adımını geri alır, sonraki geçmişi siler. Turtle, çizgi ve damgaları geri yükler; değişkenleri veya editörü değil. Geçmiş yoksa false. Önce kaydedin; değişen kodu yeniden çalıştırın.",
+    "hy": "Հետարկում է ավարտված վերջավոր գրանցման ցուցադրված քայլը և հեռացնում հետագա պատմությունը։ Վերականգնում է Turtle-ը, գծերն ու դրոշմները, ոչ փոփոխականները կամ խմբագրիչը։ Պատմության բացակայության դեպքում՝ false։ Նախ գրանցեք, փոխված կոդը նորից գործարկեք։"
+  },
+  "code": "const history = recordDrawing(() => {forward(100); right(90); forward(80);}); history.finish(); undo();"
+});
+
 const examples = new Set(["drawDino","drawPacman","drawButterfly","drawFish","drawSubmarine","drawRocket","drawFirework","drawJet","drawBomb","drawFireball","drawDog","drawFerrisWheel","drawCloud","drawFlower","jumpHeight","jumpRandom"]);
 const drawingHelpers = new Set(["setBackground","setDualBackground","setTiltedBackground","setTextColor","setTextSize","writeText","drawCircle","drawHalfCircle","drawOvalArc","drawHalfOval","drawRect","drawTriangle","drawStar","drawLine","drawArc","drawSpiral","getRandomNumber","getRandomColor"]);
 for (const item of reference) item.category = examples.has(item.name) ? "example" : drawingHelpers.has(item.name) ? "drawing" : "turtle";

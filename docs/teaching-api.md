@@ -52,3 +52,9 @@ Radius must be finite and nonzero, extent finite in [-360,360], and explicit ste
 ## Example construction views
 
 Pacman and Dino workspaces include an expandable, read-only construction view. It loads the maintained `engine/functions.js` and extracts the actual named function using the installed JavaScript parser. No second source copy is maintained. Helper dependencies remain part of the shared engine; the displayed function is explanatory source, not a standalone replacement engine. Opening or changing language never replaces the learner buffer. Failed loads can be retried by closing/reopening the view. All five UI languages label this explicitly as an example helper.
+
+## Bounded drawing undo
+
+`undo()` (alias `zeichenschrittZurueck`) and the recording controller's `undo()` restore the preceding displayed checkpoint of a completed finite recording. Ink is reconstructed from operations; stamps and logical Turtle position, heading, pen, visibility and wrapping state are restored. Later checkpoints are permanently discarded and their serialized history budget is released. It returns false at step zero or without a recording. The workspace pauses playback before Undo and updates the shorter progress total. Playback Back is reversible navigation; Undo discards future drawing history.
+
+This is opt-in drawing history with the existing 10,000-checkpoint/100,000-operation/4 MB budget. It does not reverse JavaScript variables, editor edits, timer callbacks or helper closure variables. Do not continue the original program after replay/undo; use Run/Restart for new or edited code. Recording starts a blank ink/stamp surface. Clear and completed fill operations are replayed in order; undoing clear restores the preceding filled drawing and stamps. Checkpoints follow draw calls, so a helper may contain several checkpoints rather than one source line.

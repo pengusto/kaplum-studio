@@ -1,4 +1,5 @@
 export const germanCommands = {
+  undo: "zeichenschrittZurueck",
   stamp: "stemple",
   clearStamp: "loescheStempel",
   circle: "kreisPfad",

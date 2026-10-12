@@ -14,3 +14,9 @@ const playbackCopy = {
  hy: ["Գրանցել նկարը", "Նկարի նվագարկում", "Նվագարկել", "Դադար", "Հաջորդ նկարման քայլ", "Նախորդ նկարման քայլ", "Վերակայել նվագարկումը", "Քայլի միլիվայրկյաններ", "Միայն վերջավոր նկարներ։ Ժամանակաչափերի և մուտքի համար սովորական մեկնարկ։ Քայլերը նկարման գործողություններ են, ոչ JavaScript տողեր։"]
 };
 for (const [locale, values] of Object.entries(playbackCopy)) Object.assign(capabilityLabels[locale], Object.fromEntries(["record","playback","play","pause","next","back","resetReplay","delay","replayHelp"].map((key,i)=>[key,values[i]])));
+
+const undoLabels = {en:"Undo drawing step",de:"Zeichenschritt rückgängig",ja:"描画ステップを取り消す",tr:"Çizim adımını geri al",hy:"Հետարկել նկարման քայլը"};
+for (const [locale, undo] of Object.entries(undoLabels)) capabilityLabels[locale].undo = undo;
+
+const finishLabels={en:"Show final drawing",de:"Fertige Zeichnung zeigen",ja:"完成した描画を表示",tr:"Son çizimi göster",hy:"Ցույց տալ ավարտված նկարը"};
+for(const [locale,finish] of Object.entries(finishLabels))capabilityLabels[locale].finish=finish;

@@ -312,9 +312,11 @@ export default function Workspace({ route, preferences, t, drafts }) {
               <small>{labels.replayHelp}</small>
               {playback && <div role="group" aria-label={labels.playback}>
                 <output>{playback.step} / {playback.total}</output>
+                <button className="button secondary" disabled={playback.step >= playback.total} onClick={() => preview.current.control("finish")}>{labels.finish}</button>
                 <button className="button secondary" disabled={playback.step >= playback.total} onClick={() => {preview.current.control("speed",playbackDelay);preview.current.control(playback.playing ? "pause" : "play");}}>{playback.playing ? labels.pause : labels.play}</button>
                 <button className="button secondary" disabled={!playback.step} onClick={() => preview.current.control("back")}>{labels.back}</button>
                 <button className="button secondary" disabled={playback.step >= playback.total} onClick={() => preview.current.control("next")}>{labels.next}</button>
+                <button className="button secondary" disabled={!playback.step} onClick={() => preview.current.control("undo")}>{labels.undo}</button>
                 <button className="button secondary" onClick={() => preview.current.control("reset")}>{labels.resetReplay}</button>
                 <label>{labels.delay}<input type="range" min="30" max="1000" step="10" value={playbackDelay} onChange={e => {setPlaybackDelay(Number(e.target.value));preview.current.control("speed",Number(e.target.value));}}/><output>{playbackDelay} ms</output></label>
               </div>}

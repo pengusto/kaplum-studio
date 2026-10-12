@@ -102,6 +102,7 @@ onmessage = async (event) => {
       pausePlayback();
       if (action === "next") playback.next();
       if (action === "back") playback.back();
+      if (action === "undo") playback.undo();
       if (action === "reset") playback.reset();
       if (action === "finish") playback.finish();
       playbackStatus();return;

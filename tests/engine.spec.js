@@ -173,3 +173,14 @@ test('stamp IDs are validated and storage is bounded without reusing cleared IDs
   clear();const after=stamp();return {limit,errors,after,last:ids.at(-1)};
  });expect(result.limit).toContain('1,000');expect(result.errors).toHaveLength(5);expect(result.after).toBeGreaterThan(result.last);
 });
+
+test('bounded drawing undo restores turtle, fill, clear and stamps and discards future checkpoints',async({page})=>{
+ await load(page);await page.evaluate(helpers);
+ const result=await page.evaluate(()=>{
+  wrap(false);hideTurtle();const noHistory=undo();let counter=0;
+  const h=recordDrawing(()=>{color('red');goto(-50,0);stamp();beginFill('gold');for(let i=0;i<4;i++){forward(50);right(90);counter++;}endFill();clear();});
+  h.finish();const total=h.length;const removed=undo();const restored=__displayTurtleState();const logical=getTurtleState();const ctx=document.getElementById('turtlecanvas').getContext('2d');const stampPixel=[...ctx.getImageData(300,350,1,1).data];const fillPixel=[...ctx.getImageData(325,325,1,1).data];
+  const shorter=h.length;const beforeBytes=h.bytes;while(undo()){};
+  return {noHistory,removed,total,shorter,restored,logical,counter,stampPixel,fillPixel,beforeBytes,zero:h.length,last:undo()};
+ });expect(result.noHistory).toBe(false);expect(result.removed).toBe(true);expect(result.shorter).toBe(result.total-1);expect(result.logical.x).toBeCloseTo(result.restored.x);expect(result.logical.angleDeg).toBeCloseTo(result.restored.angleDeg);expect(result.counter).toBe(4);expect(result.stampPixel).toEqual([255,0,0,255]);expect(result.fillPixel).toEqual([255,215,0,255]);expect(result.beforeBytes).toBeLessThan(4000000);expect(result.zero).toBe(0);expect(result.last).toBe(false);
+});

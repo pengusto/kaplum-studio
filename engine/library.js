@@ -4,7 +4,7 @@
   const image = document.getElementById("imagecanvas");
   const display = document.getElementById("turtlecanvas");
   const rawInk = image.getContext("2d");
-  let trace = null, displayState = null, replayDepth = 0;
+  let trace = null, displayState = null, replayDepth = 0, activeHistory = null;
   const drawingMethods = new Set(["save","restore","setTransform","resetTransform","translate","rotate","scale","transform","beginPath","closePath","moveTo","lineTo","arc","ellipse","rect","roundRect","bezierCurveTo","quadraticCurveTo","fill","stroke","clearRect","fillRect","strokeRect","fillText","strokeText","setLineDash"]);
   const readMethods = new Set(["getTransform","getLineDash","measureText","isPointInPath","isPointInStroke","getImageData"]);
   function record(op) {
@@ -269,17 +269,32 @@
       cursor=value;displayState={...(value ? data.steps[value-1].state : initial)};draw();
       return cursor;
     }
+    function undoStep() {
+      if (!cursor) return false;
+      seek(cursor - 1);
+      // Drawing undo discards future drawing checkpoints, never JS variables.
+      data.steps.length = cursor;
+      data.ops.length = cursor ? data.steps[cursor - 1].end : 0;
+      data.bytes = data.ops.reduce((bytes, op) => bytes + JSON.stringify(op).length, 0);
+      Object.assign(state, displayState);
+      stamps.clear(); for (const [id, impression] of replayStamps) stamps.set(id, {...impression});
+      return true;
+    }
     resetSurface();displayState=initial;draw();
     const controller = Object.freeze({
       get length(){return data.steps.length;}, get step(){return cursor;}, get bytes(){return data.bytes;},
       next:()=>seek(Math.min(data.steps.length,cursor+1)), back:()=>seek(Math.max(0,cursor-1)),
-      reset:()=>seek(0), finish:()=>seek(data.steps.length), seek,
+      reset:()=>seek(0), finish:()=>seek(data.steps.length), seek, undo:undoStep,
     });
-    return controller;
+    activeHistory = controller; return controller;
+  }
+  function undo() {
+    if (trace?.capturing) throw Error("Undo requires a completed finite drawing recording.");
+    return activeHistory ? activeHistory.undo() : false;
   }
   window.__displayTurtleState = () => { const shown=displayState || state;return {x:shown.x,y:shown.y,angleDeg:shown.heading,pen:shown.pen,visible:shown.visible}; };
   Object.assign(window, {
-    forward, color, goto, width, write, draw, drawIf, onKey, onClick, recordDrawing, circle, stamp, clearStamp,
+    forward, color, goto, width, write, draw, drawIf, onKey, onClick, recordDrawing, circle, stamp, clearStamp, undo,
     position: () => ({ x: state.x, y: state.y }),
     heading: () => state.heading,
     distanceTo: (x, y) => Math.hypot(finite(x, "X") - state.x, finite(y, "Y") - state.y),

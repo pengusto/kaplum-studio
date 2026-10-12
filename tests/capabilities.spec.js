@@ -37,3 +37,9 @@ test('Pacman and Dino construction views use maintained source and protect the d
   await expect(editor).toContainText('my draft');await page.locator('.language-picker select').selectOption('de');await expect(editor).toContainText('my draft');
  }
 });
+
+test('drawing Undo discards future history and leaves learner code intact',async({page})=>{
+ await page.goto('/#personal');const editor=page.locator('#code');await editor.click();await page.keyboard.press('ControlOrMeta+A');await page.keyboard.insertText('forward(100);right(90);forward(80);');
+ await page.getByRole('button',{name:'Record drawing',exact:true}).click();const group=page.getByRole('group',{name:'Drawing playback'});await expect(group).toBeVisible();await page.getByRole('button',{name:'Show final drawing',exact:true}).click();await expect(group.locator('output').first()).toHaveText('3 / 3');
+ await page.getByRole('button',{name:'Undo drawing step',exact:true}).click();await expect(group.locator('output').first()).toHaveText('2 / 2');await expect(page.locator('.turtle-state')).toContainText('x: 0.0');await expect(editor).toContainText('forward(80)');
+});
