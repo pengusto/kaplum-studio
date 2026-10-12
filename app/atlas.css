@@ -1036,3 +1036,30 @@ html:has(.documentation), body:has(.documentation) { height: auto; overflow: aut
 .lesson-task h2 { margin:12px 0 0; font-size:1.25rem; }
 .lesson-task ol { padding-left:22px; color:var(--muted); line-height:1.7; }
 .lesson-task .button { margin-top:4px; }
+
+/* A compact, always-visible drawing toolbar; optional tools open over the canvas. */
+.canvas-toolbar {display:flex;flex-wrap:wrap;align-items:center;gap:4px;padding:8px;border-bottom:1px solid var(--line);position:relative;flex-shrink:0;}
+.canvas-primary-controls {display:flex;align-items:center;gap:4px;flex:1;}
+.canvas-tool {display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:36px;height:36px;padding:6px;border:1px solid transparent;border-radius:8px;background:transparent;color:var(--text);cursor:pointer;font:inherit;}
+.canvas-tool:hover,.canvas-tool:focus-visible {background:var(--raised);border-color:var(--line);}
+.canvas-tool.primary {background:var(--strong);color:white;}
+.canvas-tool:disabled {opacity:.35;cursor:default;}
+.canvas-tool svg {flex-shrink:0;width:18px;height:18px;}
+.canvas-toolbar output {font-size:12px;white-space:nowrap;font-variant-numeric:tabular-nums;padding:0 4px;}
+.canvas-more {margin-left:auto;}
+.canvas-more summary {list-style:none;}
+.canvas-more summary::-webkit-details-marker {display:none;}
+.canvas-tools-panel {position:absolute;right:8px;top:calc(100% + 4px);width:min(300px,calc(100% - 16px));padding:14px;background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:0 8px 24px #0003;z-index:12;display:grid;gap:12px;max-height:60dvh;overflow:auto;}
+.canvas-tools-panel label {display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.canvas-tools-panel small {color:var(--muted);line-height:1.5;}
+.canvas-state {width:100%;}
+.canvas-state details {margin-top:10px;}
+.canvas-state summary,.step-comparison summary,.step-boundary summary {cursor:pointer;color:var(--muted);font-size:12px;}
+.canvas-state details .inspection-values {margin-top:12px;}
+.result-pane > .drawing-step {margin:8px 12px;flex-shrink:0;}
+.step-comparison,.step-boundary {margin-top:10px;}
+@media (max-width:700px) {
+ .canvas-toolbar {gap:2px;padding:6px;}
+ .canvas-primary-controls {gap:2px;}
+ .canvas-tool {min-width:32px;height:40px;padding:5px;}
+}

@@ -3,6 +3,14 @@ import { assetUrl } from "../src/asset-url";
 import { useEffect, useRef, useState } from "react";
 import {
   Play,
+  Pause,
+  ChevronLeft,
+  ChevronRight,
+  Undo2,
+  SkipForward,
+  Grid2X2,
+  MoreHorizontal,
+  CircleDot,
   Square,
   RotateCcw,
   ArrowLeft,
@@ -23,6 +31,7 @@ import EditorPane from "./EditorPane";
 import StatusMark from "./react-bits/StatusMark";
 import RubberSegment from "./react-bits/RubberSegment";
 import Parameters, { findEntry } from "./Parameters";
+import { canvasToolCopy } from "../src/canvas-tool-copy";
 import { capabilityLabels } from "../src/capability-labels";
 import { Preview } from "../src/runtime";
 import { projectFiles, download } from "../src/exports";
@@ -74,6 +83,7 @@ export default function Workspace({ route, preferences, t, drafts }) {
     [selected, setSelected] = useState(new Set(entry ? [entry.name] : []));
   const locale = preferences.locale;
   const labels = capabilityLabels[locale];
+  const tools = canvasToolCopy[locale];
   const [playback, setPlayback] = useState(null), [playbackDelay, setPlaybackDelay] = useState(300);
   const [turtleState, setTurtleState] = useState(null), [grid, setGrid] = useState(false), [pointer, setPointer] = useState(null), [copyError, setCopyError] = useState(false);
   const title =
@@ -303,6 +313,36 @@ export default function Workspace({ route, preferences, t, drafts }) {
                 {statusText}
               </span>
             </div>
+            <div className="canvas-toolbar">
+              <div className="canvas-primary-controls" role="group" aria-label={playback ? labels.playback : t("result")}>
+                {playback ? <>
+                  <button className="canvas-tool" aria-label={labels.back} title={labels.back} disabled={!playback.step} onClick={() => preview.current.control("back")}><ChevronLeft size={19}/></button>
+                  <button className="canvas-tool primary" aria-label={playback.playing ? labels.pause : labels.play} title={playback.playing ? labels.pause : labels.play} disabled={playback.step >= playback.total} onClick={() => {preview.current.control("speed",playbackDelay);preview.current.control(playback.playing ? "pause" : "play");}}>{playback.playing ? <Pause size={19}/> : <Play size={19}/>}</button>
+                  <button className="canvas-tool" aria-label={labels.next} title={labels.next} disabled={playback.step >= playback.total} onClick={() => preview.current.control("next")}><ChevronRight size={19}/></button>
+                  <output aria-live="polite">{playback.step} / {playback.total}</output>
+                </> : <button className="canvas-tool primary" aria-label={t("run")} title={t("run")} onClick={run}><Play size={19}/><span>{t("run")}</span></button>}
+                <button className="canvas-tool" aria-label={playback ? labels.resetReplay : t("restart")} title={playback ? labels.resetReplay : t("restart")} onClick={() => playback ? preview.current.control("reset") : run()}><RotateCcw size={18}/></button>
+                <button className="canvas-tool" aria-label={t("stop")} title={t("stop")} onClick={() => preview.current.stop()}><Square size={17}/></button>
+              </div>
+              <button className="canvas-tool" aria-label={labels.record} title={labels.record} onClick={() => preview.current?.run(code.current, undefined, true)}><CircleDot size={19}/></button>
+              <details className="canvas-more">
+                <summary className="canvas-tool" aria-label={tools.more} title={tools.more}><MoreHorizontal size={20}/></summary>
+                <div className="canvas-tools-panel">
+                  <strong>{tools.more}</strong>
+                  <label><input type="checkbox" checked={grid} onChange={e => setGrid(e.target.checked)}/><Grid2X2 size={17}/>{labels.grid}</label>
+                  {playback && <>
+                    <button className="button secondary" onClick={run}><Play size={16}/>{t("run")}</button>
+                    <button className="button secondary" disabled={playback.step >= playback.total} onClick={() => preview.current.control("finish")}><SkipForward size={16}/>{labels.finish}</button>
+                    <button className="button secondary" disabled={!playback.step} onClick={() => preview.current.control("undo")}><Undo2 size={16}/>{labels.undo}</button>
+                    <label>{labels.delay}<input type="range" min="30" max="1000" step="10" value={playbackDelay} onChange={e => {setPlaybackDelay(Number(e.target.value));preview.current.control("speed",Number(e.target.value));}}/><output>{playbackDelay} ms</output></label>
+                  </>}
+                  {pointer && <span>{labels.pointer}: {pointer.x}, {pointer.y}</span>}
+                  {pointer && <button type="button" className="button secondary" onClick={async () => { try { await navigator.clipboard.writeText(`goto(${pointer.x}, ${pointer.y});`); setCopyError(false); } catch { setCopyError(true); } }}>{labels.copy}</button>}
+                  {copyError && <code>{pointer && `goto(${pointer.x}, ${pointer.y});`}</code>}
+                  <small>{labels.replayHelp}</small>
+                </div>
+              </details>
+            </div>
             <div className="canvas-surface" data-grid={grid} data-canvas={preferences.canvas}>
               <canvas
                 ref={canvas}
@@ -317,44 +357,9 @@ export default function Workspace({ route, preferences, t, drafts }) {
             </div>
             <div className="turtle-state" aria-label={labels.state}>
               <TurtleState state={turtleState} locale={locale}/>
-              <label><input type="checkbox" checked={grid} onChange={e => setGrid(e.target.checked)}/>{labels.grid}</label>
-              {pointer && <span>{labels.pointer}: {pointer.x}, {pointer.y}</span>}
-              {pointer && <button type="button" className="button secondary" onClick={async () => { try { await navigator.clipboard.writeText(`goto(${pointer.x}, ${pointer.y});`); setCopyError(false); } catch { setCopyError(true); } }}>{labels.copy}</button>}
-              {copyError && <code>{pointer && `goto(${pointer.x}, ${pointer.y});`}</code>}
               <small>{labels.focus}</small>
             </div>
-            <div className="drawing-playback">
-              <button className="button secondary" onClick={() => preview.current?.run(code.current, undefined, true)}>{labels.record}</button>
-              <small>{labels.replayHelp}</small>
-              {playback && <div role="group" aria-label={labels.playback}>
-                <output>{playback.step} / {playback.total}</output>
-                <button className="button secondary" disabled={playback.step >= playback.total} onClick={() => preview.current.control("finish")}>{labels.finish}</button>
-                <button className="button secondary" disabled={playback.step >= playback.total} onClick={() => {preview.current.control("speed",playbackDelay);preview.current.control(playback.playing ? "pause" : "play");}}>{playback.playing ? labels.pause : labels.play}</button>
-                <button className="button secondary" disabled={!playback.step} onClick={() => preview.current.control("back")}>{labels.back}</button>
-                <button className="button secondary" disabled={playback.step >= playback.total} onClick={() => preview.current.control("next")}>{labels.next}</button>
-                <button className="button secondary" disabled={!playback.step} onClick={() => preview.current.control("undo")}>{labels.undo}</button>
-                <button className="button secondary" onClick={() => preview.current.control("reset")}>{labels.resetReplay}</button>
-                <label>{labels.delay}<input type="range" min="30" max="1000" step="10" value={playbackDelay} onChange={e => {setPlaybackDelay(Number(e.target.value));preview.current.control("speed",Number(e.target.value));}}/><output>{playbackDelay} ms</output></label>
-              </div>}
-              {playback && <DrawingStep playback={playback} locale={locale}/>}
-            </div>
-            <div className="playback">
-              <button className="button primary" onClick={run}>
-                <Play size={16} />
-                {t("run")}
-              </button>
-              <button className="button secondary" onClick={run}>
-                <RotateCcw size={16} />
-                {t("restart")}
-              </button>
-              <button
-                className="button secondary"
-                onClick={() => preview.current.stop()}
-              >
-                <Square size={15} />
-                {t("stop")}
-              </button>
-            </div>
+            {playback && <DrawingStep playback={playback} locale={locale}/>}
           </section>
         </div>
         <section className="explanation-pane" id="parameter-inspector">

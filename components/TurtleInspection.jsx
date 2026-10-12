@@ -1,3 +1,4 @@
+import {canvasToolCopy} from '../src/canvas-tool-copy';
 import {inspectionCopy} from '../src/inspection-copy';
 const number=value=>value.toFixed(1);
 function rows(state,c){return [
@@ -5,7 +6,9 @@ function rows(state,c){return [
 ];}
 export function TurtleState({state,locale}){
  const c=inspectionCopy[locale];
- return <dl className="inspection-values">{state?rows(state,c).map(([key,value])=><div key={key}><dt>{c[key]}</dt><dd>{key==='penColor'&&<span className="inspection-swatch" style={{backgroundColor:value}} aria-hidden="true"/>}{value}</dd></div>):<div><dt>{c.position}</dt><dd>—</dd></div>}</dl>;
+ const values=state?rows(state,c):[['position','—']];
+ const render=items=><dl className="inspection-values">{items.map(([key,value])=><div key={key}><dt>{c[key]}</dt><dd>{key==='penColor'&&<span className="inspection-swatch" style={{backgroundColor:value}} aria-hidden="true"/>}{value}</dd></div>)}</dl>;
+ return <div className="canvas-state">{render(values.slice(0,2))}{state&&<details><summary>{canvasToolCopy[locale].state}</summary>{render(values.slice(2))}</details>}</div>;
 }
 export function DrawingStep({playback,locale}){
  const c=inspectionCopy[locale],detail=playback.detail;
@@ -22,6 +25,6 @@ export function DrawingStep({playback,locale}){
  const b=rows(before,c),a=rows(after,c);
  return <section className="drawing-step" aria-label={c.step}><h3>{c.step} · {playback.step} / {playback.total}</h3>{!playback.step?<p>{c.initial}</p>:<>
  <ul>{(changed.length?changed:[c.quiet]).map(change=><li key={change}>{change}</li>)}</ul>
- <div className="inspection-table"><table><thead><tr><th scope="col">{c.step}</th><th scope="col">{c.before}</th><th scope="col">{c.after}</th></tr></thead><tbody>{a.map(([key,value],i)=><tr key={key} data-changed={value!==b[i][1]}><th scope="row">{c[key]}</th><td>{b[i][1]}</td><td>{value}</td></tr>)}</tbody></table></div>
- </>}<small>{c.boundary}</small></section>;
+ <details className="step-comparison"><summary>{canvasToolCopy[locale].compare}</summary><div className="inspection-table"><table><thead><tr><th scope="col">{c.step}</th><th scope="col">{c.before}</th><th scope="col">{c.after}</th></tr></thead><tbody>{a.map(([key,value],i)=><tr key={key} data-changed={value!==b[i][1]}><th scope="row">{c[key]}</th><td>{b[i][1]}</td><td>{value}</td></tr>)}</tbody></table></div></details>
+ </>}<details className="step-boundary"><summary>{canvasToolCopy[locale].more}</summary><small>{c.boundary}</small></details></section>;
 }
