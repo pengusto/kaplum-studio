@@ -2,6 +2,7 @@
 self.window = self;
 let canvases;
 let requestSnapshot = () => {};
+const scheduleSnapshot = self.setTimeout.bind(self);
 // The teaching surface stays 700 units wide. A render camera changes only
 // raster resolution and framing, never coordinates, sizes or wrapping.
 function drawingCanvas(render) {
@@ -127,7 +128,7 @@ onmessage = async (event) => {
     let snapshotTimer = null;
     requestSnapshot = () => {
       if (snapshotTimer !== null) return;
-      snapshotTimer = setTimeout(async () => {
+      snapshotTimer = scheduleSnapshot(async () => {
         snapshotTimer = null;
         await snapshot();
         if (sentRevision !== canvases.turtlecanvas.revision) requestSnapshot();

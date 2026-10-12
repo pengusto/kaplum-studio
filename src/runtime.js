@@ -99,6 +99,8 @@ export class Preview {
             if (next !== this.lastState) { this.lastState = next; this.onState?.(data.state); }
           }
           this.onFrame?.({ render });
+        } else if (data.type === "playback" && Number.isInteger(data.step) && Number.isInteger(data.total)) {
+          this.onPlayback?.({step:data.step, total:data.total, playing:data.playing === true});
         } else if (data.type === "executing")
           this.onStatus({ type: "executing" });
         else if (data.type === "error") {
