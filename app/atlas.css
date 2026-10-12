@@ -72,7 +72,7 @@ main.atlas-layout {
   padding: 0 22px;
   height: calc(100dvh - 80px);
   display: grid;
-  grid-template-columns: 290px minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
   gap: 14px;
 }
 .atlas-library {
@@ -503,7 +503,7 @@ main.atlas-layout {
 }
 @media (max-width: 1100px) and (min-width: 701px) {
   main.atlas-layout {
-    grid-template-columns: 220px minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr);
   }
   .workspace-panels {
     grid-template-columns: minmax(0, 1fr) 230px;
@@ -521,7 +521,7 @@ main.atlas-layout {
 }
 @media (max-width: 900px) and (min-width: 701px) {
   main.atlas-layout {
-    grid-template-columns: 190px minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr);
     padding: 0 12px;
   }
   .workspace-panels {
@@ -944,7 +944,7 @@ html:has(.documentation), body:has(.documentation) { height: auto; overflow: aut
 .docs-topbar { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 20px 32px; border-bottom: 1px solid var(--line); }
 .docs-tools { display: flex; align-items: center; gap: 16px; }
 .docs-tools select { background: var(--surface); color: var(--text); border: 1px solid var(--line); padding: 8px; border-radius: 8px; }
-.docs-layout { max-width: 1360px; margin: 0 auto; display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 48px; padding: 36px 32px; }
+.docs-layout { max-width: 1360px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr); gap: 48px; padding: 36px 32px; }
 .docs-sidebar { position: sticky; top: 24px; align-self: start; }
 .docs-sidebar nav { display: grid; gap: 6px; margin-bottom: 24px; }
 .docs-sidebar nav a { padding: 10px 12px; border-radius: 8px; color: var(--muted); }
@@ -959,7 +959,7 @@ html:has(.documentation), body:has(.documentation) { height: auto; overflow: aut
 .docs-content small { color: var(--muted); font-size: 14px; }
 .docs-search { display: flex; gap: 10px; align-items: center; padding: 10px 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; margin-bottom: 18px; }
 .docs-search input { width: 100%; border: 0; background: transparent; color: var(--text); font: inherit; }
-.docs-reference { display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 20px; }
+.docs-reference { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
 .docs-command-list { display: flex; flex-direction: column; max-height: 680px; overflow: auto; gap: 4px; }
 .docs-command-list button { text-align: left; padding: 10px; border: 1px solid transparent; border-radius: 8px; background: transparent; color: var(--muted); font: 13px ui-monospace, monospace; cursor: pointer; }
 .docs-command-list button[aria-pressed="true"] { color: var(--accent); background: var(--surface); border-color: var(--line); }
@@ -1143,3 +1143,13 @@ html:has(.documentation), body:has(.documentation) { height: auto; overflow: aut
 .condition-feedback[data-result="false"] {background:color-mix(in srgb,#ef6666 20%,var(--code));}
 .lesson-debug-start {margin-left:8px;}
 .editor-debug-start {font-size:12px;}
+
+/* Optional examples live below the workspace, never beside the editor. */
+.library-toggle:not([hidden]) {display:flex;align-items:center;gap:8px;align-self:flex-start;margin:16px 0 8px;padding:10px 14px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--text);flex-shrink:0;}
+.atlas-library[hidden] {display:none !important;}
+.atlas-workspace > .atlas-library {height:auto;max-height:none;overflow:visible;padding:12px;margin:0 0 12px;flex-shrink:0;}
+.atlas-library .filters {display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:12px;}
+.atlas-library .search-field {flex:1;min-width:min(240px,100%);}
+.atlas-library .gallery-grid {display:grid;grid-auto-flow:column;grid-auto-columns:160px;grid-template-columns:none;gap:12px;overflow-x:auto;padding:2px 2px 12px;scroll-snap-type:x proximity;}
+.atlas-library .example-card {min-width:0;scroll-snap-align:start;}
+.atlas-library .example-card h2 {overflow-wrap:anywhere;}

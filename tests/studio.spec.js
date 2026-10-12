@@ -427,19 +427,19 @@ test("Touch layout leaves labelled Dock and playback reachable without overlap",
   ).toBe(true);
 });
 
-test("Atlas arranges a persistent library, stacked editor/result and floating Dock", async ({
+test("Atlas gives the workspace full width with an optional library below", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1536, height: 1024 });
   await page.goto("/#figure/figur-dino");
   await expect(page.locator("h1")).toHaveText("Dinosaur");
   await expect(page.locator("#status")).toHaveText("Running");
-  const library = await page.locator(".atlas-library").boundingBox();
+  await expect(page.locator(".atlas-library")).toBeHidden();
   const code = await page.locator(".code-pane").boundingBox();
   const result = await page.locator(".result-pane").boundingBox();
   const inspector = await page.locator("#parameter-inspector").boundingBox();
   const dock = await page.locator(".studio-dock").boundingBox();
-  expect(library.x + library.width).toBeLessThan(code.x);
+  expect(code.x).toBeLessThan(50);
   expect(code.y + code.height).toBeLessThanOrEqual(result.y + 1);
   expect(result.x + result.width).toBeLessThan(inspector.x);
   expect(result.y + result.height).toBeLessThanOrEqual(1024);
@@ -449,6 +449,9 @@ test("Atlas arranges a persistent library, stacked editor/result and floating Do
       .locator(".studio-dock")
       .evaluate((el) => getComputedStyle(el).backgroundColor),
   ).toBe("rgba(0, 0, 0, 0)");
+  await page.getByRole("button", {name:"Example library",exact:true}).click();
+  const library = await page.locator(".atlas-library").boundingBox();
+  expect(library.y).toBeGreaterThan(result.y);
   await page
     .locator(".atlas-library")
     .getByRole("link", { name: "Pacman", exact: true })

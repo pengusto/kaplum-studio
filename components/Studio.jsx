@@ -12,7 +12,7 @@ import {
   FolderOpen,
   Settings2,
   Globe,
-  PanelLeft,
+  PanelsTopLeft,
 } from "lucide-react";
 import Dock from "./react-bits/Dock";
 import Gallery from "./Gallery";
@@ -197,29 +197,7 @@ export default function Studio() {
           </div>
         </WarmTooltipGroup>
       </header>
-      <button
-        className="library-toggle"
-        hidden={["figures", "commands", "animations"].includes(route) || route.startsWith("inspect-")}
-        aria-expanded={libraryOpen}
-        onClick={() => setLibraryOpen(!libraryOpen)}
-      >
-        <PanelLeft size={17} aria-hidden="true" />
-        {t("library")}
-      </button>
       <main className="atlas-layout" data-library-open={libraryOpen} data-exploring={["figures", "commands", "animations"].includes(route) || route.startsWith("inspect-")}>
-        <aside className="atlas-library" aria-label={t("library")}>
-          {!(["figures", "commands", "animations"].includes(route) || route.startsWith("inspect-")) && <Gallery
-            key={section}
-            section={
-              ["figures", "commands", "animations"].includes(section)
-                ? section
-                : "figures"
-            }
-            preferences={preferences}
-            t={t}
-            selectedRoute={route}
-          />}
-        </aside>
         <div className="atlas-workspace">
           {storageError && <p role="alert">{t("storageError")}</p>}
           {["figures", "commands", "animations"].includes(route) || route.startsWith("inspect-") ? (
@@ -239,6 +217,29 @@ export default function Studio() {
             t={t}
             drafts={drafts.current}
           />}
+      <button
+        className="library-toggle"
+        hidden={["figures", "commands", "animations"].includes(route) || route.startsWith("inspect-")}
+        aria-expanded={libraryOpen}
+        aria-controls="example-library-tray"
+        onClick={() => setLibraryOpen(!libraryOpen)}
+      >
+        <PanelsTopLeft size={17} aria-hidden="true" />
+        {t("library")}
+      </button>
+        <aside className="atlas-library" id="example-library-tray" hidden={!libraryOpen} aria-label={t("library")}>
+          {!(["figures", "commands", "animations"].includes(route) || route.startsWith("inspect-")) && <Gallery
+            key={section}
+            section={
+              ["figures", "commands", "animations"].includes(section)
+                ? section
+                : "figures"
+            }
+            preferences={preferences}
+            t={t}
+            selectedRoute={route}
+          />}
+        </aside>
       <footer className="studio-legal-links">
         <a href={assetUrl(`/legal/#${preferences.locale}`)}>{legalCopy[preferences.locale].notice}</a>
         <a href={assetUrl(`/legal/#privacy-${preferences.locale}`)}>{legalCopy[preferences.locale].privacy}</a>

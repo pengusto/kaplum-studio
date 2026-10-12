@@ -42,3 +42,7 @@ Debug mode displays the actual editable source beside the drawing on desktop, an
 ## Condition feedback
 
 The most recent actual if/for/while result marks its source line green for true or red for false, with an inline explanation in the selected language. During condition feedback the editor wraps long lines so explanations remain readable on mobile. The same explanation is available as a status above the drawing. False means normal branch selection or loop termination, not an error. Results remain visible until the next condition, Restart, Stop or edit. Notes are editor decorations, never inserted into learner code or downloads. The final false loop test remains visible after completion. Helpers remain atomic. Tests compare native results, including side-effecting tests, continue/break, empty for tests and nested branches.
+
+## Optional example tray
+
+The workspace uses the full available width. Example library is a collapsed section below the editor and drawing, with search, category filters and a horizontally scrollable row of examples. Opening it does not narrow the workspace. Selecting another example closes the tray and preserves the existing per-example drafts. This layout applies on desktop and mobile.
