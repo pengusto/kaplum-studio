@@ -87,8 +87,12 @@ test("legal pages expose confirmed contact and privacy in all five languages", a
     await expect(section.getByRole('link',{name:'eniso.uysal@gmail.com'})).toHaveAttribute('href','mailto:eniso.uysal@gmail.com');
     await expect(section.locator('h2')).toHaveCount(2);
     await expect(section.locator('p')).toHaveCount(5);
+    await section.locator('address').scrollIntoViewIfNeeded();
+    await expect(section.locator('address')).toBeInViewport();
   }
   await page.goto(`${base}/#figures`);
+  await page.locator('.studio-legal-links').scrollIntoViewIfNeeded();
+  await expect(page.locator('.studio-legal-links')).toBeInViewport();
   await expect(page.locator('.studio-legal-links a')).toHaveCount(2);
   await expect(page.locator('.studio-legal-links a').first()).toHaveAttribute('href',`${base}/legal/#en`);
 });
