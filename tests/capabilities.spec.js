@@ -96,7 +96,7 @@ test('mobile lesson has readable code, a guided start and centred navigation', a
    for (const r of bounds) { expect(r.left).toBeGreaterThanOrEqual(-1); expect(r.right).toBeLessThanOrEqual(width+1); if(r.dock) expect(Math.abs(r.centre-width/2)).toBeLessThan(2); }
   }
   await page.locator('.language-picker select').selectOption('en');
-  await page.locator('.lesson-task button').click();
+  await page.locator('.lesson-task > button').click();
   await expect(page.locator('.result-pane')).toBeVisible();
   await expect(page.getByRole('group',{name:'Drawing playback'})).toBeVisible();
   await page.getByRole('button',{name:'Next drawing step',exact:true}).click();
@@ -106,7 +106,7 @@ test('mobile lesson has readable code, a guided start and centred navigation', a
 
 test('canvas tools sit above the drawing and optional panels start collapsed',async({page})=>{
  await page.setViewportSize({width:390,height:844});await page.goto('/#course/state');
- await page.locator('.lesson-task button').click();
+ await page.locator('.lesson-task > button').click();
  const toolbar=page.locator('.canvas-toolbar'),canvas=page.locator('.canvas-surface');
  await expect(page.getByRole('button',{name:'Next drawing step',exact:true})).toBeVisible();
  const a=await toolbar.boundingBox(),b=await canvas.boundingBox();expect(a.y+a.height).toBeLessThanOrEqual(b.y+1);
@@ -154,4 +154,18 @@ test('edited timers hide recording while comments do not, and mobile animation c
   const box=await page.locator('.canvas-toolbar').boundingBox();expect(box.x).toBeGreaterThanOrEqual(0);expect(box.x+box.width).toBeLessThanOrEqual(320);
   await expect(page.locator('.canvas-toolbar button')).toHaveCount(3);
  }
+});
+
+test('every lesson offers a goal, baseline outcome and edit challenge without replacing a draft',async({page})=>{
+ for(const locale of ['en','de','ja','tr','hy']) {
+  await page.goto('/#course/state');await page.locator('.language-picker select').selectOption(locale);
+  await expect(page.locator('.lesson-goal p')).not.toBeEmpty();await expect(page.locator('.lesson-expected p')).toContainText('175');await expect(page.locator('.lesson-challenge p')).toContainText('forward(120)');
+ }
+ await page.locator('.language-picker select').selectOption('en');
+ await page.setViewportSize({width:390,height:844});
+ await page.locator('.lesson-challenge button').click();await expect(page.locator('#code')).toBeFocused();
+ await page.keyboard.press('ControlOrMeta+A');await page.keyboard.insertText('forward(42); // my exercise');
+ await page.locator('.lesson-task > button').click();await expect(page.locator('#code')).toContainText('my exercise');
+ await expect(page.getByRole('group',{name:'Drawing playback'})).toBeVisible();
+ await expect.poll(()=>page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
 });

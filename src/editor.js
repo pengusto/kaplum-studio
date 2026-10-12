@@ -44,6 +44,9 @@ export function createEditor(parent) {
     onChange(callback) {
       changed = callback;
     },
+    focus() {
+      view.focus();
+    },
     destroy() {
       view.destroy();
     },

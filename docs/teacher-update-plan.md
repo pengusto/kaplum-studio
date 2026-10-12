@@ -32,3 +32,12 @@ section (the circle activity is a finite drawing even under Animations). Mobile
 controls remain visible; optional state and comparison panels stay collapsed.
 p5.js remains deferred. The genuine source debugger and independent turtles are
 separate next stages and are not implemented by this usability change.
+
+## Lesson task follow-up
+
+All eight finite lessons now separate goal, observable baseline outcome and one
+bounded source-edit challenge in five languages. Overview cards show the goal.
+The edit action selects and focuses the existing editor; the walkthrough runs
+its current source, never a replacement solution. Expected values explicitly
+refer to the original example, not an automatic correctness claim about edits.
+No completion tracking or grading is inferred from clicks.

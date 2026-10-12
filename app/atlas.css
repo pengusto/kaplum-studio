@@ -1067,3 +1067,11 @@ html:has(.documentation), body:has(.documentation) { height: auto; overflow: aut
 .canvas-mode {display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 12px;padding:7px 12px;border-bottom:1px solid var(--line);flex-shrink:0;font-size:12px;}
 .canvas-mode > span {color:var(--accent);font-weight:600;}
 .canvas-mode small {color:var(--muted);line-height:1.5;}
+
+.lesson-task h3 {font-size:14px;margin:0 0 6px;}
+.lesson-task .lesson-goal h2 {margin:12px 0 6px;font-size:14px;color:var(--accent);}
+.lesson-goal p {font-size:18px;color:var(--text);line-height:1.5;}
+.lesson-expected,.lesson-challenge {margin-top:14px;padding:12px;border:1px solid var(--line);border-radius:10px;}
+.lesson-task .lesson-expected p,.lesson-task .lesson-challenge p {margin:0 0 10px;line-height:1.6;}
+.lesson-expected small {color:var(--muted);font-size:12px;line-height:1.5;}
+.lesson-how {color:var(--muted);font-size:13px;line-height:1.6;}

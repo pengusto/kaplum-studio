@@ -1,4 +1,5 @@
 "use client";
+import {lessonTasks,taskLabels} from "../src/lesson-tasks";
 import {executionMode} from "../src/execution-mode";
 import { assetUrl } from "../src/asset-url";
 import { useEffect, useRef, useState } from "react";
@@ -86,6 +87,8 @@ export default function Workspace({ route, preferences, t, drafts }) {
   const labels = capabilityLabels[locale];
   const tools = canvasToolCopy[locale];
   const mode = executionMode(liveCode);
+  const task = lesson && lessonTasks[lesson.id][locale];
+  const taskText = taskLabels[locale];
   const [playback, setPlayback] = useState(null), [playbackDelay, setPlaybackDelay] = useState(300);
   const [turtleState, setTurtleState] = useState(null), [grid, setGrid] = useState(false), [pointer, setPointer] = useState(null), [copyError, setCopyError] = useState(false);
   const title =
@@ -152,14 +155,17 @@ export default function Workspace({ route, preferences, t, drafts }) {
       {kind === "course" && !lesson && <FeatureLessons locale={locale} />}
       {lesson && <section className="lesson-task">
         <a href="#course">{lessonCopy[locale][3]}</a>
-        <h2>{title}</h2>
-        <p>{lesson.task[locale]}</p>
-        <ol><li>{lessonGuide[locale][1]}</li><li>{lessonGuide[locale][2]}</li></ol>
+        <div className="lesson-goal"><h2>{taskText[0]}</h2><p>{task.goal}</p></div>
+        <div className="lesson-expected"><h3>{taskText[1]}</h3><p>{task.expected}</p><small>{taskText[4]}</small></div>
+        <p className="lesson-how">{lessonGuide[locale][1]}</p>
         <button className="button primary" onClick={() => {
           setPanel("result");
           preview.current?.run(code.current, undefined, true);
           requestAnimationFrame(() => document.querySelector(".result-pane")?.scrollIntoView({block:"start"}));
         }}><Play size={16} aria-hidden="true"/>{lessonGuide[locale][0]}</button>
+        <div className="lesson-challenge"><h3>{taskText[2]}</h3><p>{task.challenge}</p>
+          <button className="button secondary" onClick={() => {setPanel("code");requestAnimationFrame(() => {document.querySelector(".code-pane")?.scrollIntoView({block:"start"});editor.current?.focus();});}}><FileCode2 size={16}/>{taskText[3]}</button>
+        </div>
       </section>}
       <div className="workspace-heading">
         <div>
