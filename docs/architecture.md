@@ -61,3 +61,11 @@ Completed static catalogue drawings use a settled React Bits StatusMark and the 
 Finite recording allocates at most 4 MB serialized operation history, 100,000 operations and 10,000 checkpoints. Ordinary Run allocates no recording. The recorded display has separate state from synchronous program queries. Recorded undo restores the earlier drawing and Turtle state and truncates later history. Stamps use a bounded 1000-entry removable overlay; trace stamp operations keep replay order. The course feature lab reuses the existing workspace, per-route draft storage and exact-source export. Construction views parse the maintained helper file lazily with the existing Lezer parser; no duplicate implementation registry.
 
 Teacher inspection reuses the existing frame/state and playback messages. Checkpoints retain style and stamp count; selected before/after snapshots and canvas-effect counts are computed from bounded operation ranges on demand. The host normalizes these worker values through `src/turtle-inspection.js`; no new execution engine, state polling, source-line mapping or dependencies. General teaching experiments stay in `src/feature-lessons.js`, separate from maintained figure helpers.
+
+## Canvas execution controls
+
+`src/execution-mode.js` uses the existing Lezer parser to classify edited source as a finite drawing, frame animation or timer/input/async program. Classification guides controls only: the recording engine independently rejects unsupported operations. Finite recordings are drawing checkpoints, not a JavaScript debugger.
+
+Frame pause retains queued callbacks in `engine/teaching-clock.js` and suspends its timer. Resume shifts the clock origin by the paused duration; it does not catch up suspended time. Worker control acknowledgements update the host state. Stop still destroys the sandbox. Timer/input programs retain Run/Stop rather than claiming this frame-only pause contract.
+
+`src/lesson-tasks.js` supplies goal, expected original outcome and edit challenge for the eight course lessons in five languages. The edit action focuses CodeMirror; it never substitutes a solution. Expected outcomes are explanatory baselines, not grading or proof that an edited program is correct.

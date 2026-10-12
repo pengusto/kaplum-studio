@@ -226,6 +226,8 @@ test("production screenshots for dark/light, settings and narrow review", async 
     .getByRole("button", { name: "Light", exact: true })
     .click();
   await page.getByRole("button", { name: "Done", exact: true }).click();
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.setViewportSize({ width: 1440, height: 1400 });
   await page.screenshot({ path: "docs/images/kaplum-next-light.png" });
   // Capture the selected panel, rather than a moving selection thumb mid-transition.
   await page.emulateMedia({ reducedMotion: "reduce" });
@@ -240,6 +242,15 @@ test("production screenshots for dark/light, settings and narrow review", async 
     )
     .toBeGreaterThan(100);
   await page.screenshot({ path: "docs/images/kaplum-next-mobile.png" });
+  await page.setViewportSize({ width: 1440, height: 1800 });
+  await page.goto("/#course/state");
+  await page.locator(".lesson-task > button").click();
+  await expect(page.getByRole("group", { name: "Drawing playback" })).toBeVisible();
+  await page.getByRole("button", { name: "Next drawing step", exact: true }).click();
+  await expect(page.locator(".drawing-step")).toContainText("Position changed");
+  await expect(page.locator(".turtle-state")).toContainText("35.0");
+  await page.locator(".lesson-task").evaluate(el => el.scrollIntoView({block:"start"}));
+  await page.screenshot({ path: "docs/images/kaplum-course.png" });
 });
 
 test("dark thumbnails match their labelled figure and all images decode", async ({

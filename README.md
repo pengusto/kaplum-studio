@@ -61,11 +61,9 @@ Next.js (App Router, static export), React 19, CodeMirror 6 and Bun. The Turtle 
 
 Kaplum Studio is in early development and used for teaching. Working today: the example library, the studio, inline figure and command parameter controls, dark and light modes and offline export.
 
-Planned next:
+The course includes eight runnable experiments with a goal, an observable baseline and a source-edit challenge. Finite drawings support recorded playback and drawing undo. Frame animations support pause/resume; timer and input programs use Run/Stop.
 
-- several named projects saved in the browser, with import
-- choosing which helper functions a project uses
-- a guided course with target images and a code-unlocked solution vault
+Next stages are a real source debugger ([#6](https://github.com/pengusto/kaplum-studio/issues/6)) and independent named turtles ([#7](https://github.com/pengusto/kaplum-studio/issues/7)). Neither is implemented yet. The optional p5.js mode is deferred. Safari, native translation review and classroom usability remain unverified.
 
 **Languages.** Complete interface and teaching content in English, German, Japanese, Turkish and Armenian. Translations are AI-assisted; native-speaker review is still welcome. Learner code uses English JavaScript names; German aliases exist for teaching commands.
 
@@ -100,6 +98,10 @@ Commands distinguish Turtle primitives, general drawing helpers and example figu
 
 ## Try the new Turtle features
 
-Open the [feature test lab](https://pengusto.github.io/kaplum-studio/#course): square replay, pen-up travel, removable stamps, circle paths versus static shapes, and undo-clear. Open a lesson and choose **Start step-by-step**. Play/pause, previous/next step, restart and stop sit above the canvas; the progress counter shows your place. The recording icon starts a fresh trace of edited code. The **More canvas tools** menu contains the coordinate grid, playback speed, final drawing and undo. Position and heading stay visible below the canvas; expand the state and before/after comparison when needed. **Undo drawing step** discards later drawing history; **Previous drawing step** only rewinds playback. Reset protects edited drafts, and ZIP export preserves the exact editor source.
+Open the [feature test lab](https://pengusto.github.io/kaplum-studio/#course): square replay, pen-up travel, removable stamps, circle paths versus static shapes, undo-clear, position queries, colour/width and edge wrapping. Each lesson explains its goal, what to look for in the original example and one change to try. **Edit code** focuses the editor without replacing your draft. Open a lesson and choose **Start step-by-step**. Play/pause, previous/next step, restart and stop sit above the canvas; the progress counter shows your place. The recording icon starts a fresh trace of edited code. The **More canvas tools** menu contains the coordinate grid, playback speed, final drawing and undo. Position and heading stay visible below the canvas; expand the state and before/after comparison when needed. **Undo drawing step** discards later drawing history; **Previous drawing step** only rewinds playback. Reset protects edited drafts, and ZIP export preserves the exact editor source.
 
 `stamp()`, `clearStamp(id)`, `circle(radius, extent, steps)` and recorded drawing `undo()` are general Turtle capabilities. Pacman and Dino remain example helpers, with expandable views of their maintained construction source. Replay/undo support finite synchronous programs and do not rewind JavaScript variables; use normal Run for timers or input. See [teaching API](docs/teaching-api.md) for geometry, storage limits and stamp layering.
+
+![Course walkthrough: goal, editable code and recorded drawing controls](docs/images/kaplum-course.png)
+
+Frame animations show **Pause animation** while running and **Resume animation** while paused. Resume retains pending frames without replaying the paused time. Restart begins again; Stop terminates execution. This pause is separate from finite drawing playback, which does not step JavaScript statements or inspect variables.

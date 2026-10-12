@@ -4,7 +4,7 @@
 [![CI: GitHub Actions](https://img.shields.io/badge/CI-GitHub%20Actions-2088FF?logo=githubactions&logoColor=white)](../../.github/workflows/ci.yml)
 [![Status: frühe Entwicklung](https://img.shields.io/badge/status-early%20development-orange)](#projektstand)
 
-[English](../../README.md) · **Deutsch**
+[Live-Studio](https://pengusto.github.io/kaplum-studio/) · [Dokumentation](https://pengusto.github.io/kaplum-studio/docs/) · [English](../../README.md) · **Deutsch**
 
 Kaplum Studio ist ein visuelles JavaScript-Turtle-Studio für Kinder, die gerade mit dem Programmieren anfangen. Sie wählen eine Zeichnung oder Animation, sehen den Code neben dem laufenden Ergebnis, verstehen, was jeder Parameter macht, ändern einen Wert und sehen sofort die Wirkung.
 
@@ -61,11 +61,13 @@ Next.js (App Router, statischer Export), React 19, CodeMirror 6 und Bun. Die Tur
 
 Kaplum Studio ist in früher Entwicklung und wird im Unterricht eingesetzt. Fertig sind die Beispielbibliothek, das Studio, die Parametererklärungen, direkt bedienbare Parameter in Figuren- und Befehlskarten, Dark- und Light-Modus und der Offline-Export.
 
-Als Nächstes geplant:
+Der Kurs bietet acht ausführbare Experimente mit Lernziel, erwartetem Ausgangsergebnis und einer Änderung zum Ausprobieren. **Code bearbeiten** fokussiert den Editor und erhält deinen Entwurf. **Schrittweise starten** zeichnet endliche Programme auf; Zurück/Vorwärts zeigt Zeichenstände, nicht JavaScript-Zeilen. Position und Richtung bleiben sichtbar, weitere Werkzeuge stehen über dem Canvas.
 
-- mehrere benannte Projekte im Browser speichern, mit Import
-- auswählen, welche Hilfsfunktionen ein Projekt nutzt
-- ein geführter Kurs mit Zielbildern und einem per Code freischaltbaren Lösungs-Tresor
+Frame-Animationen lassen sich pausieren und fortsetzen, ohne die Pause nachzuholen. Neustart beginnt von vorne, Stop beendet die Ausführung. Timer- und Eingabeprogramme nutzen Start/Stop.
+
+Als Nächstes folgen ein echter Quellcode-Debugger ([#6](https://github.com/pengusto/kaplum-studio/issues/6)) und unabhängige Schildkröten ([#7](https://github.com/pengusto/kaplum-studio/issues/7)). Beides ist noch nicht implementiert; p5.js bleibt auf später verschoben. Safari, muttersprachliche Prüfung und Verständlichkeit im Unterricht sind noch offene Prüfungen.
+
+![Kurs: Lernziel, bearbeitbarer Code und Schrittsteuerung](../images/kaplum-course.png)
 
 **Sprachen.** Oberfläche, Parametererklärungen und Beispielinhalte sind vollständig auf Englisch, Deutsch, Japanisch, Türkisch und Armenisch verfügbar. Die Übersetzungen sind KI-gestützt; eine Prüfung durch Muttersprachler steht aus. Der Code der Lernenden bleibt auf Englisch; deutsche Befehlsaliase sind verfügbar.
 
