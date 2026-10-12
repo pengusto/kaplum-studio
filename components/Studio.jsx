@@ -1,4 +1,5 @@
 "use client";
+import { legalCopy } from "../src/legal";
 import { assetUrl } from "../src/asset-url";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -234,6 +235,10 @@ export default function Studio() {
           />}
         </div>
       </main>
+      <footer className="studio-legal-links">
+        <a href={assetUrl(`/legal/#${preferences.locale}`)}>{legalCopy[preferences.locale].notice}</a>
+        <a href={assetUrl(`/legal/#privacy-${preferences.locale}`)}>{legalCopy[preferences.locale].privacy}</a>
+      </footer>
       <nav className="studio-dock" aria-label={t("navigationLabel")}>
         <Dock
           theme={preferences.theme}

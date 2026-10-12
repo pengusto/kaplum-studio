@@ -19,7 +19,7 @@ Bun.serve({
     }
     const path = resolve(
       root,
-      "." + (pathname === "/" ? "/index.html" : pathname),
+      "." + (pathname.endsWith("/") ? pathname + "index.html" : pathname),
     );
     if (!path.startsWith(root + sep)) {
       return new Response("Forbidden", { status: 403 });
