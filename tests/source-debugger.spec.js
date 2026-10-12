@@ -1,14 +1,10 @@
+import {pasteCode} from "./helpers/editor.js";
 import {readFile} from 'node:fs/promises';
 import {test,expect} from '@playwright/test';
 import {compileDebugSource} from '../src/source-debugger.js';
 async function start(page,source) {
  await page.goto('/#personal');
- await page.locator('#code').click();await page.keyboard.press('ControlOrMeta+A');await page.locator('#code').evaluate((element,text)=>{
-  const event=new Event('paste',{bubbles:true,cancelable:true});
-  Object.defineProperty(event,'clipboardData',{value:{getData:type=>type==='text/plain' ? text : ''}});
-  element.dispatchEvent(event);
- },source);
- await expect(page.locator('#code')).toContainText(source.split('\n')[0]);
+ await pasteCode(page,source);
  if(await page.getByRole('radio',{name:'Result',exact:true}).isVisible()) await page.getByRole('radio',{name:'Result',exact:true}).click();
  await page.locator('.canvas-more summary').click();await page.getByRole('button',{name:'Start code debugger',exact:true}).click();
 }

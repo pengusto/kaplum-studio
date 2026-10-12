@@ -1,3 +1,4 @@
+import {pasteCode} from "./helpers/editor.js";
 import { reference } from "../src/reference.js";
 import { test, expect } from "@playwright/test";
 import { execFileSync } from "node:child_process";
@@ -116,7 +117,7 @@ test("runtime still isolates loops and background commands override fallback", a
   page,
 }) => {
   await page.goto("/#personal");
-  await page.locator("#code").fill('setBackground("tomato"); hideTurtle();');
+  await pasteCode(page,'setBackground("tomato"); hideTurtle();');
   await page.getByRole("button", { name: "Run", exact: true }).click();
   await expect
     .poll(() =>
@@ -137,7 +138,7 @@ test("runtime still isolates loops and background commands override fallback", a
         ),
     )
     .toEqual([255, 99, 71, 255]);
-  await page.locator("#code").fill("while(true) {}");
+  await pasteCode(page,"while(true) {}");
   await page.getByRole("button", { name: "Run", exact: true }).click();
   await expect(page.locator("#status")).toHaveText("Running");
   await page.getByRole("button", { name: "Stop", exact: true }).click();
@@ -154,7 +155,7 @@ test("offline ZIP retains exact source, fallback canvas, notices and real execut
   // append DOM text before its document observer has reconciled the buffer.
   await page.locator("#code").click();
   await page.keyboard.press('ControlOrMeta+A');
-  await page.keyboard.insertText(source);
+  await pasteCode(page,source);
   await expect(page.locator("#code")).toHaveText(source);
   const download = page.waitForEvent("download");
   await page
@@ -343,7 +344,7 @@ test("Dock links keep deep links, active destination and drafts across navigatio
   ).toHaveAttribute("aria-current", "page");
   await page.locator("#code").click();
   await page.keyboard.press("ControlOrMeta+A");
-  await page.keyboard.insertText('hideTurtle(); drawDino(120, "coral", 30);');
+  await pasteCode(page,'hideTurtle(); drawDino(120, "coral", 30);');
   await expect(page.locator("#parameter-inspector")).toContainText("120");
   await expect(page.locator("#parameter-inspector")).toContainText('"coral"');
   await dock.getByRole("link", { name: "My projects", exact: true }).focus();
@@ -481,7 +482,7 @@ test("Dino parameter fields change only the displayed call on explicit apply", a
   await page.goto("/#figure/figur-dino");
   const original =
     'hideTurtle();\n// keep my notes\nforward(10);\ndrawDino(80, "LimeGreen", 25);\nright(90);';
-  await page.locator("#code").fill(original);
+  await pasteCode(page,original);
   await page.getByLabel("size", { exact: true }).fill("120");
   expect(await page.locator("#code").innerText()).toBe(original);
   await page.getByRole("button", { name: "Apply & run", exact: true }).click();

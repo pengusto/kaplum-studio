@@ -1,3 +1,4 @@
+import {pasteCode} from "./helpers/editor.js";
 import { execFileSync } from "node:child_process";
 import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -45,7 +46,7 @@ test("mounted offline ZIP retains exact source, fallback canvas, notices and rea
   const source = 'hideTurtle(); goto(0, 0); drawCircle(60, "coral", true);';
   await page.locator("#code").click();
   await page.keyboard.press("ControlOrMeta+A");
-  await page.keyboard.insertText(source);
+  await pasteCode(page,source);
   const download = page.waitForEvent("download");
   await page
     .getByRole("button", { name: "Download project ZIP", exact: true })
@@ -102,7 +103,7 @@ test("legal pages expose confirmed contact and privacy in all five languages", a
 test('exported keyboard and pointer controls work offline in logical coordinates', async ({page,browser})=>{
   await page.goto(`${base}/#personal`);
   const source='onKey("ArrowRight",()=>{angle(90);forward(25);}); onClick(({x,y})=>goto(x,y));';
-  await page.locator('#code').click();await page.keyboard.press('ControlOrMeta+A');await page.keyboard.insertText(source);
+  await page.locator('#code').click();await page.keyboard.press('ControlOrMeta+A');await pasteCode(page,source);
   const download=page.waitForEvent('download');await page.getByRole('button',{name:'Download project ZIP',exact:true}).click();
   const dir=await mkdtemp(join(tmpdir(),'kaplum-input-export-'));
   try{
@@ -117,7 +118,7 @@ test('exported keyboard and pointer controls work offline in logical coordinates
 test('exported stamps, path circle and bounded undo execute from file without network',async({page,browser})=>{
  await page.goto(`${base}/#personal`);
  const source='hideTurtle(); wrap(false); const h=recordDrawing(()=>{color("red");goto(-60,0);stamp();goto(60,0);const id=stamp();clearStamp(id);penup();circle(30,180);clear();});h.finish();undo();';
- await page.locator('#code').click();await page.keyboard.press('ControlOrMeta+A');await page.keyboard.insertText(source);
+ await page.locator('#code').click();await page.keyboard.press('ControlOrMeta+A');await pasteCode(page,source);
  const pending=page.waitForEvent('download');await page.getByRole('button',{name:'Download project ZIP',exact:true}).click();const dir=await mkdtemp(join(tmpdir(),'kaplum-feature-export-'));
  try{
   await(await pending).saveAs(join(dir,'project.zip'));execFileSync('unzip',['-q',join(dir,'project.zip'),'-d',dir]);expect(await readFile(join(dir,'program.js'),'utf8')).toBe(source);
