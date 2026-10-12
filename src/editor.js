@@ -55,6 +55,7 @@ const breakpointLines=StateField.define({
 export function createEditor(parent) {
   const theme = new Compartment();
   const attributes = new Compartment();
+  const conditionWrapping = new Compartment();
   let changed = () => {};
   const view = new EditorView({
     parent,
@@ -62,6 +63,7 @@ export function createEditor(parent) {
       basicSetup,
       debugLines,
       conditionLines,
+      conditionWrapping.of([]),
       breakpointLines,
       javascript(),
       keymap.of([indentWithTab]),
@@ -95,7 +97,7 @@ export function createEditor(parent) {
     },
     breakpoints(lines) {view.dispatch({effects:breakpointEffect.of(lines)});},
     showLine(line) {if(line>0 && line<=view.state.doc.lines) view.dispatch({effects:EditorView.scrollIntoView(view.state.doc.line(line).from,{y:"center"})});},
-    condition(note) {view.dispatch({effects:conditionEffect.of(note)});},
+    condition(note) {view.dispatch({effects:[conditionEffect.of(note),conditionWrapping.reconfigure(note ? EditorView.lineWrapping : [])]});},
     debugLine(line) { view.dispatch({effects:debugLineEffect.of(line)}); },
     focus() {
       view.focus();

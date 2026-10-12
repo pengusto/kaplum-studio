@@ -1,6 +1,6 @@
 # Source debugger prototype — issue #6
 
-The first native prototype is available under **Debug code** above the canvas in a finite drawing workspace. It creates a fresh isolated worker, pauses before an instruction and highlights its original source line. Next executes until the next checkpoint. Continue schedules checkpoints with a cancellable timer; Pause holds the next instruction. Stop destroys the worker, Restart recompiles the current source. Editing ends the debug session; exports retain the exact original program, without instrumentation.
+The first native prototype is available under **Debug code** directly in the course task and editor header, as well as above the canvas in a finite drawing workspace. Starting it scrolls to the shared source view. It creates a fresh isolated worker, pauses before an instruction and highlights its original source line. Next executes until the next checkpoint. Continue schedules checkpoints with a cancellable timer; Pause holds the next instruction. Stop destroys the worker, Restart recompiles the current source. Editing ends the debug session; exports retain the exact original program, without instrumentation.
 
 ## Supported subset
 
@@ -41,4 +41,4 @@ Debug mode displays the actual editable source beside the drawing on desktop, an
 
 ## Condition feedback
 
-The most recent actual if/for/while result marks its source line green for true or red for false, with an inline explanation in the selected language. The same explanation is available as a status above the drawing. False means normal branch selection or loop termination, not an error. Results remain visible until the next condition, Restart, Stop or edit. Notes are editor decorations, never inserted into learner code or downloads. The final false loop test remains visible after completion. Helpers remain atomic. Tests compare native results, including side-effecting tests, continue/break, empty for tests and nested branches.
+The most recent actual if/for/while result marks its source line green for true or red for false, with an inline explanation in the selected language. During condition feedback the editor wraps long lines so explanations remain readable on mobile. The same explanation is available as a status above the drawing. False means normal branch selection or loop termination, not an error. Results remain visible until the next condition, Restart, Stop or edit. Notes are editor decorations, never inserted into learner code or downloads. The final false loop test remains visible after completion. Helpers remain atomic. Tests compare native results, including side-effecting tests, continue/break, empty for tests and nested branches.

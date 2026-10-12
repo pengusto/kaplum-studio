@@ -1134,3 +1134,12 @@ html:has(.documentation), body:has(.documentation) { height: auto; overflow: aut
 .cm-condition-note {font:inherit;white-space:normal;overflow-wrap:anywhere;color:var(--text);opacity:.9;}
 .condition-feedback {margin:6px 0 0;border-left:3px solid #36b978;padding-left:8px;line-height:1.5;}
 .condition-feedback[data-result="false"] {border-color:#ef6666;}
+
+/* Execution status must remain obvious across colour themes. */
+.cm-line.cm-debug-line {background:color-mix(in srgb,var(--accent) 32%,var(--code));box-shadow:inset 4px 0 var(--accent);outline:1px solid color-mix(in srgb,var(--accent) 65%,transparent);}
+.cm-line.cm-condition-true {background:color-mix(in srgb,#36b978 32%,var(--code));box-shadow:inset 4px 0 #36b978;}
+.cm-line.cm-condition-false {background:color-mix(in srgb,#ef6666 32%,var(--code));box-shadow:inset 4px 0 #ef6666;}
+.condition-feedback {background:color-mix(in srgb,#36b978 20%,var(--code));padding:8px;border-radius:6px;}
+.condition-feedback[data-result="false"] {background:color-mix(in srgb,#ef6666 20%,var(--code));}
+.lesson-debug-start {margin-left:8px;}
+.editor-debug-start {font-size:12px;}

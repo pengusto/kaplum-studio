@@ -132,7 +132,7 @@ export default function Workspace({ route, preferences, t, drafts }) {
   function startDebug() {
     preview.current?.stop();
     setDebugError("");
-    try { const compiled=analyzeDebugSource(code.current); executableLines.current=compiled.lines; setBreakpointError(false); setPanel("result"); preview.current?.run(code.current,undefined,false,{code:compiled.code,breakpoints}); }
+    try { const compiled=analyzeDebugSource(code.current); executableLines.current=compiled.lines; setBreakpointError(false); setPanel("result"); requestAnimationFrame(() => document.querySelector(".code-pane")?.scrollIntoView({block:"start"})); preview.current?.run(code.current,undefined,false,{code:compiled.code,breakpoints}); }
     catch(error) {setDebugError(error.message);}
   }
   useEffect(()=>{editor.current?.debugLine(debug?.line || null);editor.current?.condition(debug?.condition ? {...debug.condition,text:conditionExplanation(debug.condition,locale)} : null);if(debug?.line) editor.current?.showLine(debug.line);editor.current?.breakpoints(debug ? breakpoints : []);},[debug,breakpoints,locale]);
@@ -188,6 +188,7 @@ export default function Workspace({ route, preferences, t, drafts }) {
           preview.current?.run(code.current, undefined, true);
           requestAnimationFrame(() => document.querySelector(".result-pane")?.scrollIntoView({block:"start"}));
         }}><Play size={16} aria-hidden="true"/>{lessonGuide[locale][0]}</button>
+        <button className="button secondary lesson-debug-start" onClick={startDebug}><FileCode2 size={16}/>{debugText.startShort}</button>
         <div className="lesson-challenge"><h3>{taskText[2]}</h3><p>{task.challenge}</p>
           <button className="button secondary" onClick={() => {setPanel("code");requestAnimationFrame(() => {document.querySelector(".code-pane")?.scrollIntoView({block:"start"});editor.current?.focus();});}}><FileCode2 size={16}/>{taskText[3]}</button>
         </div>
@@ -294,7 +295,7 @@ export default function Workspace({ route, preferences, t, drafts }) {
                 <FileCode2 size={16} />
                 main.js
               </span>
-              <span>JavaScript</span>
+              {mode === "drawing" && !debug ? <button className="canvas-tool editor-debug-start" onClick={startDebug}><FileCode2 size={16}/><span>{debugText.startShort}</span></button> : <span>JavaScript</span>}
             </div>
             <EditorPane
               source={initial}

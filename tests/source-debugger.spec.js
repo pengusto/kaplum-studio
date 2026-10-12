@@ -147,3 +147,19 @@ test('true and false checks explain if else and loop exit beside actual source',
  await page.getByRole('button',{name:'Stop',exact:true}).click();
  await expect(page.locator('.cm-condition-note')).toHaveCount(0);
 });
+
+test('mobile course starts source inspection without switching tabs and visibly colours checks',async({page})=>{
+ await page.setViewportSize({width:458,height:772});
+ await page.goto('/#course/square');
+ await page.locator('.lesson-debug-start').click();
+ await expect(page.locator('.workspace-panels')).toHaveAttribute('data-debug','true');
+ await expect(page.locator('.cm-debug-line')).toContainText('color');
+ const next=page.getByRole('button',{name:'Next code statement',exact:true});
+ for(let i=0;i<4;i++) await next.click();
+ await expect(page.locator('.cm-condition-true')).toContainText('True');
+ const green=await page.locator('.cm-condition-true').evaluate(el=>getComputedStyle(el).backgroundColor);
+ await page.getByRole('button',{name:'Continue code',exact:true}).click();
+ await expect(page.locator('.cm-condition-false')).toContainText('False');
+ const red=await page.locator('.cm-condition-false').evaluate(el=>getComputedStyle(el).backgroundColor);
+ expect(green).not.toBe(red);expect(green).not.toBe('rgba(0, 0, 0, 0)');
+});
