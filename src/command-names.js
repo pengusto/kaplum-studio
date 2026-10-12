@@ -1,4 +1,5 @@
 export const germanCommands = {
+  circle: "kreisPfad",
   position: "liesPosition",
   heading: "liesRichtung",
   distanceTo: "abstandZu",

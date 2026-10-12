@@ -177,6 +177,23 @@
     ink.restore();
     drawIf();
   }
+  // Positive radius curves to the left, negative radius to the right.
+  // Chord endpoints lie on the requested circle; the heading follows its tangent.
+  function circle(radius, extent = 360, steps) {
+    radius = finite(radius, "Radius"); extent = finite(extent, "Extent");
+    if (radius === 0 || Math.abs(extent) > 360) throw Error("Circle needs a nonzero radius and an extent between -360 and 360 degrees.");
+    steps = steps === undefined ? Math.max(12, Math.ceil(Math.abs(extent) / 4)) : finite(steps, "Steps");
+    if (!Number.isInteger(steps) || steps < 3 || steps > 2000) throw Error("Circle steps must be an integer from 3 to 2000.");
+    if (extent === 0) return;
+    const turn = -extent * Math.sign(radius) / steps;
+    const chord = 2 * Math.abs(radius) * Math.sin(radians(Math.abs(turn) / 2)) * Math.sign(extent);
+    window.right(turn / 2);
+    for (let step = 0; step < steps; step++) {
+      window.forward(chord);
+      if (step < steps - 1) window.right(turn);
+    }
+    window.right(turn / 2);
+  }
   function recordDrawing(program) {
     if (typeof program !== "function" || trace?.capturing) throw Error("recordDrawing needs a synchronous drawing function.");
     if (trace) throw Error("Restart the program before recording another drawing.");
@@ -236,7 +253,7 @@
   }
   window.__displayTurtleState = () => { const shown=displayState || state;return {x:shown.x,y:shown.y,angleDeg:shown.heading,pen:shown.pen,visible:shown.visible}; };
   Object.assign(window, {
-    forward, color, goto, width, write, draw, drawIf, onKey, onClick, recordDrawing,
+    forward, color, goto, width, write, draw, drawIf, onKey, onClick, recordDrawing, circle,
     position: () => ({ x: state.x, y: state.y }),
     heading: () => state.heading,
     distanceTo: (x, y) => Math.hypot(finite(x, "X") - state.x, finite(y, "Y") - state.y),

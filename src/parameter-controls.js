@@ -12,6 +12,7 @@ const ranges = {
   delayMilliseconds: [0, 5000], radians: [-6.28, 6.28, 0.01], id: [0, 1000],
 };
 const overrides = {
+  circle: {radius: [1, 200], extent: [-360, 360], steps: [3, 200]},
   setTextSize: { size: [8, 100] }, writeText: { size: [8, 100] },
   jumpHeight: { height: [0, 300] },
   drawDino: { size: [10, 160] },

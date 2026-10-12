@@ -31,10 +31,16 @@ Reference records explicitly distinguish `turtle` commands, general `drawing` he
 
 `onKey(key, handler)` delivers a non-repeated, unmodified key press on the focused canvas; the callback receives the key string. `onClick(handler)` delivers a primary pointer press as `{x,y}` in logical units. Both return an unsubscribe function. Studio input never captures typing in the editor. Stop/navigation/restart destroys the runtime and its handlers. Standalone exports focus their canvas and use the same callbacks. Keyboard chords with Ctrl/Meta/Alt and repeated keydown events are ignored.
 
-The workspace shows position, direction and pen state from coalesced drawing frames, plus an optional 50-unit grid and pointer-coordinate copy aid. These studio aids are not part of exported learner code. Speed/replay, undo, stamps and multiple turtles remain planned, not implemented.
+The workspace shows position, direction and pen state from coalesced drawing frames, plus an optional 50-unit grid and pointer-coordinate copy aid. These studio aids are not part of exported learner code. Finite drawing playback is opt-in in the workspace. General undo, stamps and multiple turtles remain planned.
 
 ## Finite drawing recording
 
 `recordDrawing(program)` starts a new blank drawing and executes a synchronous finite drawing callback immediately. Queries inside it see logical program state. It returns a controller with `length`, `step`, `bytes`, `next()`, `back()`, `reset()`, `finish()` and `seek(index)`. Playback displays recorded state without reversing JavaScript variables. History is limited to 10,000 display checkpoints, 100,000 canvas operations and 4 MB serialized operation data. Timer/input registration, asynchronous callbacks, object-valued canvas arguments and unsupported canvas methods are rejected explicitly. It is opt-in; normal programs allocate no trace. A second recording requires a fresh program run. Existing Kaplum helpers use the shared recording context.
 
 Workspace “Record drawing” records the current finite program, then starts paused at step zero. Controls play/pause, advance/back one drawing checkpoint, reset playback and choose 30–1000 ms per checkpoint. The inspector reports displayed state; program queries retain computed logical state. Previous step is playback rewind, not general runtime undo. Stop destroys the recording. Input and timer programs must use normal Run.
+
+## Turtle circle paths
+
+`circle(radius, extent = 360, steps)` follows polygonal chords from the current position and tangent. Positive radius places the centre on the left; negative radius places it on the right. Positive extent moves forward, negative extent backward. Heading changes by `-extent * sign(radius)`. It respects pen-up, wrapping, current colour/width and helper fills. Full circles return to their starting point when wrapping is disabled. Unlike the static `drawCircle`, it moves the Turtle and changes its heading.
+
+Radius must be finite and nonzero, extent finite in [-360,360], and explicit steps an integer in [3,2000]. Extent zero is a no-op after validation. The default uses at least 12 segments and approximately four degrees per segment. `kreisPfad` is the German alias. Large circles can cross the wrapping boundary; turn wrapping off when demonstrating geometric endpoints.

@@ -127,3 +127,23 @@ test('finite drawing trace preserves pixels and synchronous state while replay s
 test('recording rejects timer/input programs explicitly and restores normal APIs',async({page})=>{
  await load(page);const result=await page.evaluate(()=>{let message;try{recordDrawing(()=>onKey('x',()=>{}));}catch(e){message=e.message;}const off=onKey('x',()=>{});off();return {message,state:getTurtleState()};});expect(result.message).toContain('synchronous finite');
 });
+
+test('turtle circle follows tangent, signed radius, pen and fill contracts', async ({page}) => {
+ await load(page); await page.evaluate(helpers);
+ const result=await page.evaluate(()=>{
+  wrap(false); hideTurtle(); penup(); circle(50,180); const left=getTurtleState();
+  home(); circle(-50,180); const rightSide=getTurtleState();
+  home(); circle(50,-180); const reverse=getTurtleState();
+  home(); circle(50,360,5); const full=getTurtleState();
+  const ctx=document.getElementById('imagecanvas').getContext('2d');const blank=ctx.getImageData(300,350,1,1).data[3];
+  home(); pendown(); beginFill('gold'); kreisPfad(50,360,90);endFill();
+  const filled=[...ctx.getImageData(300,350,1,1).data];
+  const errors=[];for(const args of [[0],[50,361],[50,360,2],[50,360,2.5],[Infinity]]){try{circle(...args);}catch(e){errors.push(e.message);}}
+  return {left,rightSide,reverse,full,blank,filled,errors};
+ });
+ expect(result.left.x).toBeCloseTo(-100);expect(result.left.y).toBeCloseTo(0);expect(result.left.angleDeg).toBeCloseTo(-180);
+ expect(result.rightSide.x).toBeCloseTo(100);expect(result.rightSide.angleDeg).toBeCloseTo(180);
+ expect(result.reverse.x).toBeCloseTo(-100);expect(result.reverse.angleDeg).toBeCloseTo(180);
+ expect(result.full.x).toBeCloseTo(0);expect(result.full.y).toBeCloseTo(0);expect(result.full.angleDeg).toBeCloseTo(-360);
+ expect(result.blank).toBe(0);expect(result.filled).toEqual([255,215,0,255]);expect(result.errors).toHaveLength(5);
+});

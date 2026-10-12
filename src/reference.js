@@ -1821,6 +1821,20 @@ reference.push(...[
     "code": "onClick(({ x, y }) => { goto(x, y); drawCircle(20, \"coral\", true); });"
   }
 ]);
+reference.push({
+  "name": "circle",
+  "alias": "kreisPfad",
+  "signature": "circle(radius, extent = 360, steps = 90)",
+  "text": {
+    "en": "Moves along a circle from the current tangent. Positive radius curves left, negative right. Extent: -360 to 360 degrees; steps: 3 to 2000. Pen-up moves without drawing. Unlike drawCircle, this changes position and heading.",
+    "de": "Bewegt die Turtle vom aktuellen Tangentenpunkt auf einem Kreis. Positiver Radius: links; negativer: rechts. Winkel: -360 bis 360 Grad; Schritte: 3 bis 2000. Mit gehobenem Stift ohne Linie. Anders als drawCircle ändert dies Position und Richtung.",
+    "ja": "現在の位置と向きから円の経路を進みます。正の半径は左、負は右。角度は-360〜360度、分割数は3〜2000。ペンを上げると線を描きません。drawCircleと違い位置と向きが変わります。",
+    "tr": "Mevcut konum ve yönden dairesel bir yol izler. Pozitif yarıçap sola, negatif sağa döner. Açı: -360–360 derece; adım: 3–2000. Kalem yukarıdayken çizmez. drawCircle aksine konum ve yön değişir.",
+    "hy": "Շարժվում է շրջանաձև ուղով ընթացիկ դիրքից և ուղղությունից։ Դրական շառավիղը՝ ձախ, բացասականը՝ աջ։ Անկյունը՝ -360–360 աստիճան, քայլերը՝ 3–2000։ Բարձրացված գրիչով չի նկարում։ Ի տարբերություն drawCircle-ի՝ փոխում է դիրքն ու ուղղությունը։"
+  },
+  "code": "goto(80, 0); color(\"DeepSkyBlue\"); width(4); circle(80, 270);"
+});
+
 const examples = new Set(["drawDino","drawPacman","drawButterfly","drawFish","drawSubmarine","drawRocket","drawFirework","drawJet","drawBomb","drawFireball","drawDog","drawFerrisWheel","drawCloud","drawFlower","jumpHeight","jumpRandom"]);
 const drawingHelpers = new Set(["setBackground","setDualBackground","setTiltedBackground","setTextColor","setTextSize","writeText","drawCircle","drawHalfCircle","drawOvalArc","drawHalfOval","drawRect","drawTriangle","drawStar","drawLine","drawArc","drawSpiral","getRandomNumber","getRandomColor"]);
 for (const item of reference) item.category = examples.has(item.name) ? "example" : drawingHelpers.has(item.name) ? "drawing" : "turtle";
