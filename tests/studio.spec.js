@@ -329,7 +329,9 @@ test("Dock links keep deep links, active destination and drafts across navigatio
   await expect(
     dock.getByRole("link", { name: "Figures", exact: true }),
   ).toHaveAttribute("aria-current", "page");
-  await page.locator("#code").fill('hideTurtle(); drawDino(120, "coral", 30);');
+  await page.locator("#code").click();
+  await page.keyboard.press("ControlOrMeta+A");
+  await page.keyboard.insertText('hideTurtle(); drawDino(120, "coral", 30);');
   await expect(page.locator("#parameter-inspector")).toContainText("120");
   await expect(page.locator("#parameter-inspector")).toContainText('"coral"');
   await dock.getByRole("link", { name: "My projects", exact: true }).focus();

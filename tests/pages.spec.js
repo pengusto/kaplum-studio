@@ -43,7 +43,9 @@ test("mounted offline ZIP retains exact source, fallback canvas, notices and rea
 }) => {
   await page.goto(`${base}/#personal`);
   const source = 'hideTurtle(); goto(0, 0); drawCircle(60, "coral", true);';
-  await page.locator("#code").fill(source);
+  await page.locator("#code").click();
+  await page.keyboard.press("ControlOrMeta+A");
+  await page.keyboard.insertText(source);
   const download = page.waitForEvent("download");
   await page
     .getByRole("button", { name: "Download project ZIP", exact: true })
