@@ -362,8 +362,11 @@ test("Original Dock labels appear only on hover or focus with one active indicat
     await expect(page.locator(".studio-dock .dock-label")).toHaveCount(5);
     await page.mouse.move(0, 0);
     await expect(label).toHaveCSS("opacity", "0");
-    await active.hover();
-    await expect(label).toHaveCSS("opacity", "1");
+    // Magnification moves neighbouring tiles; keep the real pointer over the current tile.
+    await expect.poll(async () => {
+      await active.hover();
+      return label.evaluate(el => getComputedStyle(el).opacity);
+    }).toBe("1");
     await page.mouse.move(0, 0);
     await expect(label).toHaveCSS("opacity", "0");
     await active.focus();
