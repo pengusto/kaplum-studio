@@ -1001,7 +1001,9 @@ html:has(.documentation), body:has(.documentation) { height: auto; overflow: aut
 .feature-lessons, .lesson-task { flex-shrink: 0; }
 /* Lessons add teaching text above the editor: scroll the workbench as a unit. */
 @media(min-width:701px) {
- .lesson-task ~ .workspace-panels, .feature-lessons ~ .workspace-panels { flex: 0 0 850px; min-height: 850px; }
+ .lesson-task ~ .workspace-panels, .feature-lessons ~ .workspace-panels { flex: 0 0 1100px; min-height: 1100px; }
 }
 
 .lesson-task ~ .workspace-panels .code-footer { display:flex; }
+
+.lesson-task ~ .workspace-panels .canvas-surface { min-height:300px; }

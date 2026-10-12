@@ -31,7 +31,7 @@ Reference records explicitly distinguish `turtle` commands, general `drawing` he
 
 `onKey(key, handler)` delivers a non-repeated, unmodified key press on the focused canvas; the callback receives the key string. `onClick(handler)` delivers a primary pointer press as `{x,y}` in logical units. Both return an unsubscribe function. Studio input never captures typing in the editor. Stop/navigation/restart destroys the runtime and its handlers. Standalone exports focus their canvas and use the same callbacks. Keyboard chords with Ctrl/Meta/Alt and repeated keydown events are ignored.
 
-The workspace shows position, direction and pen state from coalesced drawing frames, plus an optional 50-unit grid and pointer-coordinate copy aid. These studio aids are not part of exported learner code. Finite drawing playback is opt-in in the workspace. General undo, stamps and multiple turtles remain planned.
+The workspace shows position, direction and pen state from coalesced drawing frames, plus an optional 50-unit grid and pointer-coordinate copy aid. These studio aids are not part of exported learner code. Finite drawing playback is opt-in in the workspace. Removable stamps and bounded recorded drawing undo are implemented below; unrestricted live-program undo and multiple turtles remain later work.
 
 ## Finite drawing recording
 

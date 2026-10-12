@@ -97,3 +97,9 @@ NEXT_PUBLIC_BASE_PATH=/kaplum-studio bunx playwright test tests/pages.spec.js
 The interface, parameter explanations, figure descriptions and activities are available in English, German, Japanese, Turkish and Armenian. Function names and learner code remain English; changing language never translates an edited program.
 
 Commands distinguish Turtle primitives, general drawing helpers and example figures. The workspace includes live position/direction/pen state, an optional coordinate grid and pointer-coordinate copying. Focus the canvas for `onKey`; `onClick` receives logical coordinates. Both support unsubscribing and standalone exports. See [Teaching API](docs/teaching-api.md) for the contracts.
+
+## Try the new Turtle features
+
+Open the [feature test lab](https://pengusto.github.io/kaplum-studio/#course): square replay, pen-up travel, removable stamps, circle paths versus static shapes, and undo-clear. Open a lesson, edit its code, choose **Record drawing**, then play, pause, step or show the final drawing. **Undo drawing step** discards later drawing history; **Previous drawing step** only rewinds playback. Reset protects edited drafts, and ZIP export preserves the exact editor source.
+
+`stamp()`, `clearStamp(id)`, `circle(radius, extent, steps)` and recorded drawing `undo()` are general Turtle capabilities. Pacman and Dino remain example helpers, with expandable views of their maintained construction source. Replay/undo support finite synchronous programs and do not rewind JavaScript variables; use normal Run for timers or input. See [teaching API](docs/teaching-api.md) for geometry, storage limits and stamp layering.
