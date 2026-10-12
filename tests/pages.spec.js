@@ -84,7 +84,7 @@ test("legal pages expose confirmed contact and privacy in all five languages", a
   for (const locale of ['en','de','ja','tr','hy']) {
     const section=page.locator(`section#${locale}`);
     await expect(section).toContainText('Enis Uysal');
-    await expect(section.getByRole('link',{name:'eniso.uysal@gmail.com'})).toHaveAttribute('href','mailto:eniso.uysal@gmail.com');
+    await expect(section.getByRole('link',{name:'hello@kikaio.de'})).toHaveAttribute('href','mailto:hello@kikaio.de');
     await expect(section.locator('h2')).toHaveCount(2);
     await expect(section.locator('p')).toHaveCount(5);
     await section.locator('address').scrollIntoViewIfNeeded();

@@ -8,7 +8,7 @@ export default function LegalPage() {
     {Object.entries(legalCopy).map(([locale, copy]) => <section id={locale} lang={locale} key={locale}>
       <a href={assetUrl("/#figures")}>{copy.back}</a>
       <h2>{copy.notice}</h2><h3>{copy.contact}</h3>
-      <address>Enis Uysal<br />Beisingstraße 39<br />45141 Essen<br /><a href="mailto:eniso.uysal@gmail.com">eniso.uysal@gmail.com</a></address>
+      <address>Enis Uysal<br />Beisingstraße 39<br />45141 Essen<br /><a href="mailto:hello@kikaio.de">hello@kikaio.de</a></address>
       <h2 id={`privacy-${locale}`}>{copy.privacy}</h2>
       {copy.sections.map(([heading, text]) => <div key={heading}><h3>{heading}</h3><p>{text}</p></div>)}
       <p><a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub Privacy Statement</a> · <a href="https://www.ldi.nrw.de/">LDI NRW</a></p>
