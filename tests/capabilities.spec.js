@@ -120,3 +120,38 @@ test('canvas tools sit above the drawing and optional panels start collapsed',as
  await page.locator('.canvas-state summary').click();await expect(page.locator('.canvas-state details .inspection-values')).toBeVisible();
  await expect.poll(()=>page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
 });
+
+test('frame animation pauses without changing state and resumes; restart and route change reset controls',async({page})=>{
+ await page.goto('/#animation/pacman-move');
+ await expect(page.locator('.canvas-mode')).toHaveAttribute('data-mode','animation');
+ await expect(page.getByRole('button',{name:'Record drawing',exact:true})).toHaveCount(0);
+ await expect(page.locator('#status')).toHaveText('Running');
+ await page.getByRole('button',{name:'Pause animation',exact:true}).click();
+ await expect(page.locator('#status')).toHaveText('Pause');
+ await page.waitForTimeout(100);const before=await page.locator('#canvas').evaluate(c=>c.toDataURL());
+ await page.waitForTimeout(250);expect(await page.locator('#canvas').evaluate(c=>c.toDataURL())).toBe(before);
+ await page.getByRole('button',{name:'Resume',exact:true}).click();
+ await expect(page.locator('#status')).toHaveText('Running');
+ await expect.poll(()=>page.locator('#canvas').evaluate(c=>c.toDataURL())).not.toBe(before);
+ await page.getByRole('button',{name:'Pause animation',exact:true}).click();
+ await page.getByRole('button',{name:'Restart',exact:true}).click();await expect(page.locator('#status')).toHaveText('Running');
+ await page.goto('/#animation/circle');await expect(page.locator('.canvas-mode')).toHaveAttribute('data-mode','drawing');
+ await expect(page.getByRole('button',{name:'Record drawing',exact:true})).toBeVisible();
+ await expect(page.getByRole('button',{name:'Pause animation',exact:true})).toHaveCount(0);
+});
+
+test('edited timers hide recording while comments do not, and mobile animation controls fit five languages',async({page})=>{
+ await page.goto('/#personal');const editor=page.locator('#code');
+ await editor.click();await page.keyboard.press('ControlOrMeta+A');await page.keyboard.insertText('// setInterval is only a comment\nforward(20);');
+ await expect(page.locator('.canvas-mode')).toHaveAttribute('data-mode','drawing');
+ await editor.click();await page.keyboard.press('ControlOrMeta+A');await page.keyboard.insertText('setInterval(()=>forward(1),100);');
+ await expect(page.locator('.canvas-mode')).toHaveAttribute('data-mode','live');
+ await expect(page.getByRole('button',{name:'Record drawing',exact:true})).toHaveCount(0);
+ await page.setViewportSize({width:320,height:844});await page.goto('/#animation/pacman-move');
+ await page.getByRole('radio',{name:'Result',exact:true}).click();
+ for (const locale of ['en','de','ja','tr','hy']) {
+  await page.locator('.language-picker select').selectOption(locale);
+  const box=await page.locator('.canvas-toolbar').boundingBox();expect(box.x).toBeGreaterThanOrEqual(0);expect(box.x+box.width).toBeLessThanOrEqual(320);
+  await expect(page.locator('.canvas-toolbar button')).toHaveCount(4);
+ }
+});

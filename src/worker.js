@@ -1,6 +1,7 @@
 // Browser-only drawing adapter. It exposes no host DOM or storage.
 self.window = self;
 let canvases;
+let animationPaused = false;
 let requestSnapshot = () => {};
 const scheduleSnapshot = self.setTimeout.bind(self);
 // The teaching surface stays 700 units wide. A render camera changes only
@@ -95,8 +96,15 @@ function playPlayback() {
 onmessage = async (event) => {
   try {
     if (event.data?.control) {
-      if (!playback) return;
       const {action, delay} = event.data.control;
+      if (action === "pause-animation" || action === "resume-animation") {
+        if (typeof self.__pauseTurtleFrames !== "function" || playback) return;
+        animationPaused = action === "pause-animation";
+        self.__pauseTurtleFrames(animationPaused);
+        postMessage({type:animationPaused ? "paused" : "executing"});
+        return;
+      }
+      if (!playback) return;
       if (action === "speed" && Number.isFinite(delay)) {playbackDelay=Math.max(30,Math.min(2000,delay));if(playbackTimer !== null)playPlayback();return;}
       if (action === "play") {playPlayback();return;}
       pausePlayback();
@@ -108,7 +116,7 @@ onmessage = async (event) => {
       playbackStatus();return;
     }
     if (event.data?.input) {
-      if (typeof self.__dispatchTurtleInput === "function") self.__dispatchTurtleInput(event.data.input);
+      if (!animationPaused && typeof self.__dispatchTurtleInput === "function") self.__dispatchTurtleInput(event.data.input);
       return;
     }
     canvases = { imagecanvas: drawingCanvas(event.data.render), turtlecanvas: drawingCanvas(event.data.render) };

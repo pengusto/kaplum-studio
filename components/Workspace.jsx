@@ -1,4 +1,5 @@
 "use client";
+import {executionMode} from "../src/execution-mode";
 import { assetUrl } from "../src/asset-url";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -84,6 +85,7 @@ export default function Workspace({ route, preferences, t, drafts }) {
   const locale = preferences.locale;
   const labels = capabilityLabels[locale];
   const tools = canvasToolCopy[locale];
+  const mode = executionMode(liveCode);
   const [playback, setPlayback] = useState(null), [playbackDelay, setPlaybackDelay] = useState(300);
   const [turtleState, setTurtleState] = useState(null), [grid, setGrid] = useState(false), [pointer, setPointer] = useState(null), [copyError, setCopyError] = useState(false);
   const title =
@@ -136,7 +138,7 @@ export default function Workspace({ route, preferences, t, drafts }) {
     }
   }
   const statusText =
-    status.type === "executing"
+    status.type === "paused" ? labels.pause : status.type === "executing"
       ? t("running")
       : status.type === "running"
         ? t("loading")
@@ -313,6 +315,7 @@ export default function Workspace({ route, preferences, t, drafts }) {
                 {statusText}
               </span>
             </div>
+            <div className="canvas-mode" data-mode={mode}><span>{tools[mode]}</span>{mode !== "drawing" && <small>{mode === "animation" ? tools.animationHelp : tools.liveHelp}</small>}</div>
             <div className="canvas-toolbar">
               <div className="canvas-primary-controls" role="group" aria-label={playback ? labels.playback : t("result")}>
                 {playback ? <>
@@ -321,10 +324,11 @@ export default function Workspace({ route, preferences, t, drafts }) {
                   <button className="canvas-tool" aria-label={labels.next} title={labels.next} disabled={playback.step >= playback.total} onClick={() => preview.current.control("next")}><ChevronRight size={19}/></button>
                   <output aria-live="polite">{playback.step} / {playback.total}</output>
                 </> : <button className="canvas-tool primary" aria-label={t("run")} title={t("run")} onClick={run}><Play size={19}/><span>{t("run")}</span></button>}
+                {!playback && mode === "animation" && <button className="canvas-tool" aria-label={status.type === "paused" ? tools.resume : tools.pauseAnimation} title={status.type === "paused" ? tools.resume : tools.pauseAnimation} disabled={!['executing','paused'].includes(status.type)} onClick={() => preview.current.control(status.type === "paused" ? "resume-animation" : "pause-animation")}>{status.type === "paused" ? <Play size={19}/> : <Pause size={19}/>}</button>}
                 <button className="canvas-tool" aria-label={playback ? labels.resetReplay : t("restart")} title={playback ? labels.resetReplay : t("restart")} onClick={() => playback ? preview.current.control("reset") : run()}><RotateCcw size={18}/></button>
                 <button className="canvas-tool" aria-label={t("stop")} title={t("stop")} onClick={() => preview.current.stop()}><Square size={17}/></button>
               </div>
-              <button className="canvas-tool" aria-label={labels.record} title={labels.record} onClick={() => preview.current?.run(code.current, undefined, true)}><CircleDot size={19}/></button>
+              {mode === "drawing" && <button className="canvas-tool" aria-label={labels.record} title={labels.record} onClick={() => preview.current?.run(code.current, undefined, true)}><CircleDot size={19}/></button>}
               <details className="canvas-more">
                 <summary className="canvas-tool" aria-label={tools.more} title={tools.more}><MoreHorizontal size={20}/></summary>
                 <div className="canvas-tools-panel">
@@ -339,7 +343,7 @@ export default function Workspace({ route, preferences, t, drafts }) {
                   {pointer && <span>{labels.pointer}: {pointer.x}, {pointer.y}</span>}
                   {pointer && <button type="button" className="button secondary" onClick={async () => { try { await navigator.clipboard.writeText(`goto(${pointer.x}, ${pointer.y});`); setCopyError(false); } catch { setCopyError(true); } }}>{labels.copy}</button>}
                   {copyError && <code>{pointer && `goto(${pointer.x}, ${pointer.y});`}</code>}
-                  <small>{labels.replayHelp}</small>
+                  {mode === "drawing" && <small>{labels.replayHelp}</small>}
                 </div>
               </details>
             </div>

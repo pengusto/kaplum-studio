@@ -105,6 +105,8 @@ export class Preview {
           this.onPlayback?.({step:data.step, total:data.total, detail:inspectionStep(data.detail), playing:data.playing === true});
         } else if (data.type === "executing")
           this.onStatus({ type: "executing" });
+        else if (data.type === "paused")
+          this.onStatus({ type: "paused" });
         else if (data.type === "error") {
           this.stop();
           this.onStatus({

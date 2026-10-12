@@ -16,3 +16,19 @@ Automated workshop smoke checks verify runnable examples, state transitions and 
 Implemented live position, direction, pen, colour, width, visibility and stamp count; selected checkpoint before/after with actual canvas effects; three multilingual experiments; bounded message normalization and offline inspection checks. Existing category filters already distinguish Turtle commands, drawing helpers and example figures.
 
 Verification: 24 focused browser/engine checks passed in Chromium and Firefox; the expanded test suite has 74 checks. Local full-suite runs found an accidentally broadened legal-paragraph assertion (corrected and verified) and one Firefox animation-status failure (isolated rerun passed). Publication requires full green CI, mounted Pages checks and live browser verification.
+
+## Canvas usability follow-up
+
+The toolbar uses the edited program's parsed syntax to distinguish finite drawing,
+frame animation and timer/input/async work. This is a UI hint, not a security or
+recording guarantee: the recording engine still rejects unsupported dynamic calls.
+Only finite drawings offer recording. Frame-only animations expose pause/resume;
+pausing retains pending frame callbacks and shifts the clock origin on resume,
+so no suspended-time backlog is played. Stop terminates the sandbox and restart
+creates a fresh one. Timer/input programs use normal Run/Stop.
+
+The programme kind is labelled in all five languages, independent of the catalogue
+section (the circle activity is a finite drawing even under Animations). Mobile
+controls remain visible; optional state and comparison panels stay collapsed.
+p5.js remains deferred. The genuine source debugger and independent turtles are
+separate next stages and are not implemented by this usability change.

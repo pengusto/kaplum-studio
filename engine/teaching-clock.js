@@ -3,8 +3,20 @@
   const frameDuration = 1000 / 60;
   let clockStart = performance.now(), deliveredTick = 0, nextFrameId = 0, timer = null, ticking = false;
   const callbacks = new Map();
+  let pausedAt = null;
+  self.__pauseTurtleFrames = pause => {
+    if (pause && pausedAt === null) {
+      pausedAt = performance.now();
+      if (timer !== null) clearTimeout(timer);
+      timer = null;
+    } else if (!pause && pausedAt !== null) {
+      clockStart += performance.now() - pausedAt;
+      pausedAt = null;
+      schedule();
+    }
+  };
   function schedule() {
-    if (ticking || timer !== null || !callbacks.size) return;
+    if (pausedAt !== null || ticking || timer !== null || !callbacks.size) return;
     timer = setTimeout(tick, Math.max(1, clockStart + (deliveredTick + 1) * frameDuration - performance.now()));
   }
   function tick() {
