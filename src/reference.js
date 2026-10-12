@@ -1824,7 +1824,7 @@ reference.push(...[
 reference.push({
   "name": "circle",
   "alias": "kreisPfad",
-  "signature": "circle(radius, extent = 360, steps = 90)",
+  "signature": "circle(radius, extent = 360, steps)",
   "text": {
     "en": "Moves along a circle from the current tangent. Positive radius curves left, negative right. Extent: -360 to 360 degrees; steps: 3 to 2000. Pen-up moves without drawing. Unlike drawCircle, this changes position and heading.",
     "de": "Bewegt die Turtle vom aktuellen Tangentenpunkt auf einem Kreis. Positiver Radius: links; negativer: rechts. Winkel: -360 bis 360 Grad; Schritte: 3 bis 2000. Mit gehobenem Stift ohne Linie. Anders als drawCircle ändert dies Position und Richtung.",

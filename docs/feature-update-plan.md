@@ -62,3 +62,9 @@ Avoid a broad UI redesign during this increment. Keep the catalogue fast; replay
 ## Later work
 
 Issue #6 remains a design/prototype for actual JavaScript debugging, including loops, function calls, breakpoints, source locations and safe variable inspection. It must not be presented as complete merely because drawing stepping exists. Multiple turtles (#7) and the p5.js workshop evaluation (#9) remain later independent decisions.
+
+## Implementation checkpoint
+
+Local commits 92e5c52, 41e6589, 0f542a9 and 9a781d0 implement bounded finite drawing recording, focused workspace playback and native circle paths. Chromium regression suite: 58 passed; Firefox targeted engine/playback/reference checks: 12 passed. The trace is a drawing replay, not a JavaScript debugger or general undo. Stamps, drawing undo, the dedicated new-functions collection and Pacman/Dino construction views remain next. Deployment must be verified separately; local checks alone are not release proof.
+
+Quick local test: open My projects, paste a finite square, choose Record drawing, advance a step, play, pause, rewind and Stop. In Basic commands search circle and open the command to test arcs or a five-sided path. For geometric endpoints use wrap(false).
