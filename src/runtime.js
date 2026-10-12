@@ -16,16 +16,18 @@ function loadSources() {
 }
 // Each run receives a new opaque sandbox and a terminable worker.
 export class Preview {
-  constructor(canvas, onStatus, onFrame, onState, onPlayback) {
+  constructor(canvas, onStatus, onFrame, onState, onPlayback, onDebug) {
     this.canvas = canvas;
     this.onStatus = onStatus;
     this.onFrame = onFrame;
     this.onState = onState;
     this.onPlayback = onPlayback;
+    this.onDebug = onDebug;
     this.sequence = 0;
   }
   stop() {
     this.sequence++;
+    this.onDebug?.(null);
     this.detachInput?.(); this.detachInput = null;
     this.onState?.(null); this.lastState = null; this.inputKeys = new Set(); this.onPlayback?.(null);
     this.frame?.remove();
@@ -35,7 +37,7 @@ export class Preview {
     this.onStatus({ type: "stopped" });
   }
   control(action, delay) { this.frame?.contentWindow?.postMessage({control:{action,delay}}, "*"); }
-  async run(code, render, replay = false) {
+  async run(code, render, replay = false, debug = null) {
     this.stop();
     const run = this.sequence;
     const send = input => this.frame?.contentWindow?.postMessage({ input }, "*");
@@ -63,7 +65,7 @@ export class Preview {
       frame.hidden = true;
       frame.setAttribute("sandbox", "allow-scripts");
       frame.title = "Isolated program";
-      const bridge = `let worker; onmessage=e=>{if(e.source!==parent)return; if(e.data.input){worker?.postMessage({input:e.data.input});return;} if(e.data.control){worker?.postMessage({control:e.data.control});return;} if(!e.data.start)return; const blob=new Blob([e.data.worker],{type:'text/javascript'}); const url=URL.createObjectURL(blob); worker=new Worker(url); URL.revokeObjectURL(url); worker.onmessage=event=>{const d=event.data;if(d.type==='error')worker.terminate();parent.postMessage(d,'*',d.bitmap?[d.bitmap]:[]);}; worker.onerror=event=>parent.postMessage({type:'error',message:event.message},'*'); worker.postMessage({code:e.data.code,engine:e.data.engine,render:e.data.render,replay:e.data.replay});}; parent.postMessage({type:'ready'},'*');`;
+      const bridge = `let worker; onmessage=e=>{if(e.source!==parent)return; if(e.data.input){worker?.postMessage({input:e.data.input});return;} if(e.data.control){worker?.postMessage({control:e.data.control});return;} if(!e.data.start)return; const blob=new Blob([e.data.worker],{type:'text/javascript'}); const url=URL.createObjectURL(blob); worker=new Worker(url); URL.revokeObjectURL(url); worker.onmessage=event=>{const d=event.data;if(d.type==='error')worker.terminate();parent.postMessage(d,'*',d.bitmap?[d.bitmap]:[]);}; worker.onerror=event=>parent.postMessage({type:'error',message:event.message},'*'); worker.postMessage({code:e.data.code,engine:e.data.engine,render:e.data.render,replay:e.data.replay,debug:e.data.debug});}; parent.postMessage({type:'ready'},'*');`;
       frame.srcdoc = `<!doctype html><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval'; worker-src blob:; connect-src 'none'"><script>${bridge}<\/script>`;
       const receive = (event) => {
         if (event.source !== frame.contentWindow) return;
@@ -82,6 +84,7 @@ export class Preview {
               code,
               render,
               replay,
+              debug,
             },
             "*",
           );
@@ -101,6 +104,9 @@ export class Preview {
             if (next !== this.lastState) { this.lastState = next; this.onState?.(inspected); }
           }
           this.onFrame?.({ render });
+        } else if (data.type === "debug" && Number.isInteger(data.line) && data.line >= 0 && Array.isArray(data.variables)) {
+          this.onStatus({type:data.done === true ? "ready" : data.playing === true ? "executing" : "paused"});
+          this.onDebug?.({line:data.line,done:data.done === true,playing:data.playing === true,variables:data.variables.slice(0,100).filter(v=>v && typeof v.name === "string" && typeof v.value === "string").map(v=>({name:v.name.slice(0,100),value:v.value.slice(0,240)}))});
         } else if (data.type === "playback" && Number.isInteger(data.step) && Number.isInteger(data.total)) {
           this.onPlayback?.({step:data.step, total:data.total, detail:inspectionStep(data.detail), playing:data.playing === true});
         } else if (data.type === "executing")

@@ -69,3 +69,5 @@ Teacher inspection reuses the existing frame/state and playback messages. Checkp
 Frame pause retains queued callbacks in `engine/teaching-clock.js` and suspends its timer. Resume shifts the clock origin by the paused duration; it does not catch up suspended time. Worker control acknowledgements update the host state. Stop still destroys the sandbox. Timer/input programs retain Run/Stop rather than claiming this frame-only pause contract.
 
 `src/lesson-tasks.js` supplies goal, expected original outcome and edit challenge for the eight course lessons in five languages. The edit action focuses CodeMirror; it never substitutes a solution. Expected outcomes are explanatory baselines, not grading or proof that an edited program is correct.
+
+The opt-in source debugger compiles a restricted Lezer-validated subset to a native generator in the existing isolated worker. It advances execution rather than replaying completed drawings. CodeMirror decorations show the next original line; bounded primitive snapshots avoid property access. See [prototype design and limits](source-debugger.md).

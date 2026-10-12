@@ -1075,3 +1075,19 @@ html:has(.documentation), body:has(.documentation) { height: auto; overflow: aut
 .lesson-task .lesson-expected p,.lesson-task .lesson-challenge p {margin:0 0 10px;line-height:1.6;}
 .lesson-expected small {color:var(--muted);font-size:12px;line-height:1.5;}
 .lesson-how {color:var(--muted);font-size:13px;line-height:1.6;}
+
+.source-debugger {padding:12px;margin:8px 12px;border:1px solid var(--line);border-radius:12px;flex-shrink:0;font-size:.85rem;}
+.source-debugger p {margin:6px 0;}
+.source-debugger dl {display:grid;gap:6px;}
+.source-debugger dl > div {display:flex;flex-wrap:wrap;gap:12px;}
+.source-debugger dd {margin:0;font-family:monospace;overflow-wrap:anywhere;}
+.source-debugger small {display:block;color:var(--muted);margin-top:8px;}
+.cm-debug-line {background:color-mix(in srgb,var(--accent) 22%,transparent);box-shadow:inset 3px 0 var(--accent);}
+
+.result-pane:has(.source-debugger) {overflow:auto;}
+.result-pane:has(.source-debugger) .canvas-surface {flex-shrink:0;min-height:260px;}
+@media(min-width:701px) {
+  .workspace-panels:has(.source-debugger) {flex:0 0 auto;min-height:900px;}
+  .workbench:has(.source-debugger) {min-height:900px;height:auto;}
+  .workbench:has(.source-debugger) .code-pane {flex:0 0 220px;}
+}

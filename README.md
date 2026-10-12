@@ -63,7 +63,7 @@ Kaplum Studio is in early development and used for teaching. Working today: the 
 
 The course includes eight runnable experiments with a goal, an observable baseline and a source-edit challenge. Finite drawings support recorded playback and drawing undo. Frame animations support pause/resume; timer and input programs use Run/Stop.
 
-Next stages are a real source debugger ([#6](https://github.com/pengusto/kaplum-studio/issues/6)) and independent named turtles ([#7](https://github.com/pengusto/kaplum-studio/issues/7)). Neither is implemented yet. The optional p5.js mode is deferred. Safari, native translation review and classroom usability remain unverified.
+A bounded [source debugger prototype](docs/source-debugger.md) now pauses before code instructions, highlights the line and shows primitive variables. It supports simple variables, direct teaching calls and braced for/while/if; functions and breakpoints are still pending ([#6](https://github.com/pengusto/kaplum-studio/issues/6)). Independent named turtles remain planned ([#7](https://github.com/pengusto/kaplum-studio/issues/7)). The optional p5.js mode is deferred. Safari, native translation review and classroom usability remain unverified.
 
 **Languages.** Complete interface and teaching content in English, German, Japanese, Turkish and Armenian. Translations are AI-assisted; native-speaker review is still welcome. Learner code uses English JavaScript names; German aliases exist for teaching commands.
 
@@ -105,3 +105,5 @@ Open the [feature test lab](https://pengusto.github.io/kaplum-studio/#course): s
 ![Course walkthrough: goal, editable code and recorded drawing controls](docs/images/kaplum-course.png)
 
 Frame animations show **Pause animation** while running and **Resume animation** while paused. Resume retains pending frames without replaying the paused time. Restart begins again; Stop terminates execution. This pause is separate from finite drawing playback, which does not step JavaScript statements or inspect variables.
+
+To test code stepping, open a course lesson, choose **More canvas tools → Start code debugger**, then use **Next code statement**. The highlighted instruction has not run yet. Continue runs to completion unless you pause or stop. See [supported syntax and limitations](docs/source-debugger.md).

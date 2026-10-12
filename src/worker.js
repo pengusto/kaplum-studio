@@ -70,7 +70,7 @@ function report(error) {
     type: "error",
     message,
     kind,
-    line: match ? Number(match[1]) : null,
+    line: debuggerRun?.current?.line || (match ? Number(match[1]) : null),
   });
 }
 
@@ -93,10 +93,47 @@ function playPlayback() {
   playbackStatus(true);
   playbackTimer=setTimeout(() => {playbackTimer=null;playback.next();playPlayback();},playbackDelay);
 }
+let debuggerRun=null, debuggerTimer=null;
+function stopDebugTimer() { if(debuggerTimer!==null) clearTimeout(debuggerTimer); debuggerTimer=null; }
+function debugValues(bindings) {
+  return bindings.map(([name,read])=>{
+    let value="not in scope";
+    try {
+      const v=read(),type=typeof v;
+      if(v===null) value="null";
+      else if(type==="string") value=JSON.stringify(v.slice(0,200));
+      else if(["number","boolean","undefined","bigint"].includes(type)) value=String(v);
+      else value=`[${type}]`;
+    } catch { /* Uninitialized or out-of-scope bindings are never evaluated further. */ }
+    return {name,value};
+  });
+}
+function debugStatus(playing=false) {
+  postMessage({type:"debug",line:debuggerRun.current?.line || 0,done:debuggerRun.done,playing,variables:debuggerRun.variables || []});
+}
+function advanceDebug(playing=false) {
+  stopDebugTimer();
+  if(!debuggerRun || debuggerRun.done) return;
+  if(++debuggerRun.steps>100000) throw Error("Debugger prototype: 100,000-step budget exceeded.");
+  const next=debuggerRun.iterator.next();
+  // Retain only primitive snapshots, not closure references from completed scopes.
+  debuggerRun.variables=debugValues(next.done ? debuggerRun.bindings || [] : next.value.bindings);
+  debuggerRun.bindings=next.done ? null : next.value.bindings;
+  debuggerRun.current=next.done ? null : {line:next.value.line};
+  debuggerRun.done=next.done;
+  debugStatus(playing && !next.done);
+  if(playing && !next.done) debuggerTimer=scheduleSnapshot(()=>{try{advanceDebug(true);}catch(error){report(error);}},10);
+}
 onmessage = async (event) => {
   try {
     if (event.data?.control) {
       const {action, delay} = event.data.control;
+      if(action.startsWith("debug-")) {
+        if(!debuggerRun) return;
+        if(action==="debug-pause") {stopDebugTimer();debugStatus();}
+        if(action==="debug-next" || action==="debug-continue") advanceDebug(action==="debug-continue");
+        return;
+      }
       if (action === "pause-animation" || action === "resume-animation") {
         if (typeof self.__pauseTurtleFrames !== "function" || playback) return;
         animationPaused = action === "pause-animation";
@@ -116,7 +153,7 @@ onmessage = async (event) => {
       playbackStatus();return;
     }
     if (event.data?.input) {
-      if (!animationPaused && typeof self.__dispatchTurtleInput === "function") self.__dispatchTurtleInput(event.data.input);
+      if (!debuggerRun && !animationPaused && typeof self.__dispatchTurtleInput === "function") self.__dispatchTurtleInput(event.data.input);
       return;
     }
     canvases = { imagecanvas: drawingCanvas(event.data.render), turtlecanvas: drawingCanvas(event.data.render) };
@@ -145,7 +182,11 @@ onmessage = async (event) => {
     };
     postMessage({ type: "executing" });
     const execute = () => (0, eval)('"use strict";' + event.data.code + "\n//# sourceURL=playground-program.js");
-    if (event.data.replay) { playback=recordDrawing(execute);playbackStatus(); }
+    if (event.data.debug) {
+      debuggerRun={iterator:(0,eval)("(function*(){\"use strict\";"+event.data.debug+"\n})()"),current:null,done:false,steps:0,variables:[]};
+      advanceDebug();
+    }
+    else if (event.data.replay) { playback=recordDrawing(execute);playbackStatus(); }
     else execute();
     await snapshot();
   } catch (error) {

@@ -1,4 +1,6 @@
 "use client";
+import {compileDebugSource} from "../src/source-debugger";
+import {debuggerCopy} from "../src/debugger-copy";
 import {lessonTasks,taskLabels} from "../src/lesson-tasks";
 import {executionMode} from "../src/execution-mode";
 import { assetUrl } from "../src/asset-url";
@@ -86,6 +88,8 @@ export default function Workspace({ route, preferences, t, drafts }) {
   const locale = preferences.locale;
   const labels = capabilityLabels[locale];
   const tools = canvasToolCopy[locale];
+  const debugText = debuggerCopy[locale];
+  const [debug,setDebug]=useState(null),[debugError,setDebugError]=useState("");
   const mode = executionMode(liveCode);
   const task = lesson && lessonTasks[lesson.id][locale];
   const taskText = taskLabels[locale];
@@ -102,7 +106,7 @@ export default function Workspace({ route, preferences, t, drafts }) {
             ? locales[locale].activities[id]?.title
             : item?.name;
   useEffect(() => {
-    const instance = new Preview(canvas.current, setStatus, null, setTurtleState, setPlayback);
+    const instance = new Preview(canvas.current, setStatus, null, setTurtleState, setPlayback, setDebug);
     preview.current = instance;
     const visibility = () => {
       if (document.hidden) instance.stop();
@@ -123,7 +127,15 @@ export default function Workspace({ route, preferences, t, drafts }) {
       preview.current = null;
     };
   }, []);
+  function startDebug() {
+    preview.current?.stop();
+    setDebugError("");
+    try { const compiled=compileDebugSource(code.current); setPanel("result"); preview.current?.run(code.current,undefined,false,compiled); }
+    catch(error) {setDebugError(error.message);}
+  }
+  useEffect(()=>{editor.current?.debugLine(debug?.line || null);},[debug]);
   function run() {
+    setDebugError("");
     preview.current?.run(code.current);
   }
   async function exportProject() {
@@ -276,6 +288,7 @@ export default function Workspace({ route, preferences, t, drafts }) {
               editorRef={editor}
               label={t("editor")}
               onChange={(value) => {
+                if(debug) preview.current?.stop();
                 code.current = value;
                 setLiveCode(value);
                 drafts.set(route, value);
@@ -324,21 +337,25 @@ export default function Workspace({ route, preferences, t, drafts }) {
             <div className="canvas-mode" data-mode={mode}><span>{tools[mode]}</span>{mode !== "drawing" && <small>{mode === "animation" ? tools.animationHelp : tools.liveHelp}</small>}</div>
             <div className="canvas-toolbar">
               <div className="canvas-primary-controls" role="group" aria-label={playback ? labels.playback : t("result")}>
-                {playback ? <>
+                {debug ? <>
+                  <button className="canvas-tool primary" aria-label={debugText.next} title={debugText.next} disabled={debug.done || debug.playing} onClick={()=>preview.current.control("debug-next")}><ChevronRight size={19}/></button>
+                  <button className="canvas-tool" aria-label={debug.playing ? debugText.pause : debugText.continue} title={debug.playing ? debugText.pause : debugText.continue} disabled={debug.done} onClick={()=>preview.current.control(debug.playing ? "debug-pause" : "debug-continue")}>{debug.playing ? <Pause size={19}/> : <Play size={19}/>}</button>
+                </> : playback ? <>
                   <button className="canvas-tool" aria-label={labels.back} title={labels.back} disabled={!playback.step} onClick={() => preview.current.control("back")}><ChevronLeft size={19}/></button>
                   <button className="canvas-tool primary" aria-label={playback.playing ? labels.pause : labels.play} title={playback.playing ? labels.pause : labels.play} disabled={playback.step >= playback.total} onClick={() => {preview.current.control("speed",playbackDelay);preview.current.control(playback.playing ? "pause" : "play");}}>{playback.playing ? <Pause size={19}/> : <Play size={19}/>}</button>
                   <button className="canvas-tool" aria-label={labels.next} title={labels.next} disabled={playback.step >= playback.total} onClick={() => preview.current.control("next")}><ChevronRight size={19}/></button>
                   <output aria-live="polite">{playback.step} / {playback.total}</output>
                 </> : mode === "animation" && ["executing","paused"].includes(status.type) ? <button className="canvas-tool primary" aria-label={status.type === "paused" ? tools.resume : tools.pauseAnimation} title={status.type === "paused" ? tools.resume : tools.pauseAnimation} onClick={() => preview.current.control(status.type === "paused" ? "resume-animation" : "pause-animation")}>{status.type === "paused" ? <Play size={19}/> : <Pause size={19}/>}<span>{status.type === "paused" ? tools.resume : labels.pause}</span></button> : <button className="canvas-tool primary" aria-label={t("run")} title={t("run")} onClick={run}><Play size={19}/><span>{t("run")}</span></button>}
 
-                <button className="canvas-tool" aria-label={playback ? labels.resetReplay : t("restart")} title={playback ? labels.resetReplay : t("restart")} onClick={() => playback ? preview.current.control("reset") : run()}><RotateCcw size={18}/></button>
+                <button className="canvas-tool" aria-label={playback ? labels.resetReplay : t("restart")} title={playback ? labels.resetReplay : t("restart")} onClick={() => debug ? startDebug() : playback ? preview.current.control("reset") : run()}><RotateCcw size={18}/></button>
                 <button className="canvas-tool" aria-label={t("stop")} title={t("stop")} onClick={() => preview.current.stop()}><Square size={17}/></button>
               </div>
-              {mode === "drawing" && <button className="canvas-tool" aria-label={labels.record} title={labels.record} onClick={() => preview.current?.run(code.current, undefined, true)}><CircleDot size={19}/></button>}
+              {mode === "drawing" && !debug && <button className="canvas-tool" aria-label={labels.record} title={labels.record} onClick={() => preview.current?.run(code.current, undefined, true)}><CircleDot size={19}/></button>}
               <details className="canvas-more">
                 <summary className="canvas-tool" aria-label={tools.more} title={tools.more}><MoreHorizontal size={20}/></summary>
                 <div className="canvas-tools-panel">
                   <strong>{tools.more}</strong>
+                  {mode === "drawing" && <button className="button secondary" onClick={event=>{event.currentTarget.closest("details").open=false;startDebug();}}><FileCode2 size={16}/>{debugText.start}</button>}
                   <label><input type="checkbox" checked={grid} onChange={e => setGrid(e.target.checked)}/><Grid2X2 size={17}/>{labels.grid}</label>
                   {playback && <>
                     <button className="button secondary" onClick={run}><Play size={16}/>{t("run")}</button>
@@ -353,6 +370,13 @@ export default function Workspace({ route, preferences, t, drafts }) {
                 </div>
               </details>
             </div>
+            {debugError && <p className="source-debugger" role="alert">{debugError}</p>}
+            {debug && <section className="source-debugger" aria-label={debugText.title}>
+              <strong>{debugText.title}</strong>
+              <p aria-live="polite">{debug.done ? debugText.finished : `${debugText.line} ${debug.line}`}</p>
+              <details open><summary>{debugText.variables}</summary><dl>{debug.variables.map(v=><div key={v.name}><dt>{v.name}</dt><dd>{v.value}</dd></div>)}</dl></details>
+              <small>{debugText.help}</small>
+            </section>}
             <div className="canvas-surface" data-grid={grid} data-canvas={preferences.canvas}>
               <canvas
                 ref={canvas}
@@ -405,6 +429,7 @@ export default function Workspace({ route, preferences, t, drafts }) {
                   onApply={(value) => {
                     editor.current.value = value;
                     code.current = value;
+                    if(debug) preview.current?.stop();
                     setLiveCode(value);
                     drafts.set(route, value);
                     preview.current?.run(value);
