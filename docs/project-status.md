@@ -2,7 +2,7 @@
 
 Paused by the owner on 12 October 2026 after accepting the current UI.
 
-This is a separate release snapshot. The original development repository is pending deletion: GitHub requires an additional `delete_repo` authorization. Local teaching archives remain preserved. Website deployment uses a separate GitHub Pages workflow.
+This is a separate release snapshot. The old private GitHub repository was deleted on 12 October 2026 after owner authorization; its API now returns 404. Local teaching archives remain preserved. Website deployment uses a separate GitHub Pages workflow.
 
 ## Accepted baseline
 
