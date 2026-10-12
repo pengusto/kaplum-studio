@@ -24,3 +24,12 @@ const interfaceRows={
  hy:["Ուսումնասիրել կոդը","Հաջորդ քայլը","Շարունակել","Դադար","Հաջորդ քայլը կատարում է նշված հրահանգը։","Աջակցվող կոդ"]
 };
 for(const [locale,values] of Object.entries(interfaceRows)) Object.assign(debuggerCopy[locale],Object.fromEntries(["startShort","nextShort","continueShort","pauseShort","stepHint","limits"].map((key,i)=>[key,values[i]])));
+
+const stepRows={
+ en:["Up next","Recent steps","Statement","Check control flow","Enter loop body","No instruction has run yet. Press Next step.","Showing the latest 8 checkpoints. Helper calls run as one step."],
+ de:["Als Nächstes","Letzte Schritte","Anweisung","Ablauf prüfen","In den Schleifenkörper","Noch nichts ausgeführt. Drücke Nächster Schritt.","Die letzten 8 Haltestellen. Ein Helferaufruf läuft als ein Schritt."],
+ ja:["次に実行","最近のステップ","文","制御を確認","ループ本体へ","まだ実行されていません。次のステップを押してください。","最新8件を表示。補助関数は1ステップとして実行。"],
+ tr:["Sıradaki","Son adımlar","İfade","Akışı kontrol et","Döngü gövdesine gir","Henüz çalışmadı. Sonraki adıma bas.","Son 8 kontrol noktası. Yardımcı çağrılar tek adımda çalışır."],
+ hy:["Հաջորդը","Վերջին քայլերը","Հրահանգ","Ստուգել ընթացքը","Մտնել ցիկլի մարմին","Դեռ ոչինչ չի կատարվել։ Սեղմեք Հաջորդ քայլը։","Վերջին 8 կետերը։ Օգնական կանչը մեկ քայլ է։"]
+};
+for(const [locale,values] of Object.entries(stepRows)) Object.assign(debuggerCopy[locale],Object.fromEntries(["upNext","recent","statement","control","body","initialStep","historyHelp"].map((key,i)=>[key,values[i]])));

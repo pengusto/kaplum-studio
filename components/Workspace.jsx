@@ -385,7 +385,10 @@ export default function Workspace({ route, preferences, t, drafts }) {
                 </div>
               </details>
             </div>
-            {debug && <p className="debug-instruction" aria-live="polite">{debug.done ? debugText.finished : `${debugText.line} ${debug.line} · ${debugText.stepHint}`}</p>}
+            {debug && <section className="debug-command" aria-label={debugText.upNext} aria-live="polite">
+              <strong>{debug.done ? debugText.finished : debugText.upNext}</strong>
+              {!debug.done && <><span>{debugText.line} {debug.line} · {debugText[debug.kind]}</span><pre><code>{debug.source}</code></pre><small>{debugText.stepHint}</small></>}
+            </section>}
             {debugError && <p className="source-debugger" role="alert">{debugError}</p>}
             <div className="canvas-surface" data-grid={grid} data-canvas={preferences.canvas}>
               <canvas
@@ -405,6 +408,10 @@ export default function Workspace({ route, preferences, t, drafts }) {
             </div>
             {debug && <section className="source-debugger" aria-label={debugText.title}>
               <strong>{debugText.title}</strong>
+              <section className="debug-history" aria-label={debugText.recent}><h3>{debugText.recent}</h3>
+                {!debug.history.length ? <p>{debugText.initialStep}</p> : <ol>{debug.history.map((step,index)=><li key={index}><span>{debugText.line} {step.line} · {debugText[step.kind]}</span><code>{step.source}</code></li>)}</ol>}
+                <small>{debugText.historyHelp}</small>
+              </section>
               {debug.breakpoint && <p role="status">{debugText.breakpointHit}</p>}
               <p aria-live="polite">{debug.done ? debugText.finished : `${debugText.line} ${debug.line}`}</p>
               <details className="breakpoint-settings"><summary>{debugText.breakpoints}</summary>

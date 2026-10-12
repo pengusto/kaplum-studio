@@ -109,17 +109,19 @@ function debugValues(bindings) {
   });
 }
 function debugStatus(playing=false, breakpoint=false) {
-  postMessage({type:"debug",line:debuggerRun.current?.line || 0,done:debuggerRun.done,playing,breakpoint,variables:debuggerRun.variables || []});
+  postMessage({type:"debug",line:debuggerRun.current?.line || 0,done:debuggerRun.done,playing,breakpoint,source:debuggerRun.current?.source || "",kind:debuggerRun.current?.kind || "statement",history:debuggerRun.history,variables:debuggerRun.variables || []});
 }
 function advanceDebug(playing=false) {
   stopDebugTimer();
   if(!debuggerRun || debuggerRun.done) return;
   if(++debuggerRun.steps>100000) throw Error("Debugger prototype: 100,000-step budget exceeded.");
+  const previous=debuggerRun.current;
   const next=debuggerRun.iterator.next();
+  if(previous) debuggerRun.history=[...debuggerRun.history,previous].slice(-8);
   // Retain only primitive snapshots, not closure references from completed scopes.
   debuggerRun.variables=debugValues(next.done ? debuggerRun.bindings || [] : next.value.bindings);
   debuggerRun.bindings=next.done ? null : next.value.bindings;
-  debuggerRun.current=next.done ? null : {line:next.value.line};
+  debuggerRun.current=next.done ? null : {line:next.value.line,source:next.value.source,kind:next.value.kind};
   debuggerRun.done=next.done;
   const breakpoint=playing && !next.done && debuggerRun.breakpoints.has(next.value.line);
   debugStatus(playing && !next.done && !breakpoint,breakpoint);
@@ -185,7 +187,7 @@ onmessage = async (event) => {
     postMessage({ type: "executing" });
     const execute = () => (0, eval)('"use strict";' + event.data.code + "\n//# sourceURL=playground-program.js");
     if (event.data.debug) {
-      debuggerRun={iterator:(0,eval)("(function*(){\"use strict\";"+event.data.debug.code+"\n})()"),current:null,done:false,steps:0,variables:[],breakpoints:new Set(Array.isArray(event.data.debug.breakpoints) ? event.data.debug.breakpoints.filter(n=>Number.isInteger(n) && n>0 && n<=50000).slice(0,100) : [])};
+      debuggerRun={iterator:(0,eval)("(function*(){\"use strict\";"+event.data.debug.code+"\n})()"),current:null,done:false,steps:0,variables:[],history:[],breakpoints:new Set(Array.isArray(event.data.debug.breakpoints) ? event.data.debug.breakpoints.filter(n=>Number.isInteger(n) && n>0 && n<=50000).slice(0,100) : [])};
       advanceDebug();
     }
     else if (event.data.replay) { playback=recordDrawing(execute);playbackStatus(); }

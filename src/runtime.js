@@ -106,7 +106,7 @@ export class Preview {
           this.onFrame?.({ render });
         } else if (data.type === "debug" && Number.isInteger(data.line) && data.line >= 0 && Array.isArray(data.variables)) {
           this.onStatus({type:data.done === true ? "ready" : data.playing === true ? "executing" : "paused"});
-          this.onDebug?.({line:data.line,done:data.done === true,playing:data.playing === true,breakpoint:data.breakpoint === true,variables:data.variables.slice(0,100).filter(v=>v && typeof v.name === "string" && typeof v.value === "string").map(v=>({name:v.name.slice(0,100),value:v.value.slice(0,240)}))});
+          this.onDebug?.({line:data.line,done:data.done === true,playing:data.playing === true,breakpoint:data.breakpoint === true,source:typeof data.source === "string" ? data.source.slice(0,500) : "",kind:["body","control"].includes(data.kind) ? data.kind : "statement",history:Array.isArray(data.history) ? data.history.slice(-8).filter(v=>v && Number.isInteger(v.line) && v.line>0 && typeof v.source === "string").map(v=>({line:v.line,source:v.source.slice(0,500),kind:["body","control"].includes(v.kind) ? v.kind : "statement"})) : [],variables:data.variables.slice(0,100).filter(v=>v && typeof v.name === "string" && typeof v.value === "string").map(v=>({name:v.name.slice(0,100),value:v.value.slice(0,240)}))});
         } else if (data.type === "playback" && Number.isInteger(data.step) && Number.isInteger(data.total)) {
           this.onPlayback?.({step:data.step, total:data.total, detail:inspectionStep(data.detail), playing:data.playing === true});
         } else if (data.type === "executing")
