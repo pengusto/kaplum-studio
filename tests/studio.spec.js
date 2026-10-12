@@ -27,7 +27,8 @@ test("React gallery keeps complete inventory, navigation, search and explanation
   await page.getByRole("searchbox").fill("drawDino");
   await expect(page.locator(".example-card")).toHaveCount(1);
   await expect(page.locator(".example-card")).toContainText("legAngle");
-  await page.getByRole("link", { name: "Explore parameters", exact: true }).click();
+  await expect(page.getByRole("slider", { name: "legAngle slider", exact: true })).toBeVisible();
+  await expect(page).toHaveURL(/#figures$|\/$/);
   await page.getByRole("link", { name: "Open in Studio", exact: true }).click();
   await expect(page.locator("h1")).toHaveText("Dinosaur");
   await expect(page.locator(".explanation-pane")).toContainText("legAngle");
@@ -203,7 +204,8 @@ test("production screenshots for dark/light, settings and narrow review", async 
 }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/#figures");
-  await expect(page.locator(".catalogue-preview canvas").first()).toBeVisible();
+  await expect(page.locator(".catalogue-preview").first()).toHaveAttribute("data-drawn", "true");
+  await expect(page.locator(".example-card").first()).toHaveCSS("opacity", "1");
   await page.screenshot({ path: "docs/images/kaplum-next-dark.png" });
   await page.goto("/#figure/figur-dino");
   await expect(page.locator("#status")).toHaveText("Running");
@@ -225,7 +227,7 @@ test("production screenshots for dark/light, settings and narrow review", async 
   await page.getByRole("radio", { name: "Result", exact: true }).click();
   await expect
     .poll(() =>
-      page.locator(".rubber-segment__thumb").evaluate((el) => {
+      page.locator(".mobile-tabs .rubber-segment__thumb").evaluate((el) => {
         const left = el.style.clipPath.match(/inset\([^)]*? ([\d.]+)px round/);
         return left ? Number(left[1]) : 0;
       }),

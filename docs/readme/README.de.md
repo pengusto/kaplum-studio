@@ -76,7 +76,7 @@ Der eigene Code von Kaplum Studio steht unter der [MIT-Lizenz](../../LICENSE).
 
 Einige Teile stammen aus anderen Projekten und behalten ihre eigenen Lizenzen:
 
-- `engine/library.js` ist ein neu implementierter Canvas-Turtle-Kern unter MIT. Er ersetzt den angepassten Unterrichts-Fork und dessen RGB-Parser. Für die Zeichenhelfer in `engine/functions.js` bleibt vor einer öffentlichen Veröffentlichung eine separate Herkunftsprüfung offen. Die ältere Git-Historie enthält den vorherigen Kern; dessen Hinweise bleiben in [THIRD_PARTY_NOTICES.txt](../../THIRD_PARTY_NOTICES.txt) erhalten.
+- `engine/library.js` ist ein neu implementierter Canvas-Turtle-Kern unter MIT. Er ersetzt den angepassten Unterrichts-Fork und dessen RGB-Parser. Die Zeichenhelfer in `engine/functions.js` wurden vom Autor mit Codex erstellt und stehen unter MIT. Dieses öffentliche Repository enthält keine alte Unterrichts-Engine oder deren Git-Historie. Die Lizenzhinweise der verwendeten Fremdkomponenten stehen in [THIRD_PARTY_NOTICES.txt](../../THIRD_PARTY_NOTICES.txt).
 - Die React-Bits-Komponenten in `components/react-bits/` stehen unter MIT + Commons Clause. Siehe [deren Lizenz](../../components/react-bits/LICENSE.md).
 - Die npm-Abhängigkeiten sind in `THIRD_PARTY_NOTICES.txt` aufgeführt.
 

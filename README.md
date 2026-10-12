@@ -10,7 +10,7 @@ Kaplum Studio is a visual JavaScript Turtle studio for children who are new to p
 
 It grew out of teaching beginner programming courses, where the hardest part was rarely the idea of a function call. It was connecting `drawDino(80, "LimeGreen", 25)` to *which number does what*.
 
-![Kaplum Studio: example library, code editor above the live canvas and the parameter inspector](docs/images/kaplum-next-dark.png)
+![Kaplum Studio: three-column figure catalogue with live previews and inline parameter controls](docs/images/kaplum-next-dark.png)
 
 ## What it does
 
