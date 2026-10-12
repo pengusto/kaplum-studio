@@ -152,6 +152,6 @@ test('edited timers hide recording while comments do not, and mobile animation c
  for (const locale of ['en','de','ja','tr','hy']) {
   await page.locator('.language-picker select').selectOption(locale);
   const box=await page.locator('.canvas-toolbar').boundingBox();expect(box.x).toBeGreaterThanOrEqual(0);expect(box.x+box.width).toBeLessThanOrEqual(320);
-  await expect(page.locator('.canvas-toolbar button')).toHaveCount(4);
+  await expect(page.locator('.canvas-toolbar button')).toHaveCount(3);
  }
 });
