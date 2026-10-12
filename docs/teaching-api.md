@@ -48,3 +48,7 @@ Radius must be finite and nonzero, extent finite in [-360,360], and explicit ste
 ## Removable stamps
 
 `stamp()` returns a monotonically increasing positive integer ID per runtime. It leaves a filled arrow (current pen colour, position and heading) even when the turtle is hidden or pen raised. Up to 1000 live impressions are permitted. Stamps are a separate overlay above ordinary ink, in insertion order; subsequent ink does not cover them. This explicit layer allows removal without erasing underlying lines or other impressions. `clearStamp(id)` rejects non-positive/non-integer IDs, returns false for missing IDs and true for removal. `clear()` removes ink and stamps but does not reuse IDs. Recording starts with a blank stamp layer; stamp creation/removal/clear are ordered trace operations and survive rewind/reset/finish. Aliases: `stemple`, `loescheStempel`.
+
+## Example construction views
+
+Pacman and Dino workspaces include an expandable, read-only construction view. It loads the maintained `engine/functions.js` and extracts the actual named function using the installed JavaScript parser. No second source copy is maintained. Helper dependencies remain part of the shared engine; the displayed function is explanatory source, not a standalone replacement engine. Opening or changing language never replaces the learner buffer. Failed loads can be retried by closing/reopening the view. All five UI languages label this explicitly as an example helper.

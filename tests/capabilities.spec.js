@@ -29,3 +29,11 @@ test('stamp command renders and removing one stamp keeps another through the wor
  await expect.poll(()=>page.locator('#canvas').evaluate(c=>c.getContext('2d').getImageData(410,350,1,1).data[3])).toBe(255);
  await expect.poll(()=>page.locator('#canvas').evaluate(c=>c.getContext('2d').getImageData(290,350,1,1).data[3])).toBe(0);
 });
+
+test('Pacman and Dino construction views use maintained source and protect the draft',async({page})=>{
+ for(const id of ['figur-pacman','figur-dino']){
+  await page.goto('/#figure/'+id);const editor=page.locator('#code');await editor.click();await page.keyboard.press('ControlOrMeta+A');await page.keyboard.insertText('forward(42); // my draft');
+  await page.locator('.example-construction summary').click();await expect(page.locator('.example-construction pre')).toContainText(id==='figur-pacman'?'function drawPacman(':'function drawDino(');
+  await expect(editor).toContainText('my draft');await page.locator('.language-picker select').selectOption('de');await expect(editor).toContainText('my draft');
+ }
+});

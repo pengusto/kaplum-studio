@@ -14,6 +14,7 @@ import {
   Image,
   SlidersHorizontal,
 } from "lucide-react";
+import ExampleConstruction from "./ExampleConstruction";
 import DinoControls from "./DinoControls";
 import EditorPane from "./EditorPane";
 import StatusMark from "./react-bits/StatusMark";
@@ -340,6 +341,7 @@ export default function Workspace({ route, preferences, t, drafts }) {
         <section className="explanation-pane" id="parameter-inspector">
           <h2>{t("parameters")}</h2>
           <p>{t("inspectorHelp")}</p>
+          <ExampleConstruction name={entry?.name} locale={locale} />
           {entry && (
             <>
               <details className="signature-details">
