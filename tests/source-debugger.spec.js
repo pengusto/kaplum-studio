@@ -6,7 +6,7 @@ async function start(page,source) {
  await page.goto('/#personal');
  await pasteCode(page,source);
  if(await page.getByRole('radio',{name:'Result',exact:true}).isVisible()) await page.getByRole('radio',{name:'Result',exact:true}).click();
- await page.locator('.canvas-more summary').click();await page.getByRole('button',{name:'Start code debugger',exact:true}).click();
+ await page.getByRole('button',{name:'Start code debugger',exact:true}).click();
 }
 test('prototype rejects unsupported syntax rather than changing its meaning',()=>{
  for(const source of ['function f(){forward(1);} f();','onKey("a",()=>forward(1));','let p=position();forward(p.x);','for(let i=0;i<3;i++)forward(1);','var x=2;','setTimeout(()=>forward(1),1);','beiTaste("a",forward);','setTimeout(forward,1);']) expect(()=>compileDebugSource(source)).toThrow();
@@ -47,14 +47,33 @@ test('unsupported code preserves source and offers normal execution; debug contr
 test('breakpoints stop before execution, re-hit in loops and survive Restart; edits clear them',async({page})=>{
  await start(page,'let d=20;\nfor(let i=0;i<3;i++){\n forward(d);\n d+=10;\n}\nright(90);');
  const panel=page.getByRole('region',{name:'Code debugger · prototype'});
- await page.getByLabel('Breakpoint line',{exact:true}).fill('3');await page.getByRole('button',{name:'Set breakpoint',exact:true}).click();
+ await panel.locator('.breakpoint-settings summary').click();await page.getByLabel('Breakpoint line',{exact:true}).fill('3');await page.getByRole('button',{name:'Set breakpoint',exact:true}).click();
  await expect(page.locator('.cm-breakpoint-line')).toContainText('forward(d)');
  const resume=page.getByRole('button',{name:'Continue code',exact:true});await resume.click();await expect(panel).toContainText('Paused at breakpoint');await expect(panel).toContainText('Line 3');await expect(page.locator('.turtle-state')).toContainText('y: 0.0');
  await resume.click();await expect(page.locator('.turtle-state')).toContainText('y: 20.0');await expect(panel).toContainText('Line 3');await expect(panel.locator('dd').first()).toHaveText('30');
- await page.getByRole('button',{name:'Restart',exact:true}).click();await expect(panel).toContainText('Line 1');await expect(page.getByRole('button',{name:'Remove breakpoint: Line 3',exact:true})).toBeVisible();
+ await page.getByRole('button',{name:'Restart',exact:true}).click();await expect(panel).toContainText('Line 1');await panel.locator('.breakpoint-settings summary').click();await expect(page.getByRole('button',{name:'Remove breakpoint: Line 3',exact:true})).toBeVisible();
  await resume.click();await expect(panel).toContainText('Paused at breakpoint');await page.getByRole('button',{name:'Remove breakpoint: Line 3',exact:true}).click();await expect(page.locator('.cm-breakpoint-line')).toHaveCount(0);
  await resume.click();await expect(panel).toContainText('Finished');
  await page.getByLabel('Breakpoint line',{exact:true}).fill('5');await page.getByRole('button',{name:'Set breakpoint',exact:true}).click();await expect(panel.getByRole('alert')).toContainText('supported statement');
  await page.locator('#code').click();await page.keyboard.press('End');await page.keyboard.type(' ');await expect(panel).toHaveCount(0);
- await page.locator('.canvas-more summary').click();await page.getByRole('button',{name:'Start code debugger',exact:true}).click();await expect(page.locator('.breakpoint-list button')).toHaveCount(0);
+ await page.getByRole('button',{name:'Start code debugger',exact:true}).click();await expect(page.locator('.breakpoint-list button')).toHaveCount(0);
+});
+
+test('course debugger is discoverable and drawing stays above optional settings',async({page})=>{
+ await page.goto('/#course/square');
+ const start=page.getByRole('button',{name:'Start code debugger',exact:true});
+ await expect(start).toBeVisible();await expect(start).toContainText('Debug code');
+ await start.click();await expect(page.getByRole('button',{name:'Next code statement',exact:true})).toContainText('Next step');
+ const surface=page.locator('.canvas-surface'), panel=page.locator('.source-debugger');
+ expect((await surface.boundingBox()).y).toBeLessThan((await panel.boundingBox()).y);
+ await expect(panel.locator('.breakpoint-settings')).not.toHaveAttribute('open','');
+ await expect(surface).toHaveAttribute('data-canvas','dark');
+ await page.setViewportSize({width:390,height:844});
+ await expect.poll(()=>page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
+});
+test('circle starter uses selected canvas colour without painting white',async({page})=>{
+ await page.goto('/#animation/circle');
+ await expect(page.locator('#code')).not.toContainText('setBackground("white")');
+ await expect(page.locator('.canvas-surface')).toHaveAttribute('data-canvas','dark');
+ await expect.poll(()=>page.locator('#canvas').evaluate(c=>c.getContext('2d').getImageData(0,0,1,1).data[3])).toBe(0);
 });

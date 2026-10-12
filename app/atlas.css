@@ -1098,3 +1098,14 @@ html:has(.documentation), body:has(.documentation) { height: auto; overflow: aut
 .breakpoint-list {display:flex;flex-wrap:wrap;gap:6px;margin:8px 0;}
 .cm-breakpoint-line {border-left:3px solid var(--accent);background:color-mix(in srgb,var(--accent) 10%,transparent);}
 .cm-breakpoint-line.cm-debug-line {background:color-mix(in srgb,var(--accent) 25%,transparent);}
+
+.debug-instruction {margin:0;padding:8px 12px;color:var(--muted);font-size:13px;flex-shrink:0;}
+.debug-start {color:var(--accent);}
+.breakpoint-settings input {background:var(--raised);color:var(--text);border:1px solid var(--line);border-radius:6px;padding:8px;}
+.canvas-toolbar:has(.debug-start),.canvas-toolbar:has(+ .debug-instruction) {flex-wrap:wrap;}
+.canvas-primary-controls {flex-wrap:wrap;}
+/* Keep the drawing and its inspection controls together while debugging. */
+.result-pane:has(.source-debugger) .canvas-surface {flex:0 0 320px;height:320px;min-height:260px;}
+@media(min-width:701px) {
+ .workspace-panels:has(.source-debugger),.workbench:has(.source-debugger) {min-height:0;}
+}

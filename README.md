@@ -106,6 +106,6 @@ Open the [feature test lab](https://pengusto.github.io/kaplum-studio/#course): s
 
 Frame animations show **Pause animation** while running and **Resume animation** while paused. Resume retains pending frames without replaying the paused time. Restart begins again; Stop terminates execution. This pause is separate from finite drawing playback, which does not step JavaScript statements or inspect variables.
 
-To test code stepping, open a course lesson, choose **More canvas tools → Start code debugger**, then use **Next code statement**. The highlighted instruction has not run yet. Continue runs to completion unless you pause or stop. See [supported syntax and limitations](docs/source-debugger.md).
+To test code stepping, open a course lesson, choose **Debug code** above the canvas, then use **Next code statement**. The highlighted instruction has not run yet. Continue runs to completion unless you pause or stop. See [supported syntax and limitations](docs/source-debugger.md).
 
 In the debugger panel, set a **Breakpoint line** to pause before the next supported checkpoint on that line. Continue can hit it again in a loop. Restart preserves it; editing code clears it.

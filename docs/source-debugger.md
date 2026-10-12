@@ -1,6 +1,6 @@
 # Source debugger prototype — issue #6
 
-The first native prototype is available under **More canvas tools → Start code debugger** in a finite drawing workspace. It creates a fresh isolated worker, pauses before an instruction and highlights its original source line. Next executes until the next checkpoint. Continue schedules checkpoints with a cancellable timer; Pause holds the next instruction. Stop destroys the worker, Restart recompiles the current source. Editing ends the debug session; exports retain the exact original program, without instrumentation.
+The first native prototype is available under **Debug code** above the canvas in a finite drawing workspace. It creates a fresh isolated worker, pauses before an instruction and highlights its original source line. Next executes until the next checkpoint. Continue schedules checkpoints with a cancellable timer; Pause holds the next instruction. Stop destroys the worker, Restart recompiles the current source. Editing ends the debug session; exports retain the exact original program, without instrumentation.
 
 ## Supported subset
 
@@ -29,7 +29,7 @@ Target loop-condition stepping after owner testing. Function stepping and safe r
 
 ## Source-line breakpoints
 
-The debugger panel accepts a line number that has a supported checkpoint. Blank/comment-only lines and closing braces are rejected rather than silently moved to another line. The editor marks configured lines; listed buttons remove one breakpoint and Clear removes all. There are at most 100 breakpoints.
+Below the drawing, open **Breakpoints**. The debugger panel accepts a line number that has a supported checkpoint. Blank/comment-only lines and closing braces are rejected rather than silently moved to another line. The editor marks configured lines; listed buttons remove one breakpoint and Clear removes all. There are at most 100 breakpoints.
 
 Continue advances past the current checkpoint, then stops before the next matching checkpoint. The breakpoint statement has not run yet. Next ignores breakpoint matching and advances exactly one checkpoint. A loop can hit the same breakpoint repeatedly. Several statements/checkpoints on a single source line can each stop there; a line breakpoint is not a once-per-loop-iteration promise. The initial start always pauses at the first checkpoint.
 

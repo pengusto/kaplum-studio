@@ -352,8 +352,8 @@ export default function Workspace({ route, preferences, t, drafts }) {
             <div className="canvas-toolbar">
               <div className="canvas-primary-controls" role="group" aria-label={playback ? labels.playback : t("result")}>
                 {debug ? <>
-                  <button className="canvas-tool primary" aria-label={debugText.next} title={debugText.next} disabled={debug.done || debug.playing} onClick={()=>preview.current.control("debug-next")}><ChevronRight size={19}/></button>
-                  <button className="canvas-tool" aria-label={debug.playing ? debugText.pause : debugText.continue} title={debug.playing ? debugText.pause : debugText.continue} disabled={debug.done} onClick={()=>preview.current.control(debug.playing ? "debug-pause" : "debug-continue")}>{debug.playing ? <Pause size={19}/> : <Play size={19}/>}</button>
+                  <button className="canvas-tool primary" aria-label={debugText.next} title={debugText.next} disabled={debug.done || debug.playing} onClick={()=>preview.current.control("debug-next")}><ChevronRight size={19}/><span>{debugText.nextShort}</span></button>
+                  <button className="canvas-tool" aria-label={debug.playing ? debugText.pause : debugText.continue} title={debug.playing ? debugText.pause : debugText.continue} disabled={debug.done} onClick={()=>preview.current.control(debug.playing ? "debug-pause" : "debug-continue")}>{debug.playing ? <Pause size={19}/> : <Play size={19}/>}<span>{debug.playing ? debugText.pauseShort : debugText.continueShort}</span></button>
                 </> : playback ? <>
                   <button className="canvas-tool" aria-label={labels.back} title={labels.back} disabled={!playback.step} onClick={() => preview.current.control("back")}><ChevronLeft size={19}/></button>
                   <button className="canvas-tool primary" aria-label={playback.playing ? labels.pause : labels.play} title={playback.playing ? labels.pause : labels.play} disabled={playback.step >= playback.total} onClick={() => {preview.current.control("speed",playbackDelay);preview.current.control(playback.playing ? "pause" : "play");}}>{playback.playing ? <Pause size={19}/> : <Play size={19}/>}</button>
@@ -365,11 +365,12 @@ export default function Workspace({ route, preferences, t, drafts }) {
                 <button className="canvas-tool" aria-label={t("stop")} title={t("stop")} onClick={() => preview.current.stop()}><Square size={17}/></button>
               </div>
               {mode === "drawing" && !debug && <button className="canvas-tool" aria-label={labels.record} title={labels.record} onClick={() => preview.current?.run(code.current, undefined, true)}><CircleDot size={19}/></button>}
+              {mode === "drawing" && !debug && <button className="canvas-tool debug-start" aria-label={debugText.start} onClick={startDebug}><FileCode2 size={18}/><span>{debugText.startShort}</span></button>}
               <details className="canvas-more">
                 <summary className="canvas-tool" aria-label={tools.more} title={tools.more}><MoreHorizontal size={20}/></summary>
                 <div className="canvas-tools-panel">
                   <strong>{tools.more}</strong>
-                  {mode === "drawing" && <button className="button secondary" onClick={event=>{event.currentTarget.closest("details").open=false;startDebug();}}><FileCode2 size={16}/>{debugText.start}</button>}
+
                   <label><input type="checkbox" checked={grid} onChange={e => setGrid(e.target.checked)}/><Grid2X2 size={17}/>{labels.grid}</label>
                   {playback && <>
                     <button className="button secondary" onClick={run}><Play size={16}/>{t("run")}</button>
@@ -384,24 +385,8 @@ export default function Workspace({ route, preferences, t, drafts }) {
                 </div>
               </details>
             </div>
+            {debug && <p className="debug-instruction" aria-live="polite">{debug.done ? debugText.finished : `${debugText.line} ${debug.line} · ${debugText.stepHint}`}</p>}
             {debugError && <p className="source-debugger" role="alert">{debugError}</p>}
-            {debug && <section className="source-debugger" aria-label={debugText.title}>
-              <strong>{debugText.title}</strong>
-              {debug.breakpoint && <p role="status">{debugText.breakpointHit}</p>}
-              <p aria-live="polite">{debug.done ? debugText.finished : `${debugText.line} ${debug.line}`}</p>
-              <details className="breakpoint-settings" open><summary>{debugText.breakpoints}</summary>
-                <form onSubmit={event=>{event.preventDefault();addBreakpoint();}}>
-                  <label>{debugText.breakpointLine}<input type="number" min="1" max={code.current.split("\n").length} step="1" value={breakpointLine} onChange={event=>setBreakpointLine(event.target.value)}/></label>
-                  <button className="button secondary" type="submit">{debugText.addBreakpoint}</button>
-                </form>
-                {breakpointError && <p role="alert">{debugText.breakpointError}</p>}
-                <div className="breakpoint-list">{breakpoints.map(line=><button className="button secondary" key={line} aria-label={`${debugText.removeBreakpoint}: ${debugText.line} ${line}`} onClick={()=>updateBreakpoints(breakpoints.filter(n=>n!==line))}>{debugText.line} {line} ×</button>)}</div>
-                {!!breakpoints.length && <button className="button secondary" onClick={()=>updateBreakpoints([])}>{debugText.clearBreakpoints}</button>}
-                <small>{debugText.breakpointHelp}</small>
-              </details>
-              <details open><summary>{debugText.variables}</summary><dl>{debug.variables.map(v=><div key={v.name}><dt>{v.name}</dt><dd>{v.value}</dd></div>)}</dl></details>
-              <small>{debugText.help}</small>
-            </section>}
             <div className="canvas-surface" data-grid={grid} data-canvas={preferences.canvas}>
               <canvas
                 ref={canvas}
@@ -418,6 +403,23 @@ export default function Workspace({ route, preferences, t, drafts }) {
               <TurtleState state={turtleState} locale={locale}/>
               <small>{labels.focus}</small>
             </div>
+            {debug && <section className="source-debugger" aria-label={debugText.title}>
+              <strong>{debugText.title}</strong>
+              {debug.breakpoint && <p role="status">{debugText.breakpointHit}</p>}
+              <p aria-live="polite">{debug.done ? debugText.finished : `${debugText.line} ${debug.line}`}</p>
+              <details className="breakpoint-settings"><summary>{debugText.breakpoints}</summary>
+                <form onSubmit={event=>{event.preventDefault();addBreakpoint();}}>
+                  <label>{debugText.breakpointLine}<input type="number" min="1" max={code.current.split("\n").length} step="1" value={breakpointLine} onChange={event=>setBreakpointLine(event.target.value)}/></label>
+                  <button className="button secondary" type="submit">{debugText.addBreakpoint}</button>
+                </form>
+                {breakpointError && <p role="alert">{debugText.breakpointError}</p>}
+                <div className="breakpoint-list">{breakpoints.map(line=><button className="button secondary" key={line} aria-label={`${debugText.removeBreakpoint}: ${debugText.line} ${line}`} onClick={()=>updateBreakpoints(breakpoints.filter(n=>n!==line))}>{debugText.line} {line} ×</button>)}</div>
+                {!!breakpoints.length && <button className="button secondary" onClick={()=>updateBreakpoints([])}>{debugText.clearBreakpoints}</button>}
+                <small>{debugText.breakpointHelp}</small>
+              </details>
+              <details open><summary>{debugText.variables}</summary><dl>{debug.variables.map(v=><div key={v.name}><dt>{v.name}</dt><dd>{v.value}</dd></div>)}</dl></details>
+              <details><summary>{debugText.limits}</summary><small>{debugText.help}</small></details>
+            </section>}
             {playback && <DrawingStep playback={playback} locale={locale}/>}
           </section>
         </div>
