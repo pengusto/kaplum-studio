@@ -5,3 +5,12 @@ export const capabilityLabels = {
  tr: {all:"Tümü", turtle:"Turtle komutları", drawing:"Çizim yardımcıları", example:"Örnek şekiller", state:"Turtle durumu", grid:"Koordinat ızgarası", pen:"Kalem aşağıda", pointer:"İşaretçi", copy:"Konumu kopyala", focus:"Tuşlar için çizim alanını odaklayın."},
  hy: {all:"Բոլորը", turtle:"Turtle հրամաններ", drawing:"Նկարման օգնականներ", example:"Օրինակ պատկերներ", state:"Turtle վիճակ", grid:"Կոորդինատային ցանց", pen:"Գրիչն իջեցված է", pointer:"Ցուցիչ", copy:"Պատճենել դիրքը", focus:"Ստեղների համար ընտրեք նկարման դաշտը։"}
 };
+
+const playbackCopy = {
+ en: ["Record drawing", "Drawing playback", "Play", "Pause", "Next drawing step", "Previous drawing step", "Reset playback", "Milliseconds per step", "Finite drawings only. Timers and input need normal Run. This steps drawing operations, not JavaScript lines."],
+ de: ["Zeichnung aufzeichnen", "Zeichnung abspielen", "Abspielen", "Pause", "Nächster Zeichenschritt", "Vorheriger Zeichenschritt", "Wiedergabe zurücksetzen", "Millisekunden pro Schritt", "Nur endliche Zeichnungen. Timer und Eingaben brauchen normales Starten. Schritte zeigen Zeichenoperationen, keine JavaScript-Zeilen."],
+ ja: ["描画を記録", "描画の再生", "再生", "一時停止", "次の描画ステップ", "前の描画ステップ", "再生をリセット", "ステップのミリ秒", "有限の描画のみ。タイマーと入力には通常実行を使います。JavaScriptの行ではなく描画操作です。"],
+ tr: ["Çizimi kaydet", "Çizim oynatma", "Oynat", "Duraklat", "Sonraki çizim adımı", "Önceki çizim adımı", "Oynatmayı sıfırla", "Adım başına milisaniye", "Yalnızca sonlu çizimler. Zamanlayıcı ve giriş için normal çalıştırmayı kullanın. JavaScript satırları değil çizim işlemleri adımlanır."],
+ hy: ["Գրանցել նկարը", "Նկարի նվագարկում", "Նվագարկել", "Դադար", "Հաջորդ նկարման քայլ", "Նախորդ նկարման քայլ", "Վերակայել նվագարկումը", "Քայլի միլիվայրկյաններ", "Միայն վերջավոր նկարներ։ Ժամանակաչափերի և մուտքի համար սովորական մեկնարկ։ Քայլերը նկարման գործողություններ են, ոչ JavaScript տողեր։"]
+};
+for (const [locale, values] of Object.entries(playbackCopy)) Object.assign(capabilityLabels[locale], Object.fromEntries(["record","playback","play","pause","next","back","resetReplay","delay","replayHelp"].map((key,i)=>[key,values[i]])));

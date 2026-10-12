@@ -80,8 +80,31 @@ self.addEventListener("unhandledrejection", (event) => {
   event.preventDefault();
   report(event.reason);
 });
+let playback = null, playbackTimer = null, playbackDelay = 300;
+function playbackStatus(playing = false) {
+  postMessage({type:"playback", step:playback?.step || 0, total:playback?.length || 0, playing});
+}
+function pausePlayback() { if (playbackTimer !== null) clearTimeout(playbackTimer); playbackTimer=null; }
+function playPlayback() {
+  pausePlayback();
+  if (!playback || playback.step >= playback.length) {playbackStatus();return;}
+  playbackStatus(true);
+  playbackTimer=setTimeout(() => {playbackTimer=null;playback.next();playPlayback();},playbackDelay);
+}
 onmessage = async (event) => {
   try {
+    if (event.data?.control) {
+      if (!playback) return;
+      const {action, delay} = event.data.control;
+      if (action === "speed" && Number.isFinite(delay)) {playbackDelay=Math.max(30,Math.min(2000,delay));if(playbackTimer !== null)playPlayback();return;}
+      if (action === "play") {playPlayback();return;}
+      pausePlayback();
+      if (action === "next") playback.next();
+      if (action === "back") playback.back();
+      if (action === "reset") playback.reset();
+      if (action === "finish") playback.finish();
+      playbackStatus();return;
+    }
     if (event.data?.input) {
       if (typeof self.__dispatchTurtleInput === "function") self.__dispatchTurtleInput(event.data.input);
       return;
@@ -96,7 +119,7 @@ onmessage = async (event) => {
       sentRevision = canvases.turtlecanvas.revision;
       try {
         const bitmap = await createImageBitmap(canvases.turtlecanvas.surface);
-        postMessage({ type: "frame", bitmap, keys: __turtleInputKeys(), state: { ...getTurtleState(), pen: isPenDown(), visible: isVisible() } }, [bitmap]);
+        postMessage({ type: "frame", bitmap, keys: __turtleInputKeys(), state: __displayTurtleState() }, [bitmap]);
       } finally {
         sending = false;
       }
@@ -111,11 +134,9 @@ onmessage = async (event) => {
       }, 33);
     };
     postMessage({ type: "executing" });
-    (0, eval)(
-      '"use strict";' +
-        event.data.code +
-        "\n//# sourceURL=playground-program.js",
-    );
+    const execute = () => (0, eval)('"use strict";' + event.data.code + "\n//# sourceURL=playground-program.js");
+    if (event.data.replay) { playback=recordDrawing(execute);playbackStatus(); }
+    else execute();
     await snapshot();
   } catch (error) {
     report(error);

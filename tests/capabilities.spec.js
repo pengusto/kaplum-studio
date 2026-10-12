@@ -14,3 +14,12 @@ test('worker input updates inspector, editing stays separate and Stop removes in
  await page.getByLabel('Coordinate grid').check();await expect(page.locator('.canvas-surface')).toHaveAttribute('data-grid','true');
  await page.getByRole('button',{name:'Stop',exact:true}).click();await canvas.focus();await page.keyboard.press('ArrowRight');await expect(page.locator('.turtle-state')).toContainText('Turtle state: —');
 });
+
+test('drawing playback pauses, steps, rewinds and stops through the worker',async({page})=>{
+ await page.goto('/#personal');const editor=page.locator('#code');await editor.click();await page.keyboard.press('ControlOrMeta+A');await page.keyboard.insertText('goto(-50,-50); for(let i=0;i<4;i++){forward(100);right(90);}');
+ await page.getByRole('button',{name:'Record drawing',exact:true}).click();const group=page.getByRole('group',{name:'Drawing playback'});await expect(group).toBeVisible();await expect(group.locator('output').first()).toContainText('0 /');
+ await page.getByRole('button',{name:'Next drawing step',exact:true}).click();await expect(group.locator('output').first()).toContainText('1 /');
+ await page.getByRole('button',{name:'Previous drawing step',exact:true}).click();await expect(group.locator('output').first()).toContainText('0 /');
+ await page.getByRole('button',{name:'Play',exact:true}).click();await expect(page.getByRole('button',{name:'Pause',exact:true})).toBeVisible();await page.getByRole('button',{name:'Pause',exact:true}).click();const paused=await group.locator('output').first().textContent();await page.waitForTimeout(400);await expect(group.locator('output').first()).toHaveText(paused);
+ await page.getByRole('button',{name:'Reset playback',exact:true}).click();await expect(group.locator('output').first()).toContainText('0 /');await page.getByRole('button',{name:'Stop',exact:true}).click();await expect(group).toHaveCount(0);
+});

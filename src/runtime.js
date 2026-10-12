@@ -15,24 +15,26 @@ function loadSources() {
 }
 // Each run receives a new opaque sandbox and a terminable worker.
 export class Preview {
-  constructor(canvas, onStatus, onFrame, onState) {
+  constructor(canvas, onStatus, onFrame, onState, onPlayback) {
     this.canvas = canvas;
     this.onStatus = onStatus;
     this.onFrame = onFrame;
     this.onState = onState;
+    this.onPlayback = onPlayback;
     this.sequence = 0;
   }
   stop() {
     this.sequence++;
     this.detachInput?.(); this.detachInput = null;
-    this.onState?.(null); this.lastState = null; this.inputKeys = new Set();
+    this.onState?.(null); this.lastState = null; this.inputKeys = new Set(); this.onPlayback?.(null);
     this.frame?.remove();
     this.frame = null;
     if (this.receive) window.removeEventListener("message", this.receive);
     this.receive = null;
     this.onStatus({ type: "stopped" });
   }
-  async run(code, render) {
+  control(action, delay) { this.frame?.contentWindow?.postMessage({control:{action,delay}}, "*"); }
+  async run(code, render, replay = false) {
     this.stop();
     const run = this.sequence;
     const send = input => this.frame?.contentWindow?.postMessage({ input }, "*");
@@ -60,7 +62,7 @@ export class Preview {
       frame.hidden = true;
       frame.setAttribute("sandbox", "allow-scripts");
       frame.title = "Isolated program";
-      const bridge = `let worker; onmessage=e=>{if(e.source!==parent)return; if(e.data.input){worker?.postMessage({input:e.data.input});return;} if(!e.data.start)return; const blob=new Blob([e.data.worker],{type:'text/javascript'}); const url=URL.createObjectURL(blob); worker=new Worker(url); URL.revokeObjectURL(url); worker.onmessage=event=>{const d=event.data;if(d.type==='error')worker.terminate();parent.postMessage(d,'*',d.bitmap?[d.bitmap]:[]);}; worker.onerror=event=>parent.postMessage({type:'error',message:event.message},'*'); worker.postMessage({code:e.data.code,engine:e.data.engine,render:e.data.render});}; parent.postMessage({type:'ready'},'*');`;
+      const bridge = `let worker; onmessage=e=>{if(e.source!==parent)return; if(e.data.input){worker?.postMessage({input:e.data.input});return;} if(e.data.control){worker?.postMessage({control:e.data.control});return;} if(!e.data.start)return; const blob=new Blob([e.data.worker],{type:'text/javascript'}); const url=URL.createObjectURL(blob); worker=new Worker(url); URL.revokeObjectURL(url); worker.onmessage=event=>{const d=event.data;if(d.type==='error')worker.terminate();parent.postMessage(d,'*',d.bitmap?[d.bitmap]:[]);}; worker.onerror=event=>parent.postMessage({type:'error',message:event.message},'*'); worker.postMessage({code:e.data.code,engine:e.data.engine,render:e.data.render,replay:e.data.replay});}; parent.postMessage({type:'ready'},'*');`;
       frame.srcdoc = `<!doctype html><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval'; worker-src blob:; connect-src 'none'"><script>${bridge}<\/script>`;
       const receive = (event) => {
         if (event.source !== frame.contentWindow) return;
@@ -78,6 +80,7 @@ export class Preview {
               engine: sources[3] + "\n" + sources[0] + "\n" + sources[1],
               code,
               render,
+              replay,
             },
             "*",
           );
