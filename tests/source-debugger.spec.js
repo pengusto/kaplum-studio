@@ -3,7 +3,12 @@ import {test,expect} from '@playwright/test';
 import {compileDebugSource} from '../src/source-debugger.js';
 async function start(page,source) {
  await page.goto('/#personal');
- await page.locator('#code').click();await page.keyboard.press('ControlOrMeta+A');await page.keyboard.insertText(source);
+ await page.locator('#code').click();await page.keyboard.press('ControlOrMeta+A');await page.locator('#code').evaluate((element,text)=>{
+  const event=new Event('paste',{bubbles:true,cancelable:true});
+  Object.defineProperty(event,'clipboardData',{value:{getData:type=>type==='text/plain' ? text : ''}});
+  element.dispatchEvent(event);
+ },source);
+ await expect(page.locator('#code')).toContainText(source.split('\n')[0]);
  if(await page.getByRole('radio',{name:'Result',exact:true}).isVisible()) await page.getByRole('radio',{name:'Result',exact:true}).click();
  await page.locator('.canvas-more summary').click();await page.getByRole('button',{name:'Start code debugger',exact:true}).click();
 }
@@ -30,7 +35,7 @@ test('native stepping executes statements only on advance and inspects loop vari
  await page.screenshot({path:'/tmp/kaplum-source-debugger.png'});
  await page.getByRole('button',{name:'Continue code',exact:true}).click();await expect(panel).toContainText('Finished');await expect(panel.locator('dd').first()).toHaveText('50');await expect(page.locator('.turtle-state')).toContainText('y: 90.0');
  const downloaded=page.waitForEvent('download');await page.getByRole('button',{name:'Download .js',exact:true}).click();const file=await downloaded;const exported=await readFile(await file.path(),'utf8');expect(exported).toContain('let distance=20;');expect(exported).not.toContain('yield {');
- await page.locator('#code').click();await page.keyboard.insertText('// edit');await expect(panel).toHaveCount(0);await expect(page.locator('.cm-debug-line')).toHaveCount(0);
+ await page.locator('#code').click();await page.keyboard.type('// edit');await expect(panel).toHaveCount(0);await expect(page.locator('.cm-debug-line')).toHaveCount(0);
 });
 test('empty infinite loops remain pausable and Stop clears a debug session',async({page})=>{
  await start(page,'let n=0;\nwhile(true){n++;}');const panel=page.getByRole('region',{name:'Code debugger · prototype'});await expect(panel).toBeVisible();
@@ -41,4 +46,19 @@ test('unsupported code preserves source and offers normal execution; debug contr
  await start(page,'let p=position();\nforward(p.x);');await expect(page.locator('.source-debugger[role=alert]')).toContainText('unsupported');await expect(page.locator('#code')).toContainText('forward(p.x)');
  await page.setViewportSize({width:390,height:844});await start(page,'let d=20;\nforward(d);');
  for(const locale of ['en','de','ja','tr','hy']) {await page.locator('.language-picker select').selectOption(locale);await expect(page.locator('.source-debugger').last()).toBeVisible();await expect.poll(()=>page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);}
+});
+
+test('breakpoints stop before execution, re-hit in loops and survive Restart; edits clear them',async({page})=>{
+ await start(page,'let d=20;\nfor(let i=0;i<3;i++){\n forward(d);\n d+=10;\n}\nright(90);');
+ const panel=page.getByRole('region',{name:'Code debugger · prototype'});
+ await page.getByLabel('Breakpoint line',{exact:true}).fill('3');await page.getByRole('button',{name:'Set breakpoint',exact:true}).click();
+ await expect(page.locator('.cm-breakpoint-line')).toContainText('forward(d)');
+ const resume=page.getByRole('button',{name:'Continue code',exact:true});await resume.click();await expect(panel).toContainText('Paused at breakpoint');await expect(panel).toContainText('Line 3');await expect(page.locator('.turtle-state')).toContainText('y: 0.0');
+ await resume.click();await expect(page.locator('.turtle-state')).toContainText('y: 20.0');await expect(panel).toContainText('Line 3');await expect(panel.locator('dd').first()).toHaveText('30');
+ await page.getByRole('button',{name:'Restart',exact:true}).click();await expect(panel).toContainText('Line 1');await expect(page.getByRole('button',{name:'Remove breakpoint: Line 3',exact:true})).toBeVisible();
+ await resume.click();await expect(panel).toContainText('Paused at breakpoint');await page.getByRole('button',{name:'Remove breakpoint: Line 3',exact:true}).click();await expect(page.locator('.cm-breakpoint-line')).toHaveCount(0);
+ await resume.click();await expect(panel).toContainText('Finished');
+ await page.getByLabel('Breakpoint line',{exact:true}).fill('5');await page.getByRole('button',{name:'Set breakpoint',exact:true}).click();await expect(panel.getByRole('alert')).toContainText('supported statement');
+ await page.locator('#code').click();await page.keyboard.press('End');await page.keyboard.type(' ');await expect(panel).toHaveCount(0);
+ await page.locator('.canvas-more summary').click();await page.getByRole('button',{name:'Start code debugger',exact:true}).click();await expect(page.locator('.breakpoint-list button')).toHaveCount(0);
 });

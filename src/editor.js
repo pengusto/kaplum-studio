@@ -18,6 +18,16 @@ const debugLines=StateField.define({
   },
   provide:field=>EditorView.decorations.from(field)
 });
+const breakpointEffect=StateEffect.define();
+const breakpointLines=StateField.define({
+  create:()=>Decoration.none,
+  update(value,tr) {
+    if(tr.docChanged) value=Decoration.none;
+    for(const effect of tr.effects) if(effect.is(breakpointEffect)) value=Decoration.set(effect.value.filter(line=>line>0 && line<=tr.state.doc.lines).sort((a,b)=>a-b).map(line=>Decoration.line({class:"cm-breakpoint-line"}).range(tr.state.doc.line(line).from)));
+    return value;
+  },
+  provide:field=>EditorView.decorations.from(field)
+});
 // The CodeMirror document is the single editable program buffer.
 export function createEditor(parent) {
   const theme = new Compartment();
@@ -28,6 +38,7 @@ export function createEditor(parent) {
     extensions: [
       basicSetup,
       debugLines,
+      breakpointLines,
       javascript(),
       keymap.of([indentWithTab]),
       EditorState.tabSize.of(2),
@@ -58,6 +69,8 @@ export function createEditor(parent) {
     onChange(callback) {
       changed = callback;
     },
+    breakpoints(lines) {view.dispatch({effects:breakpointEffect.of(lines)});},
+    showLine(line) {if(line>0 && line<=view.state.doc.lines) view.dispatch({effects:EditorView.scrollIntoView(view.state.doc.line(line).from,{y:"center"})});},
     debugLine(line) { view.dispatch({effects:debugLineEffect.of(line)}); },
     focus() {
       view.focus();

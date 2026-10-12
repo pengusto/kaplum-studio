@@ -15,7 +15,7 @@ The existing Lezer parser validates a bounded syntax whitelist and injects gener
 
 No functions, closures, callbacks, async/timers, property access, object/array literals, destructuring, try/catch, switch, do/while, imports or var. Unsupported source is rejected before execution, leaving Run available. Helper internals are not stepped. Loop tests/updates run between checkpoints: a body-entry marker can share the loop header's line. Final snapshots retain the last visible binding scope, not a complete heap or post-loop scope browser. The next highlighted statement has not executed yet.
 
-There are no breakpoints, step-into/step-over calls or code rewind. Drawing undo and drawing playback are separate capabilities. Paused source is not a recording of an already-completed program.
+There is no step-into/step-over for calls or code rewind. Drawing undo and drawing playback are separate capabilities. Paused source is not a recording of an already-completed program.
 
 ## Safety and budgets
 
@@ -25,4 +25,12 @@ Checks cover genuinely delayed drawing and assignments, code highlight, loop var
 
 ## Next increment
 
-Add source-location breakpoint selection and targeted loop-condition stepping after owner testing. Function stepping and safe richer inspection need a separate design; do not expand the subset silently or present this prototype as a full debugger.
+Target loop-condition stepping after owner testing. Function stepping and safe richer inspection need a separate design; do not expand the subset silently or present this prototype as a full debugger.
+
+## Source-line breakpoints
+
+The debugger panel accepts a line number that has a supported checkpoint. Blank/comment-only lines and closing braces are rejected rather than silently moved to another line. The editor marks configured lines; listed buttons remove one breakpoint and Clear removes all. There are at most 100 breakpoints.
+
+Continue advances past the current checkpoint, then stops before the next matching checkpoint. The breakpoint statement has not run yet. Next ignores breakpoint matching and advances exactly one checkpoint. A loop can hit the same breakpoint repeatedly. Several statements/checkpoints on a single source line can each stop there; a line breakpoint is not a once-per-loop-iteration promise. The initial start always pauses at the first checkpoint.
+
+Restart keeps breakpoints for the same source. Stop ends execution and clears editor marks while retaining the configuration until the next Debug start; ordinary Run ignores it. Editing/resetting source clears all breakpoint configuration, avoiding stale locations. Breakpoints are local workspace UI state and never injected into exported learner source. Native generator yields and the existing worker handle the pause; there is no host evaluation of learner expressions.

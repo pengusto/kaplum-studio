@@ -6,3 +6,12 @@ const rows={
  hy:["Կոդի վրիպազերծիչ · նախատիպ","Սկսել կոդի վրիպազերծումը","Հաջորդ հրահանգը","Շարունակել կոդը","Դադարեցնել կոդը","Տող","Փոփոխականներ","Ավարտված","Դադար այս հրահանգից առաջ։ Հաջորդը կատարում է այն։ Աջակցվում են let/const, նկարման կանչերը և փակագծերով for/while/if։ Ֆունկցիաները, ժամանակաչափերն ու հատկությունների հասանելիությունը չեն աջակցվում։ Օգնականը մեկ հրահանգ է․ միայն պարզ արժեքներ։"]
 };
 export const debuggerCopy=Object.fromEntries(Object.entries(rows).map(([locale,values])=>[locale,Object.fromEntries(["title","start","next","continue","pause","line","variables","finished","help"].map((key,i)=>[key,values[i]]))]));
+
+const breakpointRows={
+ en:["Breakpoints","Breakpoint line","Set breakpoint","Remove breakpoint","Clear breakpoints","Paused at breakpoint","Select an executable line. Continue stops before its next checkpoint; Next executes it. Breakpoints survive Restart and clear when code changes.","Choose a line with a supported statement (maximum 100 breakpoints)."],
+ de:["Haltepunkte","Zeile für Haltepunkt","Haltepunkt setzen","Haltepunkt entfernen","Haltepunkte löschen","Am Haltepunkt pausiert","Wähle eine ausführbare Zeile. Fortsetzen hält vor ihrem nächsten Schritt; Weiter führt ihn aus. Haltepunkte bleiben beim Neustart und werden bei Codeänderungen gelöscht.","Wähle eine Zeile mit unterstützter Anweisung (höchstens 100 Haltepunkte)."],
+ ja:["ブレークポイント","停止する行","停止点を設定","停止点を削除","すべて削除","停止点で一時停止","実行できる行を選ぶ。続行は次のチェックポイントの前で停止。次へで実行。再起動で保持し、編集で削除。","対応する文の行を選択してください（最大100件）。"],
+ tr:["Kesme noktaları","Kesme noktası satırı","Kesme noktası ekle","Kesme noktasını kaldır","Kesme noktalarını temizle","Kesme noktasında durakladı","Çalıştırılabilir bir satır seç. Devam sonraki noktadan önce durur; Sonraki çalıştırır. Yeniden başlatmada korunur, kod düzenlenince silinir.","Desteklenen bir ifadenin satırını seç (en fazla 100 nokta)."],
+ hy:["Կանգառի կետեր","Կանգառի տողը","Ավելացնել կանգառ","Հեռացնել կանգառը","Ջնջել կանգառները","Դադար կանգառի կետում","Ընտրեք կատարվող տողը։ Շարունակելը կանգնում է հաջորդ կետից առաջ, Հաջորդը կատարում է այն։ Վերագործարկման դեպքում կետերը մնում են, խմբագրման դեպքում՝ ջնջվում։","Ընտրեք աջակցվող հրահանգի տողը (առավելագույնը 100 կետ)։"]
+};
+for(const [locale,values] of Object.entries(breakpointRows)) Object.assign(debuggerCopy[locale],Object.fromEntries(["breakpoints","breakpointLine","addBreakpoint","removeBreakpoint","clearBreakpoints","breakpointHit","breakpointHelp","breakpointError"].map((key,i)=>[key,values[i]])));

@@ -65,7 +65,7 @@ Der Kurs bietet acht ausführbare Experimente mit Lernziel, erwartetem Ausgangse
 
 Frame-Animationen lassen sich pausieren und fortsetzen, ohne die Pause nachzuholen. Neustart beginnt von vorne, Stop beendet die Ausführung. Timer- und Eingabeprogramme nutzen Start/Stop.
 
-Ein begrenzter [Code-Debugger-Prototyp](../source-debugger.md) pausiert vor Anweisungen, markiert die Zeile und zeigt einfache Variablen. Unter **Weitere Canvas-Werkzeuge → Code-Debugger starten** kannst du ihn testen. Funktionen und Haltepunkte fehlen noch ([#6](https://github.com/pengusto/kaplum-studio/issues/6)); unabhängige Schildkröten bleiben geplant ([#7](https://github.com/pengusto/kaplum-studio/issues/7)). p5.js bleibt auf später verschoben. Safari, muttersprachliche Prüfung und Verständlichkeit im Unterricht sind noch offene Prüfungen.
+Ein begrenzter [Code-Debugger-Prototyp](../source-debugger.md) pausiert vor Anweisungen, markiert die Zeile und zeigt einfache Variablen. Unter **Weitere Canvas-Werkzeuge → Code-Debugger starten** kannst du ihn testen. Zeilen-Haltepunkte sind verfügbar; das Hineinsteppen in eigene Funktionen fehlt noch ([#6](https://github.com/pengusto/kaplum-studio/issues/6)); unabhängige Schildkröten bleiben geplant ([#7](https://github.com/pengusto/kaplum-studio/issues/7)). p5.js bleibt auf später verschoben. Safari, muttersprachliche Prüfung und Verständlichkeit im Unterricht sind noch offene Prüfungen.
 
 ![Kurs: Lernziel, bearbeitbarer Code und Schrittsteuerung](../images/kaplum-course.png)
 

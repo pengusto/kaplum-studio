@@ -108,8 +108,8 @@ function debugValues(bindings) {
     return {name,value};
   });
 }
-function debugStatus(playing=false) {
-  postMessage({type:"debug",line:debuggerRun.current?.line || 0,done:debuggerRun.done,playing,variables:debuggerRun.variables || []});
+function debugStatus(playing=false, breakpoint=false) {
+  postMessage({type:"debug",line:debuggerRun.current?.line || 0,done:debuggerRun.done,playing,breakpoint,variables:debuggerRun.variables || []});
 }
 function advanceDebug(playing=false) {
   stopDebugTimer();
@@ -121,15 +121,17 @@ function advanceDebug(playing=false) {
   debuggerRun.bindings=next.done ? null : next.value.bindings;
   debuggerRun.current=next.done ? null : {line:next.value.line};
   debuggerRun.done=next.done;
-  debugStatus(playing && !next.done);
-  if(playing && !next.done) debuggerTimer=scheduleSnapshot(()=>{try{advanceDebug(true);}catch(error){report(error);}},10);
+  const breakpoint=playing && !next.done && debuggerRun.breakpoints.has(next.value.line);
+  debugStatus(playing && !next.done && !breakpoint,breakpoint);
+  if(playing && !next.done && !breakpoint) debuggerTimer=scheduleSnapshot(()=>{try{advanceDebug(true);}catch(error){report(error);}},10);
 }
 onmessage = async (event) => {
   try {
     if (event.data?.control) {
-      const {action, delay} = event.data.control;
+      const {action, delay, lines} = event.data.control;
       if(action.startsWith("debug-")) {
         if(!debuggerRun) return;
+        if(action==="debug-breakpoints") {debuggerRun.breakpoints=new Set(Array.isArray(lines) ? lines.filter(n=>Number.isInteger(n) && n>0 && n<=50000).slice(0,100) : []);return;}
         if(action==="debug-pause") {stopDebugTimer();debugStatus();}
         if(action==="debug-next" || action==="debug-continue") advanceDebug(action==="debug-continue");
         return;
@@ -183,7 +185,7 @@ onmessage = async (event) => {
     postMessage({ type: "executing" });
     const execute = () => (0, eval)('"use strict";' + event.data.code + "\n//# sourceURL=playground-program.js");
     if (event.data.debug) {
-      debuggerRun={iterator:(0,eval)("(function*(){\"use strict\";"+event.data.debug+"\n})()"),current:null,done:false,steps:0,variables:[]};
+      debuggerRun={iterator:(0,eval)("(function*(){\"use strict\";"+event.data.debug.code+"\n})()"),current:null,done:false,steps:0,variables:[],breakpoints:new Set(Array.isArray(event.data.debug.breakpoints) ? event.data.debug.breakpoints.filter(n=>Number.isInteger(n) && n>0 && n<=50000).slice(0,100) : [])};
       advanceDebug();
     }
     else if (event.data.replay) { playback=recordDrawing(execute);playbackStatus(); }

@@ -1091,3 +1091,10 @@ html:has(.documentation), body:has(.documentation) { height: auto; overflow: aut
   .workbench:has(.source-debugger) {min-height:900px;height:auto;}
   .workbench:has(.source-debugger) .code-pane {flex:0 0 220px;}
 }
+
+.breakpoint-settings form {display:flex;flex-wrap:wrap;align-items:end;gap:8px;margin:8px 0;}
+.breakpoint-settings label {display:flex;flex-wrap:wrap;align-items:center;gap:8px;}
+.breakpoint-settings input {width:5rem;}
+.breakpoint-list {display:flex;flex-wrap:wrap;gap:6px;margin:8px 0;}
+.cm-breakpoint-line {border-left:3px solid var(--accent);background:color-mix(in srgb,var(--accent) 10%,transparent);}
+.cm-breakpoint-line.cm-debug-line {background:color-mix(in srgb,var(--accent) 25%,transparent);}

@@ -1,5 +1,5 @@
 "use client";
-import {compileDebugSource} from "../src/source-debugger";
+import {analyzeDebugSource} from "../src/source-debugger";
 import {debuggerCopy} from "../src/debugger-copy";
 import {lessonTasks,taskLabels} from "../src/lesson-tasks";
 import {executionMode} from "../src/execution-mode";
@@ -90,6 +90,8 @@ export default function Workspace({ route, preferences, t, drafts }) {
   const tools = canvasToolCopy[locale];
   const debugText = debuggerCopy[locale];
   const [debug,setDebug]=useState(null),[debugError,setDebugError]=useState("");
+  const [breakpoints,setBreakpoints]=useState([]),[breakpointLine,setBreakpointLine]=useState(1),[breakpointError,setBreakpointError]=useState(false);
+  const executableLines=useRef([]);
   const mode = executionMode(liveCode);
   const task = lesson && lessonTasks[lesson.id][locale];
   const taskText = taskLabels[locale];
@@ -130,10 +132,21 @@ export default function Workspace({ route, preferences, t, drafts }) {
   function startDebug() {
     preview.current?.stop();
     setDebugError("");
-    try { const compiled=compileDebugSource(code.current); setPanel("result"); preview.current?.run(code.current,undefined,false,compiled); }
+    try { const compiled=analyzeDebugSource(code.current); executableLines.current=compiled.lines; setBreakpointError(false); setPanel("result"); preview.current?.run(code.current,undefined,false,{code:compiled.code,breakpoints}); }
     catch(error) {setDebugError(error.message);}
   }
-  useEffect(()=>{editor.current?.debugLine(debug?.line || null);},[debug]);
+  useEffect(()=>{editor.current?.debugLine(debug?.line || null);editor.current?.breakpoints(debug ? breakpoints : []);},[debug,breakpoints]);
+  function updateBreakpoints(lines) {
+    setBreakpoints(lines);setBreakpointError(false);
+    preview.current?.control("debug-breakpoints",undefined,lines);
+  }
+  function addBreakpoint() {
+    const line=Number(breakpointLine);
+    if(!executableLines.current.includes(line) || (!breakpoints.includes(line) && breakpoints.length>=100)) {setBreakpointError(true);return;}
+    updateBreakpoints([...new Set([...breakpoints,line])].sort((a,b)=>a-b));
+    editor.current?.showLine(line);
+  }
+
   function run() {
     setDebugError("");
     preview.current?.run(code.current);
@@ -289,6 +302,7 @@ export default function Workspace({ route, preferences, t, drafts }) {
               label={t("editor")}
               onChange={(value) => {
                 if(debug) preview.current?.stop();
+                setBreakpoints([]);setBreakpointError(false);
                 code.current = value;
                 setLiveCode(value);
                 drafts.set(route, value);
@@ -373,7 +387,18 @@ export default function Workspace({ route, preferences, t, drafts }) {
             {debugError && <p className="source-debugger" role="alert">{debugError}</p>}
             {debug && <section className="source-debugger" aria-label={debugText.title}>
               <strong>{debugText.title}</strong>
+              {debug.breakpoint && <p role="status">{debugText.breakpointHit}</p>}
               <p aria-live="polite">{debug.done ? debugText.finished : `${debugText.line} ${debug.line}`}</p>
+              <details className="breakpoint-settings" open><summary>{debugText.breakpoints}</summary>
+                <form onSubmit={event=>{event.preventDefault();addBreakpoint();}}>
+                  <label>{debugText.breakpointLine}<input type="number" min="1" max={code.current.split("\n").length} step="1" value={breakpointLine} onChange={event=>setBreakpointLine(event.target.value)}/></label>
+                  <button className="button secondary" type="submit">{debugText.addBreakpoint}</button>
+                </form>
+                {breakpointError && <p role="alert">{debugText.breakpointError}</p>}
+                <div className="breakpoint-list">{breakpoints.map(line=><button className="button secondary" key={line} aria-label={`${debugText.removeBreakpoint}: ${debugText.line} ${line}`} onClick={()=>updateBreakpoints(breakpoints.filter(n=>n!==line))}>{debugText.line} {line} ×</button>)}</div>
+                {!!breakpoints.length && <button className="button secondary" onClick={()=>updateBreakpoints([])}>{debugText.clearBreakpoints}</button>}
+                <small>{debugText.breakpointHelp}</small>
+              </details>
               <details open><summary>{debugText.variables}</summary><dl>{debug.variables.map(v=><div key={v.name}><dt>{v.name}</dt><dd>{v.value}</dd></div>)}</dl></details>
               <small>{debugText.help}</small>
             </section>}

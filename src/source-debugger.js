@@ -5,7 +5,7 @@ import {reference} from "./reference.js";
 const asynchronous = new Set(["onKey","onClick","requestAnimationFrame","cancelAnimationFrame","setTimeout","clearTimeout","setInterval","clearInterval"]);
 const calls = new Set(reference.filter(entry => !asynchronous.has(entry.name)).flatMap(entry => [entry.name,entry.alias].filter(Boolean)));
 const allowed = new Set(["Script","Block","VariableDeclaration","VariableDefinition","VariableName","ExpressionStatement","CallExpression","ArgList","Number","String","BooleanLiteral","Null","BinaryExpression","UnaryExpression","AssignmentExpression","PostfixExpression","ParenthesizedExpression","ForStatement","ForSpec","WhileStatement","IfStatement","BreakStatement","ContinueStatement","LineComment","BlockComment","EmptyStatement"]);
-export function compileDebugSource(source) {
+export function analyzeDebugSource(source) {
   if (source.length > 50000) throw Error("Debugger prototype: maximum source length is 50,000 characters.");
   const tree=parser.parse(source), points=[], names=new Set();
   const walk=node=>{
@@ -37,9 +37,12 @@ export function compileDebugSource(source) {
   if(names.size>100 || points.length>2000) throw Error("Debugger prototype: source exceeds the variable/statement budget.");
   const captures=[...names].map(name=>`[${JSON.stringify(name)},()=>${name}]`).join(",");
   let code=source;
-  for(const offset of points.sort((a,b)=>b-a)) {
+  const offsets=[...new Set(points)].sort((a,b)=>b-a);
+  for(const offset of offsets) {
     const line=source.slice(0,offset).split("\n").length;
     code=code.slice(0,offset)+`yield {line:${line},bindings:[${captures}]};`+code.slice(offset);
   }
-  return code;
+  return {code,lines:[...new Set(offsets.map(offset=>source.slice(0,offset).split("\n").length))].sort((a,b)=>a-b)};
 }
+
+export function compileDebugSource(source) {return analyzeDebugSource(source).code;}
