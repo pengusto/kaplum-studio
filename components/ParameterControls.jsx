@@ -1,4 +1,5 @@
 "use client";
+import { messages } from "./messages";
 import ScrubField from "./react-bits/ScrubField";
 import StudioCard from "./StudioCard";
 import { parameterMeanings } from "../src/parameters";
@@ -18,6 +19,7 @@ function colourHex(value) {
   return /^#[\da-f]{6}$/i.test(result) ? result : "#32cd32";
 }
 export default function ParameterControls({ entry, values, change, preferences, locale }) {
+const t = messages(locale);
 return <div className="parameter-inputs">
           {parameterMeanings(entry, locale).map((parameter, index) => {
             const value = values[index];
@@ -27,7 +29,7 @@ return <div className="parameter-inputs">
             return <StudioCard key={parameter.name} className="configurator-parameter" style={{ padding: 14, borderRadius: 12, background: "var(--surface)" }}>
               <h3><span className="number">{index + 1}</span><code>{parameter.name}</code></h3><p>{parameter.meaning}</p>
               {number ? <><ScrubField label={parameter.name} suffix={/angle|mouth|degrees|rotation/i.test(parameter.name) ? "°" : ""} value={Number(value)} min={min} max={max} onChange={v => change(index, String(v))} accent="var(--accent)" chipColor="var(--raised)" />
-                <input type="range" aria-label={`${parameter.name} slider`} min={min} max={max} step="1" value={Number(value)} onChange={e => change(index, e.target.value)} /></> : color ? <label className="configurator-colour"><input type="color" aria-label={parameter.name} value={colourHex(value.slice(1, -1))} onChange={e => change(index, JSON.stringify(e.target.value))} /><code>{value}</code></label> : /^(true|false)$/.test(value || "") ? <label><input type="checkbox" checked={value === "true"} onChange={e => change(index, String(e.target.checked))} />{parameter.meaning}</label> : parameter.name === "facing" && /^(["']).*\1$/.test(value || "") ? <select aria-label={parameter.name} value={value.slice(1, -1)} onChange={e => change(index, JSON.stringify(e.target.value))}><option value="right">right</option><option value="left">left</option></select> : <code>{value === "undefined" ? "—" : value ?? parameter.value ?? "—"}</code>}
+                <input type="range" aria-label={`${parameter.name} ${t("slider")}`} min={min} max={max} step="1" value={Number(value)} onChange={e => change(index, e.target.value)} /></> : color ? <label className="configurator-colour"><input type="color" aria-label={parameter.name} value={colourHex(value.slice(1, -1))} onChange={e => change(index, JSON.stringify(e.target.value))} /><code>{value}</code></label> : /^(true|false)$/.test(value || "") ? <label><input type="checkbox" checked={value === "true"} onChange={e => change(index, String(e.target.checked))} />{parameter.meaning}</label> : parameter.name === "facing" && /^(["']).*\1$/.test(value || "") ? <select aria-label={parameter.name} value={value.slice(1, -1)} onChange={e => change(index, JSON.stringify(e.target.value))}><option value="right">{t("right")}</option><option value="left">{t("left")}</option></select> : <code>{value === "undefined" ? "—" : value ?? parameter.value ?? "—"}</code>}
             </StudioCard>;
           })}
 

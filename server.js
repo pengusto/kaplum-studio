@@ -12,6 +12,11 @@ Bun.serve({
     } catch {
       return new Response("Bad request", { status: 400 });
     }
+    const base = process.env.NEXT_PUBLIC_BASE_PATH || "";
+    if (base) {
+      if (pathname !== base && !pathname.startsWith(base + "/")) return new Response("Not found", { status: 404 });
+      pathname = pathname.slice(base.length) || "/";
+    }
     const path = resolve(
       root,
       "." + (pathname === "/" ? "/index.html" : pathname),

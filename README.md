@@ -4,7 +4,7 @@
 [![CI: GitHub Actions](https://img.shields.io/badge/CI-GitHub%20Actions-2088FF?logo=githubactions&logoColor=white)](.github/workflows/ci.yml)
 [![Status: early development](https://img.shields.io/badge/status-early%20development-orange)](#project-status)
 
-**English** · [Deutsch](docs/readme/README.de.md)
+[**Live Studio**](https://pengusto.github.io/kaplum-studio/) · **English** · [Deutsch](docs/readme/README.de.md)
 
 Kaplum Studio is a visual JavaScript Turtle studio for children who are new to programming. Learners pick a drawing or animation, see its code next to the live result, understand what each parameter does, change a value and immediately see the effect.
 
@@ -66,9 +66,8 @@ Planned next:
 - several named projects saved in the browser, with import
 - choosing which helper functions a project uses
 - a guided course with target images and a code-unlocked solution vault
-- complete interface translations
 
-**Languages.** The studio interface is available in English and German. Japanese, Turkish and Armenian content drafts exist for examples and commands; they are AI-assisted and have not yet been reviewed by native speakers. Learner code always uses English JavaScript names; German aliases exist for every teaching command.
+**Languages.** Complete interface and teaching content in English, German, Japanese, Turkish and Armenian. Translations are AI-assisted; native-speaker review is still welcome. Learner code uses English JavaScript names; German aliases exist for teaching commands.
 
 ## License
 
@@ -85,3 +84,14 @@ Appearance settings offer ten coordinated Studio colour presets, saved locally. 
 The Dock opens Figures, Basic commands and Animations directly, alongside Course and My projects. Each catalogue is searchable and uses the full content width. Figure and command overview cards offer an isolated live configurator: React Bits ScrubField, range controls, boolean choices and the browser colour picker update the actual Turtle drawing and displayed call. Open in Studio transfers a configured example only when no Studio draft exists. Existing drafts remain intact. Unsupported expression arguments are displayed rather than evaluated by the UI.
 
 Catalogue previews execute the real Turtle examples only while at least 35% visible. Scrolling away or hiding the tab terminates their sandbox; returning restarts the example. Explicit pauses persist across catalogue navigation within the open tab. Reduced motion requires explicit playback. The Dock is a fixed overlay on desktop and mobile; scroll tails keep final controls reachable.
+
+## GitHub Pages
+
+The Pages workflow builds and tests the static export at `/kaplum-studio` before deploying. Local and VPS builds use the root path by default. To test the Pages mount locally:
+
+```sh
+NEXT_PUBLIC_BASE_PATH=/kaplum-studio bun run build
+NEXT_PUBLIC_BASE_PATH=/kaplum-studio bunx playwright test tests/pages.spec.js
+```
+
+The interface, parameter explanations, figure descriptions and activities are available in English, German, Japanese, Turkish and Armenian. Function names and learner code remain English; changing language never translates an edited program.

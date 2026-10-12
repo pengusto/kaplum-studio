@@ -2,7 +2,7 @@
 
 Paused by the owner on 12 October 2026 after accepting the current UI.
 
-This is a separate release snapshot. The original development repository remains private. Website deployment is separate from source publication.
+This is a separate release snapshot. The original development repository is pending deletion: GitHub requires an additional `delete_repo` authorization. Local teaching archives remain preserved. Website deployment uses a separate GitHub Pages workflow.
 
 ## Accepted baseline
 
@@ -18,8 +18,12 @@ Production build and whitespace checks passed. Relevant browser checks passed in
 
 ## Resume
 
-Start by checking the current checkout and runtime, then agree on the next bounded change. Curriculum content, broader language completion and website deployment remain future work. Source publication is complete. Preserve original course sources and local tracker files.
+Start by checking the current checkout and runtime, then agree on the next bounded change. Curriculum content remains future work. Five-language UI completion and GitHub Pages were authorized on 12 October 2026. Source publication is complete. Preserve original course sources and local tracker files.
 
 ## Helper authorship clarification
 
 On 12 October 2026, the owner confirmed that `engine/functions.js` contains helpers he created with Codex assistance. The source header, README and third-party notices now record their project MIT licensing. The historical teaching-fork engine and third-party component licences remain separate concerns. Feature development remains paused; source publication was subsequently authorized and completed in this separate repository.
+
+## Release closeout
+
+All five UI dictionaries and existing teaching translations are selectable and persist across reloads. Native-speaker review remains outstanding. Root deployment remains supported; GitHub Pages builds at `/kaplum-studio` and asset loading, favicon and ZIP exports share that mount path. Browser and deployment verification are recorded in the GitHub workflow runs.

@@ -1,4 +1,5 @@
 "use client";
+import { assetUrl } from "../src/asset-url";
 import { useEffect, useRef, useState } from "react";
 import {
   Play,
@@ -171,7 +172,7 @@ export default function Workspace({ route, preferences, t, drafts }) {
             <h2>{t("lesson")}</h2>
             <p>{t("goal")}</p>
             <img
-              src="/assets/previews/activity-circle.png"
+              src={assetUrl("/assets/previews/activity-circle.png")}
               alt={t("goal")}
               width="130"
               height="130"
@@ -429,7 +430,7 @@ export default function Workspace({ route, preferences, t, drafts }) {
                   }}
                 />
                 <img
-                  src={`/assets/previews/recipe-${x.id}.png`}
+                  src={assetUrl(`/assets/previews/recipe-${x.id}.png`)}
                   alt=""
                   width="50"
                   height="50"

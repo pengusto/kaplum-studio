@@ -1,4 +1,5 @@
 "use client";
+import { assetUrl } from "../src/asset-url";
 import CataloguePreview from "./CataloguePreview";
 import { useState } from "react";
 import { Search, ArrowUpRight, RotateCcw, X, Shapes, PawPrint, LayoutGrid } from "lucide-react";
@@ -114,7 +115,7 @@ function GalleryCard({ item, isCommand, section, source, title, entry, href, ove
               {overview ? <CataloguePreview source={liveSource} title={title} id={`${section}/${item.id || item.name}`} pausedPreviews={pausedPreviews} t={t} fitFigure={section === "figures" && !/zufall|spring/.test(item.id)} /> : !isCommand && (
                 <a href={href} tabIndex={-1} aria-hidden="true">
                   <img
-                    src={`/assets/${section === "figures" && preferences.canvas === "dark" ? "previews-dark" : "previews"}/${section === "animations" ? "activity" : "recipe"}-${item.id}.png`}
+                    src={assetUrl(`/assets/${section === "figures" && preferences.canvas === "dark" ? "previews-dark" : "previews"}/${section === "animations" ? "activity" : "recipe"}-${item.id}.png`)}
                     alt=""
                     width="360"
                     height="360"

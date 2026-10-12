@@ -1,3 +1,4 @@
+import { assetUrl } from "./asset-url.js";
 import { storedZip } from "./zip.js";
 export function download(blob, filename) {
   const url = URL.createObjectURL(blob);
@@ -69,7 +70,7 @@ export async function projectFiles(code, background = "white") {
       "/THIRD_PARTY_NOTICES.txt",
       "/engine/teaching-clock.js",
     ].map(async (path) => {
-      const response = await fetch(path);
+      const response = await fetch(assetUrl(path));
       if (!response.ok) throw new Error(`Cannot load ${path}`);
       return response.text();
     }),

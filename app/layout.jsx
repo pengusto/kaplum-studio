@@ -1,13 +1,14 @@
+import { assetUrl } from "../src/asset-url";
 import "./globals.css";
 import "./atlas.css";
 export const metadata = {
   title: "Kaplum Studio",
   icons: {
     icon: [
-      { url: "/favicon.svg", type: "image/svg+xml" },
-      { url: "/favicon.ico", sizes: "16x16 32x32 48x48" },
+      { url: assetUrl("/favicon.svg"), type: "image/svg+xml" },
+      { url: assetUrl("/favicon.ico"), sizes: "16x16 32x32 48x48" },
     ],
-    apple: "/apple-touch-icon.png",
+    apple: assetUrl("/apple-touch-icon.png"),
   },
   description: "Explore Turtle examples and learn by creating.",
 };

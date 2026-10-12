@@ -1,6 +1,9 @@
+import { studioLocales } from "./studio-locales";
 import { locales } from "../src/i18n";
-const copy = {
+export const copy = {
+  ...studioLocales,
   en: {
+    left: "Left", right: "Right", slider: "slider",
     library: "Example library",
     sizeEffect: "Makes your dinosaur bigger or smaller.",
     colourEffect: "Changes the dinosaur’s colour.",
@@ -83,7 +86,7 @@ const copy = {
     js: "Download .js",
     exportHelp: "One ZIP. Extract it and open index.html. Libraries included.",
     scope:
-      "Private UI preview · Course and helper selection are demonstrations.",
+      "Course and helper selection are demonstrations.",
     lesson: "Your first shape",
     goal: "Make a filled coral circle with radius 60 at the centre.",
     hint: "Need a hint?",
@@ -102,6 +105,7 @@ const copy = {
     visible: "Visible result",
   },
   de: {
+    left: "Links", right: "Rechts", slider: "Schieberegler",
     library: "Beispielbibliothek",
     sizeEffect: "Macht deinen Dinosaurier größer oder kleiner.",
     colourEffect: "Ändert die Farbe des Dinosauriers.",
@@ -184,7 +188,7 @@ const copy = {
     js: ".js herunterladen",
     exportHelp:
       "Eine ZIP. Entpacken und index.html öffnen. Bibliotheken sind enthalten.",
-    scope: "Private UI-Vorschau · Kurs und Funktionsauswahl sind Demos.",
+    scope: "Kurs und Funktionsauswahl sind Demos.",
     lesson: "Deine erste Form",
     goal: "Zeichne einen gefüllten korallfarbenen Kreis mit Radius 60 in der Mitte.",
     hint: "Brauchst du einen Hinweis?",
@@ -207,6 +211,9 @@ const copy = {
 export const languages = [
   ["en", "🇬🇧", "English"],
   ["de", "🇩🇪", "Deutsch"],
+  ["ja", "🇯🇵", "日本語"],
+  ["tr", "🇹🇷", "Türkçe"],
+  ["hy", "🇦🇲", "Հայերեն"],
 ];
 export function messages(locale) {
   const language = copy[locale] || copy.en;

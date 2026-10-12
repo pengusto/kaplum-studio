@@ -1,3 +1,4 @@
+import { assetUrl } from "./asset-url.js";
 // Each run receives a new opaque sandbox and a terminable worker.
 export class Preview {
   constructor(canvas, onStatus, onFrame) {
@@ -26,7 +27,7 @@ export class Preview {
           "/src/worker.js",
           "/engine/teaching-clock.js",
         ].map(async (path) => {
-          const response = await fetch(path);
+          const response = await fetch(assetUrl(path));
           if (!response.ok) throw Error(`Cannot load ${path}`);
           return response.text();
         }),

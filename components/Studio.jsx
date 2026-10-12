@@ -1,4 +1,5 @@
 "use client";
+import { assetUrl } from "../src/asset-url";
 import { useEffect, useRef, useState } from "react";
 import {
   Shapes,
@@ -24,13 +25,14 @@ function validate(value) {
     colorPreset: colorPresets.some((preset) => preset.id === value?.colorPreset) ? value.colorPreset : "ocean",
     theme: ["dark", "light"].includes(value?.theme) ? value.theme : "dark",
     canvas: ["dark", "light"].includes(value?.canvas) ? value.canvas : "dark",
-    locale: ["en", "de"].includes(value?.locale) ? value.locale : "en",
+    locale: ["en", "de", "ja", "tr", "hy"].includes(value?.locale) ? value.locale : "en",
   };
 }
 export default function Studio() {
   const [route, setRoute] = useState("figures"),
     [preferences, setPreferences] = useState(defaults),
     [settings, setSettings] = useState(false),
+    [preferencesReady, setPreferencesReady] = useState(false),
     [storageError, setStorageError] = useState(false),
     [libraryOpen, setLibraryOpen] = useState(false);
   const drafts = useRef(new Map());
@@ -57,6 +59,7 @@ export default function Studio() {
       );
     };
     read();
+    setPreferencesReady(true);
     window.addEventListener("hashchange", read);
     return () => window.removeEventListener("hashchange", read);
   }, []);
@@ -76,7 +79,7 @@ export default function Studio() {
     const controller = new AbortController();
     let observer;
     const preset = colorPresets.find((entry) => entry.id === preferences.colorPreset);
-    fetch("/favicon.svg", { signal: controller.signal })
+    fetch(assetUrl("/favicon.svg"), { signal: controller.signal })
       .then((response) => {
         if (!response.ok) throw new Error("Favicon unavailable");
         return response.text();
@@ -152,6 +155,7 @@ export default function Studio() {
             <label className="language-picker">
               <Globe size={16} aria-hidden="true" />
               <select
+                disabled={!preferencesReady}
                 aria-label={t("language")}
                 value={preferences.locale}
                 onChange={(e) => update({ locale: e.target.value })}

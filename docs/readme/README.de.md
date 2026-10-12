@@ -66,9 +66,8 @@ Als Nächstes geplant:
 - mehrere benannte Projekte im Browser speichern, mit Import
 - auswählen, welche Hilfsfunktionen ein Projekt nutzt
 - ein geführter Kurs mit Zielbildern und einem per Code freischaltbaren Lösungs-Tresor
-- vollständige Übersetzungen der Oberfläche
 
-**Sprachen.** Die Studio-Oberfläche gibt es auf Englisch und Deutsch. Für Beispiele und Befehle existieren Entwürfe auf Japanisch, Türkisch und Armenisch; sie sind KI-gestützt und noch nicht von Muttersprachlern geprüft. Der Code der Lernenden nutzt immer englische JavaScript-Namen; für jeden Unterrichtsbefehl gibt es zusätzlich einen deutschen Alias.
+**Sprachen.** Oberfläche, Parametererklärungen und Beispielinhalte sind vollständig auf Englisch, Deutsch, Japanisch, Türkisch und Armenisch verfügbar. Die Übersetzungen sind KI-gestützt; eine Prüfung durch Muttersprachler steht aus. Der Code der Lernenden bleibt auf Englisch; deutsche Befehlsaliase sind verfügbar.
 
 ## Lizenz
 
@@ -81,3 +80,7 @@ Einige Teile stammen aus anderen Projekten und behalten ihre eigenen Lizenzen:
 - Die npm-Abhängigkeiten sind in `THIRD_PARTY_NOTICES.txt` aufgeführt.
 
 Die aktuelle Canvas-Engine und die vom Autor mit Codex erstellten Zeichenhelfer stehen unter MIT. Dieses Release-Repository enthält nur den aktuellen Stand und keine Historie der früheren Unterrichts-Engine. Die Lizenzen der Fremdkomponenten bleiben erhalten; React Bits hat zusätzliche Commons-Clause-Bedingungen.
+
+## Live-Seite
+
+[Kaplum Studio auf GitHub Pages](https://pengusto.github.io/kaplum-studio/). Der Workflow prüft den Build unter `/kaplum-studio`, bevor er veröffentlicht wird.
