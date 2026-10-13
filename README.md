@@ -109,3 +109,10 @@ Frame animations show **Pause animation** while running and **Resume animation**
 To test code stepping, open a course lesson, choose **Debug code** above the canvas, then use **Next code statement**. The highlighted instruction has not run yet. Continue runs to completion unless you pause or stop. See [supported syntax and limitations](docs/source-debugger.md).
 
 In the debugger panel, set a **Breakpoint line** to pause before the next supported checkpoint on that line. Continue can hit it again in a loop. Restart preserves it; editing code clears it.
+
+
+## Verified publishing
+
+Run `bun run hooks:install` once per clone. The pre-push hook runs `bun run verify:push`: production build, the full Chromium and Firefox suites, and a separate `/kaplum-studio` build with Pages tests. A failed check blocks the push. Test screenshots stay temporary; the root-path preview is rebuilt afterwards.
+
+After committing, use `bun run push:verified` on main. It pushes through the hook and waits up to 15 minutes for the Pages workflow for that exact commit. Failed deployment, unavailable GitHub access or timeout exits with an error; success confirms the published commit and links the run. Pull requests retain their CI checks.

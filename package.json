@@ -10,7 +10,10 @@
     "build": "bun scripts/prepare-public.js && next build",
     "preview": "STATIC_DIR=out bun server.js",
     "test": "playwright test",
-    "profile:previews": "bun scripts/profile-previews.js"
+    "profile:previews": "bun scripts/profile-previews.js",
+    "verify:push": "bun scripts/verify-push.js",
+    "push:verified": "bun scripts/push-and-check.js",
+    "hooks:install": "git config core.hooksPath .githooks"
   },
   "dependencies": {
     "@codemirror/commands": "6.11.1",

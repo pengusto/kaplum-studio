@@ -213,11 +213,11 @@ test("production screenshots for dark/light, settings and narrow review", async 
   await page.goto("/#figures");
   await expect(page.locator(".catalogue-preview").first()).toHaveAttribute("data-drawn", "true");
   await expect(page.locator(".example-card").first()).toHaveCSS("opacity", "1");
-  await page.screenshot({ path: "docs/images/kaplum-next-dark.png" });
+  await page.screenshot({ path: `${process.env.KAPLUM_SCREENSHOT_DIR || "docs/images"}/kaplum-next-dark.png` });
   await page.goto("/#figure/figur-dino");
   await expect(page.locator("#status")).toHaveText("Running");
   await page.getByRole("button", { name: "Settings", exact: true }).click();
-  await page.screenshot({ path: "docs/images/kaplum-next-settings.png" });
+  await page.screenshot({ path: `${process.env.KAPLUM_SCREENSHOT_DIR || "docs/images"}/kaplum-next-settings.png` });
   await page
     .getByRole("dialog")
     .getByRole("switch", { name: "Dark mode", exact: true })
@@ -229,7 +229,7 @@ test("production screenshots for dark/light, settings and narrow review", async 
   await page.getByRole("button", { name: "Done", exact: true }).click();
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.setViewportSize({ width: 1440, height: 1400 });
-  await page.screenshot({ path: "docs/images/kaplum-next-light.png" });
+  await page.screenshot({ path: `${process.env.KAPLUM_SCREENSHOT_DIR || "docs/images"}/kaplum-next-light.png` });
   // Capture the selected panel, rather than a moving selection thumb mid-transition.
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.setViewportSize({ width: 390, height: 844 });
@@ -242,7 +242,7 @@ test("production screenshots for dark/light, settings and narrow review", async 
       }),
     )
     .toBeGreaterThan(100);
-  await page.screenshot({ path: "docs/images/kaplum-next-mobile.png" });
+  await page.screenshot({ path: `${process.env.KAPLUM_SCREENSHOT_DIR || "docs/images"}/kaplum-next-mobile.png` });
   await page.setViewportSize({ width: 1440, height: 1800 });
   await page.goto("/#course/state");
   await page.locator(".lesson-task").getByRole("button", { name: "Start step-by-step", exact: true }).click();
@@ -251,7 +251,7 @@ test("production screenshots for dark/light, settings and narrow review", async 
   await expect(page.locator(".drawing-step")).toContainText("Position changed");
   await expect(page.locator(".turtle-state")).toContainText("35.0");
   await page.locator(".lesson-task").evaluate(el => el.scrollIntoView({block:"start"}));
-  await page.screenshot({ path: "docs/images/kaplum-course.png" });
+  await page.screenshot({ path: `${process.env.KAPLUM_SCREENSHOT_DIR || "docs/images"}/kaplum-course.png` });
 });
 
 test("dark thumbnails match their labelled figure and all images decode", async ({
