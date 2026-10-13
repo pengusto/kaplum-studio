@@ -1,3 +1,5 @@
 import Documentation from "../../components/Documentation";
-export const metadata = { title: "Documentation — Kaplum Studio", description: "Learn the Kaplum Studio Turtle commands, parameters and offline workflow." };
-export default function DocsPage() { return <Documentation />; }
+import StructuredData from "../../components/StructuredData";
+import { studioUrl, documentationStructuredData } from "../../src/structured-data";
+export const metadata = { title: "Documentation — Kaplum Studio", description: documentationStructuredData.description, alternates: { canonical: `${studioUrl}docs/` } };
+export default function DocsPage() { return <><StructuredData data={documentationStructuredData} /><Documentation /></>; }

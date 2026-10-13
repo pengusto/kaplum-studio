@@ -18,7 +18,7 @@ try {
   run(["run", "test"], { PLAYWRIGHT_BROWSER: "firefox" });
   mounted = true;
   run(["run", "build"], { NEXT_PUBLIC_BASE_PATH: "/kaplum-studio" });
-  run(["x", "playwright", "test", "tests/pages.spec.js"], { NEXT_PUBLIC_BASE_PATH: "/kaplum-studio" });
+  run(["x", "playwright", "test", "tests/pages.spec.js", "tests/structured-data.spec.js"], { NEXT_PUBLIC_BASE_PATH: "/kaplum-studio" });
 } catch (error) {
   console.error(error.message);
   failed = true;
