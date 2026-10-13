@@ -1,6 +1,6 @@
-# Project status — 13 October 2026
+# Project status — 14 October 2026
 
-Kaplum Studio is an early-development public teaching app. Work resumed after the 12 October pause. The official repository is `pengusto/kaplum-studio`; its website is https://pengusto.github.io/kaplum-studio/. Original local course archives remain preserved. The earlier private repository was deleted with owner authorization; it is not the active development repository.
+Kaplum Studio is an early-development public teaching app. Development is paused for now after the verified own-function debugger update. Resume with the classroom trial and the remaining work below. The official repository is `pengusto/kaplum-studio`; its website is https://pengusto.github.io/kaplum-studio/. Original local course archives remain preserved. The earlier private repository was deleted with owner authorization; it is not the active development repository.
 
 ## Working today
 
@@ -17,7 +17,9 @@ Kaplum Studio is an early-development public teaching app. Work resumed after th
 
 ## Latest verified baseline
 
-The implementation at `9d4f3bf` passed 118 Chromium and 118 Firefox tests, plus 15 mounted Pages tests. Its [Pages workflow](https://github.com/pengusto/kaplum-studio/actions/runs/38423185011) completed successfully, including deployment. The public Studio and documentation HTML were checked for the deployed JSON-LD. This evidence is a dated baseline, not a substitute for checking later commits.
+The implementation at `d1d4b4f` passed all 123 Chromium and 123 Firefox tests, plus 15 mounted Pages and structured-data tests. Its [Pages workflow](https://github.com/pengusto/kaplum-studio/actions/runs/38479560067) completed successfully, including build, verification and deployment. Browser suites use two workers to keep concurrent canvas checks reliable.
+
+The public [own-functions lesson](https://pengusto.github.io/kaplum-studio/#course/functions) was also checked in the browser: stepping entered `square`, highlighted the original source and showed its active call and parameter; continuing drew both squares and returned `perimeter = 400`. These results establish this implementation baseline; the handoff documentation commit is published through the same verification workflow.
 
 The installed pre-push hook runs the full build/browser/Pages checks. `bun run push:verified` then waits for successful Pages publication of the exact commit. Install the hook once per clone with `bun run hooks:install`. Tests cannot establish child comprehension, native translation quality or Safari support.
 
