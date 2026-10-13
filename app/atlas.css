@@ -1174,3 +1174,28 @@ header .release-links a {
 @media (min-width: 701px) and (max-width: 1150px) {
   header:has(.release-links) .header-place { display: none; }
 }
+
+/* Editing and drawing must remain usable when teaching, exports or the example tray add content. */
+.atlas-workspace > .export-bar { margin-bottom: 0; flex-shrink: 0; }
+.atlas-workspace > .scope-note { flex-shrink: 0; }
+.atlas-workspace > .studio-legal-links { flex-shrink: 0; padding-bottom: 112px; }
+@media (min-width: 701px) {
+  .workspace-panels:not([data-debug="true"]) {
+    flex: 0 0 auto;
+    min-height: 800px;
+  }
+  .workspace-panels:not([data-debug="true"]) .workbench {
+    height: 800px;
+    min-height: 800px;
+  }
+  .workspace-panels:not([data-debug="true"]) .code-pane {
+    flex: 0 0 360px;
+  }
+  .workspace-panels:not([data-debug="true"]) .canvas-surface {
+    min-height: 300px;
+  }
+}
+@media (min-width: 901px) {
+  .workspace-panels[data-inspector="false"] { grid-template-columns: minmax(0, 1fr); }
+  .workspace-panels[data-inspector="false"] .explanation-pane { display: none; }
+}

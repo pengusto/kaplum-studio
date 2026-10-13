@@ -245,7 +245,7 @@ test("production screenshots for dark/light, settings and narrow review", async 
   await page.screenshot({ path: "docs/images/kaplum-next-mobile.png" });
   await page.setViewportSize({ width: 1440, height: 1800 });
   await page.goto("/#course/state");
-  await page.locator(".lesson-task > button").click();
+  await page.locator(".lesson-task").getByRole("button", { name: "Start step-by-step", exact: true }).click();
   await expect(page.getByRole("group", { name: "Drawing playback" })).toBeVisible();
   await page.getByRole("button", { name: "Next drawing step", exact: true }).click();
   await expect(page.locator(".drawing-step")).toContainText("Position changed");
