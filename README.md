@@ -15,7 +15,7 @@ It grew out of teaching beginner programming courses, where the hardest part was
 ## What it does
 
 - **Example library.** 32 figures, 73 commands and helpers and 26 animations, each with a real preview rendered by the engine.
-- **Code and result together.** A CodeMirror editor sits above the canvas, with Run, Restart and Stop next to the result. Animations start automatically, except when reduced motion is requested.
+- **Code and result together.** A CodeMirror editor sits beside the canvas on desktop, with Run, Restart and Stop next to the result. Animations start automatically, except when reduced motion is requested.
 - **Parameters made visible.** Each argument in the code gets a number that matches a row in the inspector: parameter name, current value and plain-language meaning. Figure and command catalogue cards expose numeric controls, colours and boolean choices directly, updating the live preview and displayed call. Expressions remain read-only; existing Studio drafts are preserved.
 - **Safe execution.** Learner code runs in a Web Worker inside a sandboxed iframe. Stop, navigation and hidden tabs terminate it, so an infinite loop cannot freeze the page.
 - **Offline project export.** One ZIP contains `index.html`, the learner's exact `program.js` and the engine. Unzip it, open `index.html` and it runs without a server or internet connection.
@@ -63,7 +63,7 @@ Kaplum Studio is in early development and used for teaching. Working today: the 
 
 The course includes eight runnable experiments with a goal, an observable baseline and a source-edit challenge. Finite drawings support recorded playback and drawing undo. Frame animations support pause/resume; timer and input programs use Run/Stop.
 
-A bounded [source debugger prototype](docs/source-debugger.md) now pauses before code instructions, highlights the line and shows primitive variables. It supports simple variables, direct teaching calls and braced for/while/if; source-line breakpoints are available; own-function stepping is still pending ([#6](https://github.com/pengusto/kaplum-studio/issues/6)). Independent named turtles remain planned ([#7](https://github.com/pengusto/kaplum-studio/issues/7)). The optional p5.js mode is deferred. Safari, native translation review and classroom usability remain unverified.
+A bounded [source debugger prototype](docs/source-debugger.md) now pauses before code instructions, highlights the line and shows primitive variables. It supports simple variables, direct teaching calls and braced for/while/if; source-line breakpoints are available; own-function stepping is still pending ([#6](https://github.com/pengusto/kaplum-studio/issues/6)). Independent named turtles remain planned ([#7](https://github.com/pengusto/kaplum-studio/issues/7)). The optional p5.js mode is deferred. Safari, native translation review and classroom usability remain unverified. The [short German classroom trial](docs/classroom-trial.de.md) is ready to use; see [current project status](docs/project-status.md).
 
 **Languages.** Complete interface and teaching content in English, German, Japanese, Turkish and Armenian. Translations are AI-assisted; native-speaker review is still welcome. Learner code uses English JavaScript names; German aliases exist for teaching commands.
 

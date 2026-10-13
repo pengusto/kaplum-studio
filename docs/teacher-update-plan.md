@@ -1,5 +1,7 @@
 # Teacher inspection update
 
+Status on 13 October 2026: the inspection and lesson work below is implemented. Historical test counts are checkpoint evidence. A bounded source debugger subsequently shipped; see [project status](project-status.md) and [classroom trial](classroom-trial.de.md) for current follow-up.
+
 ## Scope and delivery order
 
 1. Expand the existing coalesced live inspector with pen colour, line width, visibility and stamp count. Preserve synchronous program queries and the 700-unit coordinate system.
@@ -30,8 +32,8 @@ creates a fresh one. Timer/input programs use normal Run/Stop.
 The programme kind is labelled in all five languages, independent of the catalogue
 section (the circle activity is a finite drawing even under Animations). Mobile
 controls remain visible; optional state and comparison panels stay collapsed.
-p5.js remains deferred. The genuine source debugger and independent turtles are
-separate next stages and are not implemented by this usability change.
+p5.js remains deferred. The source debugger is implemented separately with a bounded syntax subset;
+learner-defined function stepping and independent turtles remain future work.
 
 ## Lesson task follow-up
 

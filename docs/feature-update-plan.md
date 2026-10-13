@@ -1,5 +1,7 @@
 # Testable Turtle feature update
 
+Status on 13 October 2026: stages 1–6 below have been implemented. This is the original delivery plan and its acceptance criteria, not the current todo list. See [project status](project-status.md) for the remaining work. A bounded source debugger is also implemented; learner-function stepping remains open.
+
 Owner requested a concrete implementation plan, 2026-10-12. This document proposes the next update; it does not promise unattended overnight execution or a delivery time. Baseline: ea815f3, successfully deployed on GitHub Pages.
 
 ## Delivery order
@@ -61,7 +63,7 @@ Avoid a broad UI redesign during this increment. Keep the catalogue fast; replay
 
 ## Later work
 
-Issue #6 remains a design/prototype for actual JavaScript debugging, including loops, function calls, breakpoints, source locations and safe variable inspection. It must not be presented as complete merely because drawing stepping exists. Multiple turtles (#7) and the p5.js workshop evaluation (#9) remain later independent decisions.
+Issue #6 now has a bounded source debugger with loop/condition feedback, source highlighting, breakpoints and primitive variable inspection. Learner-defined function stepping and broader syntax support remain open. It must not be presented as complete merely because drawing stepping exists. Multiple turtles (#7) and the p5.js workshop evaluation (#9) remain later independent decisions.
 
 ## Implementation checkpoint
 
@@ -69,6 +71,6 @@ Implemented: bounded finite trace and playback, removable coloured stamps, nativ
 
 The lab is at `#course`; each lesson has a protected editable draft, reset, instructions, expected outcome and the existing exact-source ZIP export. Lessons: square replay, pen-up journey, removable stamp pattern, circle path versus static shape and undo-clear.
 
-Deliberate limits: replay and undo require synchronous finite recordings, not timer/input/async programs; checkpoints are drawing updates, not JavaScript lines. Undo discards later drawing history and restores Turtle state but does not reverse JavaScript variables or helper closure state. Unfinished helper fills reject a recording explicitly. New runs use Run/Restart. Stamps are a removable overlay above ordinary ink. Native translation review and Safari remain unverified. Multiple turtles, a real JavaScript debugger and p5.js are later issues.
+Deliberate limits: replay and undo require synchronous finite recordings, not timer/input/async programs; checkpoints are drawing updates, not JavaScript lines. Undo discards later drawing history and restores Turtle state but does not reverse JavaScript variables or helper closure state. Unfinished helper fills reject a recording explicitly. New runs use Run/Restart. Stamps are a removable overlay above ordinary ink. Native translation review and Safari remain unverified. Multiple turtles and p5.js remain later issues. A bounded JavaScript source debugger has since shipped; see [source debugger](source-debugger.md) for its supported subset.
 
 Verification includes real Chromium/Firefox interaction, five-language narrow/reduced-motion layout, geometry and stamp pixel checks, trace overflow and undo latency samples, draft/reset protection, and network-free execution of stamps/circle/undo from an exported ZIP. Full regression and Pages deployment evidence are recorded after the release gate.

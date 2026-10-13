@@ -1,5 +1,7 @@
 # Stabilization checkpoint — 12 October 2026
 
+Historical measurements and test counts below are retained as checkpoint evidence. The second checkpoint and larger starting figures were subsequently implemented and published. Current follow-up is classroom usability and slower-device/Safari testing; see [project status](project-status.md).
+
 Completed locally:
 - Stable exploration ranges, complete 360-degree ovals and the default 24 firework rays.
 - Shared parser-based defaults/call replacement for catalogue, inspector and Dino editor.
