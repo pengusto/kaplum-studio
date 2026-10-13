@@ -1,7 +1,6 @@
 name: CI
 on:
-  push:
-    branches: [main]
+  # Main pushes are verified once by the Pages workflow via workflow_call.
   pull_request:
   workflow_dispatch:
   workflow_call:

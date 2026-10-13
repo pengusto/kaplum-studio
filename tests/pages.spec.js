@@ -130,5 +130,5 @@ test('exported stamps, path circle and bounded undo execute from file without ne
 
 test('mounted course lab and construction views load under Pages subpath',async({page})=>{
  await page.goto(`${base}/#course`);await expect(page.locator('.feature-lesson-grid article')).toHaveCount(8);await page.locator('.feature-lesson-grid article').first().getByRole('link').click();await expect(page).toHaveURL(/#course\/square$/);await page.getByRole('button',{name:'Record drawing',exact:true}).click();await expect(page.getByRole('group',{name:'Drawing playback'})).toBeVisible();
- await page.goto(`${base}/#figure/figur-pacman`);await page.locator('.example-construction summary').click();await expect(page.locator('.example-construction pre')).toContainText('function drawPacman(');
+ await page.goto(`${base}/#figure/figur-pacman`);await page.locator('.inspector-toggle').click();await expect(page.locator('.explanation-pane')).toBeVisible();await page.locator('.example-construction summary').click();await expect(page.locator('.example-construction pre')).toContainText('function drawPacman(');
 });

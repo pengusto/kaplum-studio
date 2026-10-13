@@ -51,7 +51,7 @@ bun run test
 PLAYWRIGHT_BROWSER=firefox bun run test
 ```
 
-First run: `bunx playwright install chromium firefox`. The suite also refreshes the screenshots in `docs/images/`. CI runs the build and both browsers on every push to `main`.
+First run: `bunx playwright install chromium firefox`. The suite also refreshes the screenshots in `docs/images/`. The Pages workflow calls CI once on every push to `main`: build plus both browsers. Pull requests run CI directly; deployment requires successful verification.
 
 ## How it is built
 
