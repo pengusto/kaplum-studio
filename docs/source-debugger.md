@@ -54,3 +54,8 @@ Normal desktop editing places source and drawing side by side and reserves enoug
 ## Adjustable split
 
 On desktop, drag the separator between code and drawing to allocate 25–75% of the workspace to code. The same split applies in normal and debug mode. Keyboard users can focus the separator and use Left/Right in 5% steps, Home/End for the limits; double-click resets to 50/50. The split is saved in browser localStorage and restored across reloads and examples. Invalid saved values fall back to 50/50; blocked storage does not prevent resizing. This does not modify source or exports. Parameters start collapsed and open below the workspace, preserving its width. Mobile retains panel tabs and hides the divider.
+
+
+## Adjustable height
+
+The horizontal grip below the desktop workspace resizes code and drawing together from 480 to 1400px and saves the height in localStorage across reloads and examples, including debug mode. Up/Down adjusts by 40px, Home/End selects the limits, and double-click restores the responsive default. Mobile retains its panel sizing. Invalid or unavailable storage falls back safely.

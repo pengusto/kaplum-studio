@@ -42,7 +42,7 @@ test('split divider responds to drag, keyboard, reset and debug mode without edi
   await page.setViewportSize({ width: 1073, height: 766 });
   await page.goto('/#figure/figur-dino');
   const original = await page.locator('#code').innerText();
-  const divider = page.getByRole('separator');
+  const divider = page.locator('.workspace-divider');
   const before = await page.locator('.code-pane').boundingBox();
   const handle = await divider.boundingBox();
   await page.mouse.move(handle.x + handle.width / 2, handle.y + 80);
@@ -70,7 +70,7 @@ test('split divider responds to drag, keyboard, reset and debug mode without edi
 test('split survives reload and example navigation, and reset is saved', async ({ page }) => {
   await page.setViewportSize({ width: 1073, height: 766 });
   await page.goto('/#animation/circle');
-  const divider = page.getByRole('separator');
+  const divider = page.locator('.workspace-divider');
   await divider.press('ArrowRight');
   await expect(divider).toHaveAttribute('aria-valuenow', '55');
   await page.reload();
@@ -87,15 +87,61 @@ test('invalid or unavailable storage preserves a usable divider', async ({ page 
   for (const saved of ['broken json', 'null', '"65"', '100']) {
     await page.evaluate(value => localStorage.setItem('kaplum-workspace-split-v1', value), saved);
     await page.reload();
-    await expect(page.getByRole('separator')).toHaveAttribute('aria-valuenow', '50');
+    await expect(page.locator('.workspace-divider')).toHaveAttribute('aria-valuenow', '50');
   }
   await page.addInitScript(() => {
     Storage.prototype.getItem = () => { throw new Error('Storage unavailable'); };
     Storage.prototype.setItem = () => { throw new Error('Storage unavailable'); };
   });
   await page.reload();
-  const divider = page.getByRole('separator');
+  const divider = page.locator('.workspace-divider');
   await expect(divider).toHaveAttribute('aria-valuenow', '50');
   await divider.press('ArrowRight');
   await expect(divider).toHaveAttribute('aria-valuenow', '55');
+});
+
+
+test('shared height can be dragged, restored and reset without changing source', async ({ page }) => {
+  await page.setViewportSize({ width: 1073, height: 1000 });
+  await page.goto('/#animation/circle');
+  const original = await page.locator('#code').innerText();
+  const handle = page.getByRole('separator', { name: 'Workspace height' });
+  await handle.scrollIntoViewIfNeeded();
+  const before = await page.locator('.workbench').boundingBox();
+  const grip = await handle.boundingBox();
+  await page.mouse.move(grip.x + grip.width / 2, grip.y + 8);
+  await page.mouse.down();
+  await page.mouse.move(grip.x + grip.width / 2, grip.y + 108);
+  await page.mouse.up();
+  const height = Number(await handle.getAttribute('aria-valuenow'));
+  expect(height).toBeGreaterThan(before.height + 90);
+  await page.reload();
+  await expect(handle).toHaveAttribute('aria-valuenow', String(height));
+  for (const selector of ['.code-pane', '.result-pane']) expect(Math.abs((await page.locator(selector).boundingBox()).height - height)).toBeLessThanOrEqual(2);
+  await page.locator('.editor-debug-start').click();
+  await handle.press('Home');
+  for (const selector of ['.code-pane', '.result-pane']) expect(Math.abs((await page.locator(selector).boundingBox()).height - 480)).toBeLessThanOrEqual(2);
+  await handle.press('ArrowDown');
+  await expect(handle).toHaveAttribute('aria-valuenow', '520');
+  expect(await page.locator('#code').innerText()).toBe(original);
+  await handle.dblclick();
+  await page.reload();
+  expect(await page.evaluate(() => localStorage.getItem('kaplum-workspace-height-v1'))).toBe('null');
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(handle).toBeHidden();
+});
+
+test('invalid and blocked height storage keeps resizing available', async ({ page }) => {
+  await page.goto('/#animation/circle');
+  await page.evaluate(() => localStorage.setItem('kaplum-workspace-height-v1', '9000'));
+  await page.reload();
+  await expect(page.locator('.workspace-panels')).toHaveAttribute('data-resized-height', 'false');
+  await page.addInitScript(() => {
+    Storage.prototype.getItem = () => { throw new Error('Unavailable'); };
+    Storage.prototype.setItem = () => { throw new Error('Unavailable'); };
+  });
+  await page.reload();
+  const handle = page.getByRole('separator', { name: 'Workspace height' });
+  await handle.press('End');
+  await expect(handle).toHaveAttribute('aria-valuenow', '1400');
 });

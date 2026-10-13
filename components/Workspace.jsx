@@ -86,12 +86,35 @@ export default function Workspace({ route, preferences, t, drafts }) {
     [showVault, setShowVault] = useState(false),
     [selected, setSelected] = useState(new Set(entry ? [entry.name] : []));
   const [split, setSplit] = useState(50);
+  const [workspaceHeight, setWorkspaceHeight] = useState(null);
   useEffect(() => {
     try {
       const saved = JSON.parse(localStorage.getItem("kaplum-workspace-split-v1") || "null");
       if (typeof saved === "number" && Number.isFinite(saved) && saved >= 25 && saved <= 75) setSplit(saved);
     } catch {}
   }, []);
+  useEffect(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem("kaplum-workspace-height-v1") || "null");
+      if (typeof saved === "number" && Number.isFinite(saved) && saved >= 480 && saved <= 1400) setWorkspaceHeight(saved);
+    } catch {}
+  }, []);
+  function updateHeight(value) {
+    setWorkspaceHeight(value);
+    try { localStorage.setItem("kaplum-workspace-height-v1", JSON.stringify(value)); } catch {}
+  }
+  function resizeHeight(event) {
+    if (!event.currentTarget.hasPointerCapture(event.pointerId)) return;
+    const rect = event.currentTarget.previousElementSibling.getBoundingClientRect();
+    updateHeight(Math.max(480, Math.min(1400, Math.round(event.clientY - rect.top))));
+  }
+  function resizeHeightKey(event) {
+    const current = workspaceHeight ?? event.currentTarget.previousElementSibling.getBoundingClientRect().height;
+    const values = { ArrowUp: current - 40, ArrowDown: current + 40, Home: 480, End: 1400 };
+    if (!(event.key in values)) return;
+    event.preventDefault();
+    updateHeight(Math.max(480, Math.min(1400, Math.round(values[event.key]))));
+  }
   function updateSplit(value) {
     setSplit(value);
     try { localStorage.setItem("kaplum-workspace-split-v1", JSON.stringify(value)); } catch {}
@@ -309,6 +332,8 @@ export default function Workspace({ route, preferences, t, drafts }) {
         data-panel={panel}
         data-inspector={inspector}
         data-debug={!!debug}
+        data-resized-height={workspaceHeight !== null}
+        style={{ "--workspace-height": workspaceHeight === null ? undefined : `${workspaceHeight}px` }}
       >
         <div className="workbench" style={{ "--workspace-columns": `minmax(0, ${split}fr) 12px minmax(0, ${100 - split}fr)` }}>
           <section className="code-pane">
@@ -470,6 +495,21 @@ export default function Workspace({ route, preferences, t, drafts }) {
             {playback && <DrawingStep playback={playback} locale={locale}/>}
           </section>
         </div>
+        <div
+          className="workspace-height-divider"
+          role="separator"
+          aria-label={{ en: "Workspace height", de: "Höhe der Arbeitsfläche", ja: "作業領域の高さ", tr: "Çalışma alanı yüksekliği", hy: "Աշխատանքային տարածքի բարձրություն" }[preferences.locale]}
+          aria-orientation="horizontal"
+          aria-valuemin={480}
+          aria-valuemax={1400}
+          aria-valuenow={workspaceHeight ?? 560}
+          tabIndex={0}
+          onPointerDown={event => { event.preventDefault(); event.currentTarget.setPointerCapture(event.pointerId); }}
+          onPointerMove={resizeHeight}
+          onPointerUp={event => { if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId); }}
+          onKeyDown={resizeHeightKey}
+          onDoubleClick={() => updateHeight(null)}
+        />
         <section className="explanation-pane" id="parameter-inspector">
           <h2>{t("parameters")}</h2>
           <p>{t("inspectorHelp")}</p>

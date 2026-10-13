@@ -1241,3 +1241,20 @@ header .release-links a {
   .workspace-divider:hover::after, .workspace-divider:focus-visible::after { background: var(--accent); }
   .workspace-divider:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 }
+
+/* Shared vertical sizing keeps the source and drawing aligned. */
+.workspace-height-divider { display: none; }
+@media (min-width: 701px) {
+  .workspace-height-divider {
+    display: flex; align-items: center; justify-content: center;
+    height: 16px; flex: 0 0 16px; cursor: row-resize; touch-action: none;
+    border: 1px solid var(--line); border-radius: 0 0 8px 8px; background: var(--surface);
+  }
+  .workspace-height-divider::after { content: ""; width: 40px; height: 3px; border-radius: 2px; background: var(--muted); }
+  .workspace-height-divider:hover::after, .workspace-height-divider:focus-visible::after { background: var(--accent); }
+  .workspace-height-divider:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+  .workspace-panels[data-resized-height="true"] { min-height: 0; }
+  .workspace-panels[data-resized-height="true"] .workbench { height: var(--workspace-height); min-height: 0; }
+  .workspace-panels[data-resized-height="true"] .code-pane,
+  .workspace-panels[data-resized-height="true"] .result-pane { height: 100%; min-height: 0; position: static; overflow: auto; }
+}
