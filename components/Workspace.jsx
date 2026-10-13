@@ -86,16 +86,26 @@ export default function Workspace({ route, preferences, t, drafts }) {
     [showVault, setShowVault] = useState(false),
     [selected, setSelected] = useState(new Set(entry ? [entry.name] : []));
   const [split, setSplit] = useState(50);
+  useEffect(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem("kaplum-workspace-split-v1") || "null");
+      if (typeof saved === "number" && Number.isFinite(saved) && saved >= 25 && saved <= 75) setSplit(saved);
+    } catch {}
+  }, []);
+  function updateSplit(value) {
+    setSplit(value);
+    try { localStorage.setItem("kaplum-workspace-split-v1", JSON.stringify(value)); } catch {}
+  }
   function resizeSplit(event) {
     if (!event.currentTarget.hasPointerCapture(event.pointerId)) return;
     const rect = event.currentTarget.parentElement.getBoundingClientRect();
-    setSplit(Math.max(25, Math.min(75, Math.round((event.clientX - rect.left) / rect.width * 100))));
+    updateSplit(Math.max(25, Math.min(75, Math.round((event.clientX - rect.left) / rect.width * 100))));
   }
   function resizeSplitKey(event) {
     const values = { ArrowLeft: split - 5, ArrowRight: split + 5, Home: 25, End: 75 };
     if (!(event.key in values)) return;
     event.preventDefault();
-    setSplit(Math.max(25, Math.min(75, values[event.key])));
+    updateSplit(Math.max(25, Math.min(75, values[event.key])));
   }
   const locale = preferences.locale;
   const labels = capabilityLabels[locale];
@@ -349,7 +359,7 @@ export default function Workspace({ route, preferences, t, drafts }) {
             onPointerMove={resizeSplit}
             onPointerUp={event => { if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId); }}
             onKeyDown={resizeSplitKey}
-            onDoubleClick={() => setSplit(50)}
+            onDoubleClick={() => updateSplit(50)}
           />
           <section className="result-pane">
             <div className="pane-header">

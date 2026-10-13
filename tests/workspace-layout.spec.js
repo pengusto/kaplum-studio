@@ -65,3 +65,37 @@ test('split divider responds to drag, keyboard, reset and debug mode without edi
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(divider).toBeHidden();
 });
+
+
+test('split survives reload and example navigation, and reset is saved', async ({ page }) => {
+  await page.setViewportSize({ width: 1073, height: 766 });
+  await page.goto('/#animation/circle');
+  const divider = page.getByRole('separator');
+  await divider.press('ArrowRight');
+  await expect(divider).toHaveAttribute('aria-valuenow', '55');
+  await page.reload();
+  await expect(divider).toHaveAttribute('aria-valuenow', '55');
+  await page.goto('/#figure/figur-dino');
+  await expect(divider).toHaveAttribute('aria-valuenow', '55');
+  await divider.dblclick();
+  await page.reload();
+  await expect(divider).toHaveAttribute('aria-valuenow', '50');
+});
+
+test('invalid or unavailable storage preserves a usable divider', async ({ page }) => {
+  await page.goto('/#animation/circle');
+  for (const saved of ['broken json', 'null', '"65"', '100']) {
+    await page.evaluate(value => localStorage.setItem('kaplum-workspace-split-v1', value), saved);
+    await page.reload();
+    await expect(page.getByRole('separator')).toHaveAttribute('aria-valuenow', '50');
+  }
+  await page.addInitScript(() => {
+    Storage.prototype.getItem = () => { throw new Error('Storage unavailable'); };
+    Storage.prototype.setItem = () => { throw new Error('Storage unavailable'); };
+  });
+  await page.reload();
+  const divider = page.getByRole('separator');
+  await expect(divider).toHaveAttribute('aria-valuenow', '50');
+  await divider.press('ArrowRight');
+  await expect(divider).toHaveAttribute('aria-valuenow', '55');
+});
