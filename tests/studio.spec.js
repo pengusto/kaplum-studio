@@ -440,7 +440,8 @@ test("Atlas gives the workspace full width with an optional library below", asyn
   const inspector = await page.locator("#parameter-inspector").boundingBox();
   const dock = await page.locator(".studio-dock").boundingBox();
   expect(code.x).toBeLessThan(50);
-  expect(code.y + code.height).toBeLessThanOrEqual(result.y + 1);
+  expect(code.x + code.width).toBeLessThanOrEqual(result.x + 1);
+  expect(Math.abs(code.y - result.y)).toBeLessThan(2);
   expect(result.x + result.width).toBeLessThan(inspector.x);
   expect(result.y + result.height).toBeLessThanOrEqual(1024);
   expect(dock.width).toBeLessThan(400);

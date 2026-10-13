@@ -13,6 +13,9 @@ for (const width of [390, 850, 1073, 1536]) {
         const editor = await page.locator('.editor-host').boundingBox();
         expect(editor.height).toBeGreaterThanOrEqual(200);
         const result = await page.locator('.result-pane').boundingBox();
+        const code = await page.locator('.code-pane').boundingBox();
+        expect(code.x + code.width).toBeLessThanOrEqual(result.x + 1);
+        expect(Math.abs(code.y - result.y)).toBeLessThan(2);
         const workbench = await page.locator('.workbench').boundingBox();
         expect(result.y + result.height).toBeLessThanOrEqual(workbench.y + workbench.height + 1);
       }

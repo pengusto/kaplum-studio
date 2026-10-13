@@ -49,4 +49,4 @@ The workspace uses the full available width. Example library is a collapsed sect
 
 ## Workspace sizing
 
-Normal desktop editing reserves enough height for both source and drawing rather than shrinking them to fit exports or teaching text into one viewport. The workspace scrolls to reach additional controls. Parameter visibility works from 901px upward; mobile keeps the existing Code/Result/Explanation tabs. Dock clearance is reserved once at the end of the content, not as a large gap after the export controls.
+Normal desktop editing places source and drawing side by side and reserves enough height for both rather than shrinking them to fit exports or teaching text into one viewport. The workspace scrolls to reach additional controls. Parameter visibility works from 901px upward; mobile keeps the existing Code/Result/Explanation tabs. Dock clearance is reserved once at the end of the content, not as a large gap after the export controls.
