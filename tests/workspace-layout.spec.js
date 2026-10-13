@@ -24,14 +24,44 @@ for (const width of [390, 850, 1073, 1536]) {
   });
 }
 
-test('parameters can be hidden on intermediate desktop widths', async ({ page }) => {
+test('parameters are collapsed by default and open below the workspace', async ({ page }) => {
   await page.setViewportSize({ width: 1073, height: 766 });
   await page.goto('/#animation/circle');
   const inspector = page.locator('.explanation-pane');
-  await expect(inspector).toBeVisible();
+  await expect(inspector).toBeHidden();
   const before = await page.locator('.workbench').boundingBox();
   await page.getByRole('button', { name: 'Parameters', exact: true }).click();
-  await expect(inspector).toBeHidden();
+  await expect(inspector).toBeVisible();
   const after = await page.locator('.workbench').boundingBox();
-  expect(after.width).toBeGreaterThan(before.width + 150);
+  const parameters = await inspector.boundingBox();
+  expect(after.width).toBeCloseTo(before.width, 0);
+  expect(parameters.y).toBeGreaterThanOrEqual(after.y + after.height);
+});
+
+test('split divider responds to drag, keyboard, reset and debug mode without editing code', async ({ page }) => {
+  await page.setViewportSize({ width: 1073, height: 766 });
+  await page.goto('/#figure/figur-dino');
+  const original = await page.locator('#code').innerText();
+  const divider = page.getByRole('separator');
+  const before = await page.locator('.code-pane').boundingBox();
+  const handle = await divider.boundingBox();
+  await page.mouse.move(handle.x + handle.width / 2, handle.y + 80);
+  await page.mouse.down();
+  await page.mouse.move(handle.x + 140, handle.y + 80);
+  await page.mouse.up();
+  expect((await page.locator('.code-pane').boundingBox()).width).toBeGreaterThan(before.width + 100);
+  await divider.focus();
+  await divider.press('Home');
+  await expect(divider).toHaveAttribute('aria-valuenow', '25');
+  await divider.press('End');
+  await expect(divider).toHaveAttribute('aria-valuenow', '75');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+  await divider.dblclick();
+  await expect(divider).toHaveAttribute('aria-valuenow', '50');
+  await page.locator('.editor-debug-start').click();
+  await divider.press('ArrowLeft');
+  await expect(divider).toHaveAttribute('aria-valuenow', '45');
+  expect(await page.locator('#code').innerText()).toBe(original);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(divider).toBeHidden();
 });

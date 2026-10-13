@@ -358,9 +358,9 @@ test("Dock links keep deep links, active destination and drafts across navigatio
   await expect(page.locator("#code")).toContainText("120");
   const toggle = page.getByRole("button", { name: "Parameters", exact: true });
   await toggle.click();
-  await expect(page.locator("#parameter-inspector")).not.toBeVisible();
-  await toggle.click();
   await expect(page.locator("#parameter-inspector")).toBeVisible();
+  await toggle.click();
+  await expect(page.locator("#parameter-inspector")).not.toBeVisible();
 });
 
 test("Original Dock labels appear only on hover or focus with one active indicator", async ({ page }) => {
@@ -437,12 +437,12 @@ test("Atlas gives the workspace full width with an optional library below", asyn
   await expect(page.locator(".atlas-library")).toBeHidden();
   const code = await page.locator(".code-pane").boundingBox();
   const result = await page.locator(".result-pane").boundingBox();
-  const inspector = await page.locator("#parameter-inspector").boundingBox();
+  await expect(page.locator("#parameter-inspector")).toBeHidden();
   const dock = await page.locator(".studio-dock").boundingBox();
   expect(code.x).toBeLessThan(50);
   expect(code.x + code.width).toBeLessThanOrEqual(result.x + 1);
   expect(Math.abs(code.y - result.y)).toBeLessThan(2);
-  expect(result.x + result.width).toBeLessThan(inspector.x);
+
   expect(result.y + result.height).toBeLessThanOrEqual(1024);
   expect(dock.width).toBeLessThan(400);
   expect(
@@ -487,6 +487,7 @@ test("Dino parameter fields change only the displayed call on explicit apply", a
   const original =
     'hideTurtle();\n// keep my notes\nforward(10);\ndrawDino(80, "LimeGreen", 25);\nright(90);';
   await pasteCode(page,original);
+  await page.getByRole("button", {name:"Parameters",exact:true}).click();
   await page.getByLabel("size", { exact: true }).fill("120");
   expect(await page.locator("#code").innerText()).toBe(original);
   await page.getByRole("button", { name: "Apply & run", exact: true }).click();

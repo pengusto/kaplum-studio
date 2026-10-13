@@ -49,4 +49,8 @@ The workspace uses the full available width. Example library is a collapsed sect
 
 ## Workspace sizing
 
-Normal desktop editing places source and drawing side by side and reserves enough height for both rather than shrinking them to fit exports or teaching text into one viewport. The workspace scrolls to reach additional controls. Parameter visibility works from 901px upward; mobile keeps the existing Code/Result/Explanation tabs. Dock clearance is reserved once at the end of the content, not as a large gap after the export controls.
+Normal desktop editing places source and drawing side by side and reserves enough height for both rather than shrinking them to fit exports or teaching text into one viewport. The workspace scrolls to reach additional controls. Parameter visibility works from 701px upward; mobile keeps the existing Code/Result/Explanation tabs. Dock clearance is reserved once at the end of the content, not as a large gap after the export controls.
+
+## Adjustable split
+
+On desktop, drag the separator between code and drawing to allocate 25–75% of the workspace to code. The same split applies in normal and debug mode. Keyboard users can focus the separator and use Left/Right in 5% steps, Home/End for the limits; double-click resets to 50/50. This is local view state and does not modify source or exports. Parameters start collapsed and open below the workspace, preserving its width. Mobile retains panel tabs and hides the divider.

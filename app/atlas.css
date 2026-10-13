@@ -1214,3 +1214,30 @@ header .release-links a {
   .workspace-panels[data-inspector="false"] { grid-template-columns: minmax(0, 1fr); }
   .workspace-panels[data-inspector="false"] .explanation-pane { display: none; }
 }
+
+
+/* The optional parameter section follows the drawing; it never takes a third column. */
+.workspace-divider { display: none; }
+@media (min-width: 701px) {
+  .workspace-panels { display: flex; flex-direction: column; }
+  .workspace-panels .workbench { flex-shrink: 0; }
+  .workspace-panels .explanation-pane { grid-column: auto; width: 100%; }
+  .workspace-panels:not([data-debug="true"]) .explanation-pane { max-height: none; }
+  .workspace-panels[data-inspector="false"] .explanation-pane { display: none; }
+  .workspace-panels:not([data-debug="true"]) .workbench,
+  .workspace-panels[data-debug="true"] .workbench { grid-template-columns: var(--workspace-columns); }
+  .workspace-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: col-resize;
+    touch-action: none;
+    background: var(--surface);
+    border-inline: 1px solid var(--line);
+    align-self: stretch;
+    min-height: 100%;
+  }
+  .workspace-divider::after { content: ""; width: 3px; height: 40px; border-radius: 2px; background: var(--muted); }
+  .workspace-divider:hover::after, .workspace-divider:focus-visible::after { background: var(--accent); }
+  .workspace-divider:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+}

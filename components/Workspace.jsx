@@ -79,12 +79,24 @@ export default function Workspace({ route, preferences, t, drafts }) {
         : findEntry(source, reference);
   const [status, setStatus] = useState({ type: "ready" }),
     [panel, setPanel] = useState("code"),
-    [inspector, setInspector] = useState(true),
+    [inspector, setInspector] = useState(false),
     [liveCode, setLiveCode] = useState(initial),
     [exporting, setExporting] = useState(false),
     [exportError, setExportError] = useState(""),
     [showVault, setShowVault] = useState(false),
     [selected, setSelected] = useState(new Set(entry ? [entry.name] : []));
+  const [split, setSplit] = useState(50);
+  function resizeSplit(event) {
+    if (!event.currentTarget.hasPointerCapture(event.pointerId)) return;
+    const rect = event.currentTarget.parentElement.getBoundingClientRect();
+    setSplit(Math.max(25, Math.min(75, Math.round((event.clientX - rect.left) / rect.width * 100))));
+  }
+  function resizeSplitKey(event) {
+    const values = { ArrowLeft: split - 5, ArrowRight: split + 5, Home: 25, End: 75 };
+    if (!(event.key in values)) return;
+    event.preventDefault();
+    setSplit(Math.max(25, Math.min(75, values[event.key])));
+  }
   const locale = preferences.locale;
   const labels = capabilityLabels[locale];
   const tools = canvasToolCopy[locale];
@@ -288,7 +300,7 @@ export default function Workspace({ route, preferences, t, drafts }) {
         data-inspector={inspector}
         data-debug={!!debug}
       >
-        <div className="workbench">
+        <div className="workbench" style={{ "--workspace-columns": `minmax(0, ${split}fr) 12px minmax(0, ${100 - split}fr)` }}>
           <section className="code-pane">
             <div className="pane-header">
               <span>
@@ -324,6 +336,21 @@ export default function Workspace({ route, preferences, t, drafts }) {
               </button>
             </div>
           </section>
+          <div
+            className="workspace-divider"
+            role="separator"
+            aria-label={`${t("code")} / ${t("result")}`}
+            aria-orientation="vertical"
+            aria-valuemin={25}
+            aria-valuemax={75}
+            aria-valuenow={split}
+            tabIndex={0}
+            onPointerDown={event => { event.preventDefault(); event.currentTarget.setPointerCapture(event.pointerId); }}
+            onPointerMove={resizeSplit}
+            onPointerUp={event => { if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId); }}
+            onKeyDown={resizeSplitKey}
+            onDoubleClick={() => setSplit(50)}
+          />
           <section className="result-pane">
             <div className="pane-header">
               <span>
