@@ -10,8 +10,8 @@ Kaplum Studio is an early-development public teaching app. Work resumed after th
 - Five interface/teaching languages, colour presets, independent canvas/appearance settings and theme-aware favicon.
 - General position/direction/state queries, focused keyboard/pointer input, stamps and path-based circles.
 - Bounded finite drawing recording, playback and drawing undo. Frame animation pause/resume is separate from drawing playback.
-- Eight finite course experiments with a goal, an observable original-example outcome and an edit challenge.
-- A bounded source debugger: next instruction, continue/pause/stop/restart, highlighted source, primitive variables, line breakpoints and true/false condition feedback. It does not yet step into learner-defined functions; see [supported syntax and limits](source-debugger.md).
+- Nine finite course experiments with a goal, an observable original-example outcome and an edit challenge.
+- A bounded source debugger: next instruction, continue/pause/stop/restart, highlighted source, primitive variables, line breakpoints and true/false condition feedback. It steps into named learner functions with plain parameters and returns, and shows active calls; see [supported syntax and limits](source-debugger.md).
 - Exact-source, network-free ZIP exports; public documentation, GitHub navigation and legal pages.
 - Static JSON-LD for the application and documentation; see [structured data](structured-data.md).
 
@@ -26,7 +26,7 @@ The installed pre-push hook runs the full build/browser/Pages checks. `bun run p
 1. Run the [short classroom trial](classroom-trial.de.md), record where learners need help, and prioritize those observed problems.
 2. Review translations with native speakers; current translations are AI-assisted.
 3. Test Safari and slower devices; check control reachability, drawing clarity and interaction latency.
-4. Extend the source debugger deliberately, starting with learner-defined function stepping: [issue #6](https://github.com/pengusto/kaplum-studio/issues/6). The existing prototype is implemented; full JavaScript debugging is not.
+4. Evaluate broader debugger syntax and inspection deliberately; named own-function stepping is implemented: [issue #6](https://github.com/pengusto/kaplum-studio/issues/6). The existing prototype is implemented; full JavaScript debugging is not.
 5. Independent named turtles: [issue #7](https://github.com/pengusto/kaplum-studio/issues/7).
 6. Optional p5.js workshop mode remains deferred: [issue #9](https://github.com/pengusto/kaplum-studio/issues/9).
 

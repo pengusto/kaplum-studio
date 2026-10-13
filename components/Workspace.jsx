@@ -450,8 +450,9 @@ export default function Workspace({ route, preferences, t, drafts }) {
               </details>
             </div>
             {debug && <section className="debug-command" aria-label={debugText.upNext} aria-live="polite">
-              <strong>{debug.done ? debugText.finished : `${debugText.upNext}: ${debugText.line} ${debug.line}`}</strong>
-              {!debug.done && <small>{debug.kind === "condition" ? debugText.condition : debugText.stepHint}</small>}
+              <strong>{debug.done ? debugText.finished : `${debug.kind === "function" ? debugText.function : debugText.upNext}: ${debugText.line} ${debug.line}`}</strong>
+              {!debug.done && <small>{debug.kind === "condition" ? debugText.condition : debug.kind === "function" ? debugText.functionHint : debug.kind === "return" ? debugText.returnHint : debugText.stepHint}</small>}
+              <p className="debug-call-stack"><span>{debugText.calls}: </span><code>{[debugText.main,...debug.stack].join(" → ")}</code></p>
               {debug.condition && <p className="condition-feedback" data-result={debug.condition.result} role="status"><code>{debug.condition.source}</code> · {conditionExplanation(debug.condition,locale)}</p>}
             </section>}
             {debugError && <p className="source-debugger" role="alert">{debugError}</p>}

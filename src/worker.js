@@ -109,7 +109,7 @@ function debugValues(bindings) {
   });
 }
 function debugStatus(playing=false, breakpoint=false) {
-  postMessage({type:"debug",line:debuggerRun.current?.line || 0,done:debuggerRun.done,playing,breakpoint,source:debuggerRun.current?.source || "",kind:debuggerRun.current?.kind || "statement",history:debuggerRun.history,condition:debuggerRun.condition || null,variables:debuggerRun.variables || []});
+  postMessage({type:"debug",line:debuggerRun.current?.line || 0,done:debuggerRun.done,playing,breakpoint,source:debuggerRun.current?.source || "",kind:debuggerRun.current?.kind || "statement",stack:debuggerRun.current?.stack || [],history:debuggerRun.history,condition:debuggerRun.condition || null,variables:debuggerRun.variables || []});
 }
 function advanceDebug(playing=false) {
   stopDebugTimer();
@@ -121,8 +121,9 @@ function advanceDebug(playing=false) {
   // Retain only primitive snapshots, not closure references from completed scopes.
   debuggerRun.variables=debugValues(next.done ? debuggerRun.bindings || [] : next.value.bindings);
   debuggerRun.bindings=next.done ? null : next.value.bindings;
-  debuggerRun.current=next.done ? null : {line:next.value.line,source:next.value.source,kind:next.value.kind,...(next.value.kind === "condition" ? {result:next.value.result,control:next.value.control} : {})};
+  debuggerRun.current=next.done ? null : {line:next.value.line,source:next.value.source,kind:next.value.kind,stack:next.value.stack,...(next.value.kind === "condition" ? {result:next.value.result,control:next.value.control} : {})};
   if(debuggerRun.current?.kind === "condition") debuggerRun.condition=debuggerRun.current;
+  else if(debuggerRun.current && (debuggerRun.current.kind === "function" || JSON.stringify(debuggerRun.current.stack) !== JSON.stringify(debuggerRun.condition?.stack))) debuggerRun.condition=null;
   debuggerRun.done=next.done;
   const breakpoint=playing && !next.done && debuggerRun.breakpoints.has(next.value.line);
   debugStatus(playing && !next.done && !breakpoint,breakpoint);

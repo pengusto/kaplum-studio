@@ -97,6 +97,24 @@ forward(120);`,
  ['Crossing the edge','Über den Rand','端を越える','Kenardan geçmek','Եզրից անցնելը'],
  ['With wrapping on, x moves from 300 to -280 after 120 units. With wrapping off it reaches 420 outside the canvas. Compare endpoints; they do not equal distance travelled.','Mit Randübergang wird aus x=300 nach 120 Einheiten x=-280. Ohne Randübergang erreicht die Turtle x=420 außerhalb der Fläche. Endpunkte vergleichen; sie sind nicht die zurückgelegte Strecke.','端の折り返しありでは120進むとx=300から-280。なしでは画面外の420。端点と移動距離は異なる。','Kenar geçişi açıkken 120 birim sonra x=300 yerine -280 olur. Kapalıyken alan dışında 420 olur. Uç noktalar kat edilen mesafe değildir.','Եզրից անցումը միացված է․ 120 միավորից հետո x=300-ը դառնում է -280։ Անջատված՝ հասնում է դաշտից դուրս 420-ի։ Վերջնակետերը անցած հեռավորությունը չեն։']]
 
+ ,['functions','function square(side)',`function square(side) {
+  for (let i = 0; i < 4; i++) {
+    forward(side);
+    right(90);
+  }
+  return side * 4;
+}
+color("DeepSkyBlue");
+width(4);
+goto(-100,-60);
+const perimeter = square(100);
+penup();
+goto(60,-60);
+pendown();
+square(60);`,
+ ['Own functions, step by step','Eigene Funktionen Schritt für Schritt','自分の関数をステップ実行','Kendi işlevlerin, adım adım','Սեփական ֆունկցիաները՝ քայլ առ քայլ'],
+ ['Use Code debugger to enter square, inspect side and i, and return to its caller. Built-in drawing commands remain single steps.','Mit Code untersuchen in square gehen, side und i ansehen und zum Aufruf zurückkehren. Eingebaute Zeichenbefehle bleiben einzelne Schritte.','コードデバッガーでsquareに入り、sideとiを見て呼び出し元に戻ります。描画命令は1ステップです。','Kod hata ayıklayıcıyla square içine gir, side ve i değerlerini izle ve çağırana dön. Çizim komutları tek adımdır.','Կոդի վրիպազերծիչով մտիր square, դիտիր side և i արժեքները և վերադարձիր կանչողին։ Նկարչական հրահանգները մեկ քայլ են։']]
+
 ];
 const languages=['en','de','ja','tr','hy'];
 export const featureLessons=rows.map(([id,command,code,titles,tasks])=>({id,command,code,title:Object.fromEntries(languages.map((l,i)=>[l,titles[i]])),task:Object.fromEntries(languages.map((l,i)=>[l,tasks[i]]))}));

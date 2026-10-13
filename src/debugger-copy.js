@@ -1,9 +1,9 @@
 const rows={
- en:["Code debugger · prototype","Start code debugger","Next code statement","Continue code","Pause code","Line","Variables","Finished","Paused before this statement. Next executes it; Continue runs until paused or finished. Supports let/const, direct teaching calls and braced for/while/if. Functions, timers and expressions with property access are unsupported. Helper calls run as one statement; values are primitives only."],
- de:["Code-Debugger · Prototyp","Code-Debugger starten","Nächste Code-Anweisung","Code fortsetzen","Code pausieren","Zeile","Variablen","Fertig","Pause vor dieser Anweisung. Weiter führt sie aus; Fortsetzen läuft bis Pause oder Ende. Unterstützt let/const, direkte Lehrbefehle und for/while/if mit Klammern. Funktionen, Timer und Eigenschaftszugriffe fehlen. Helfer laufen als eine Anweisung; nur einfache Werte werden angezeigt."],
- ja:["コードデバッガー · 試作","コードデバッガーを開始","次の文","コードを続行","コードを一時停止","行","変数","完了","この文の前で停止。次へで実行。let/const、直接の描画呼び出し、波括弧付きfor/while/ifを対応。関数、タイマー、プロパティアクセスは未対応。補助関数は一つの文。単純な値のみ表示。"],
- tr:["Kod hata ayıklayıcı · prototip","Kod hata ayıklayıcıyı başlat","Sonraki kod ifadesi","Koda devam et","Kodu duraklat","Satır","Değişkenler","Bitti","Bu ifadeden önce durakladı. Sonraki çalıştırır. let/const, doğrudan çizim çağrıları ve süslü parantezli for/while/if desteklenir. İşlev, zamanlayıcı ve özellik erişimi desteklenmez. Yardımcı tek ifade olarak çalışır; yalnız basit değerler gösterilir."],
- hy:["Կոդի վրիպազերծիչ · նախատիպ","Սկսել կոդի վրիպազերծումը","Հաջորդ հրահանգը","Շարունակել կոդը","Դադարեցնել կոդը","Տող","Փոփոխականներ","Ավարտված","Դադար այս հրահանգից առաջ։ Հաջորդը կատարում է այն։ Աջակցվում են let/const, նկարման կանչերը և փակագծերով for/while/if։ Ֆունկցիաները, ժամանակաչափերն ու հատկությունների հասանելիությունը չեն աջակցվում։ Օգնականը մեկ հրահանգ է․ միայն պարզ արժեքներ։"]
+ en:["Code debugger · prototype","Start code debugger","Next code statement","Continue code","Pause code","Line","Variables","Finished","Paused before this statement. Next executes it; Continue runs until paused or finished. Supports let/const, direct teaching calls and braced for/while/if. Named functions with plain parameters and return values are stepped into. Timers and property access are unsupported. Helper calls run as one statement; values are primitives only."],
+ de:["Code-Debugger · Prototyp","Code-Debugger starten","Nächste Code-Anweisung","Code fortsetzen","Code pausieren","Zeile","Variablen","Fertig","Pause vor dieser Anweisung. Weiter führt sie aus; Fortsetzen läuft bis Pause oder Ende. Unterstützt let/const, direkte Lehrbefehle und for/while/if mit Klammern. Benannte Funktionen mit einfachen Parametern und Rückgabewerten werden schrittweise ausgeführt. Timer und Eigenschaftszugriffe fehlen. Helfer laufen als eine Anweisung; nur einfache Werte werden angezeigt."],
+ ja:["コードデバッガー · 試作","コードデバッガーを開始","次の文","コードを続行","コードを一時停止","行","変数","完了","この文の前で停止。次へで実行。let/const、直接の描画呼び出し、波括弧付きfor/while/ifを対応。名前付き関数、引数、戻り値をステップ実行。タイマーとプロパティアクセスは未対応。補助関数は一つの文。単純な値のみ表示。"],
+ tr:["Kod hata ayıklayıcı · prototip","Kod hata ayıklayıcıyı başlat","Sonraki kod ifadesi","Koda devam et","Kodu duraklat","Satır","Değişkenler","Bitti","Bu ifadeden önce durakladı. Sonraki çalıştırır. let/const, doğrudan çizim çağrıları ve süslü parantezli for/while/if desteklenir. Adlandırılmış işlevler, basit parametreler ve dönüş değerleri adım adım çalışır. Zamanlayıcı ve özellik erişimi desteklenmez. Yardımcı tek ifade olarak çalışır; yalnız basit değerler gösterilir."],
+ hy:["Կոդի վրիպազերծիչ · նախատիպ","Սկսել կոդի վրիպազերծումը","Հաջորդ հրահանգը","Շարունակել կոդը","Դադարեցնել կոդը","Տող","Փոփոխականներ","Ավարտված","Դադար այս հրահանգից առաջ։ Հաջորդը կատարում է այն։ Աջակցվում են let/const, նկարման կանչերը և փակագծերով for/while/if։ Անվանված ֆունկցիաները, պարզ պարամետրերն ու վերադարձի արժեքները կատարվում են քայլերով։ Ժամանակաչափերն ու հատկությունները չեն աջակցվում։ Օգնականը մեկ հրահանգ է․ միայն պարզ արժեքներ։"]
 };
 export const debuggerCopy=Object.fromEntries(Object.entries(rows).map(([locale,values])=>[locale,Object.fromEntries(["title","start","next","continue","pause","line","variables","finished","help"].map((key,i)=>[key,values[i]]))]));
 
@@ -43,3 +43,21 @@ const conditionRows={
 };
 for(const [locale,values] of Object.entries(conditionRows)) Object.assign(debuggerCopy[locale],Object.fromEntries(["condition","ifTrue","ifFalse","loopTrue","loopFalse"].map((key,i)=>[key,values[i]])));
 export function conditionExplanation(condition,locale) {return debuggerCopy[locale][`${condition.control}${condition.result ? "True" : "False"}`];}
+
+const functionRows={
+ en:["Enter function","Return from function","Active calls","main.js"],
+ de:["In die Funktion","Aus der Funktion zurück","Aktive Aufrufe","main.js"],
+ ja:["関数に入る","関数から戻る","実行中の呼び出し","main.js"],
+ tr:["İşleve gir","İşlevden dön","Etkin çağrılar","main.js"],
+ hy:["Մտնել ֆունկցիա","Վերադառնալ ֆունկցիայից","Ակտիվ կանչեր","main.js"]
+};
+for(const [locale,values] of Object.entries(functionRows)) Object.assign(debuggerCopy[locale],Object.fromEntries(["function","return","calls","main"].map((key,i)=>[key,values[i]])));
+
+const functionHints={
+ en:["Function entered. Its parameters are ready; Next goes to the first body instruction.","Next evaluates the return value and continues in the caller."],
+ de:["Funktion betreten. Ihre Parameter sind bereit; Nächster Schritt geht zur ersten Anweisung im Körper.","Nächster Schritt berechnet den Rückgabewert und geht zum Aufrufer zurück."],
+ ja:["関数に入りました。引数は設定済み。次のステップで最初の文へ進みます。","次のステップで戻り値を計算し、呼び出し元に戻ります。"],
+ tr:["İşleve girildi. Parametreler hazır; sonraki adım ilk ifadeye gider.","Sonraki adım dönüş değerini hesaplar ve çağırana döner."],
+ hy:["Ֆունկցիան սկսված է։ Պարամետրերը պատրաստ են․ հաջորդ քայլը անցնում է առաջին հրահանգին։","Հաջորդ քայլը հաշվարկում է վերադարձի արժեքը և վերադառնում կանչողին։"]
+};
+for(const [locale,values] of Object.entries(functionHints)) Object.assign(debuggerCopy[locale],{functionHint:values[0],returnHint:values[1]});

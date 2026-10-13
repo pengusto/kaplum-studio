@@ -1,6 +1,6 @@
 # Testable Turtle feature update
 
-Status on 13 October 2026: stages 1–6 below have been implemented. This is the original delivery plan and its acceptance criteria, not the current todo list. See [project status](project-status.md) for the remaining work. A bounded source debugger is also implemented; learner-function stepping remains open.
+Status on 13 October 2026: stages 1–6 below have been implemented. This is the original delivery plan and its acceptance criteria, not the current todo list. See [project status](project-status.md) for the remaining work. A bounded source debugger is also implemented; named learner-function stepping is implemented (14 October 2026).
 
 Owner requested a concrete implementation plan, 2026-10-12. This document proposes the next update; it does not promise unattended overnight execution or a delivery time. Baseline: ea815f3, successfully deployed on GitHub Pages.
 
@@ -63,7 +63,7 @@ Avoid a broad UI redesign during this increment. Keep the catalogue fast; replay
 
 ## Later work
 
-Issue #6 now has a bounded source debugger with loop/condition feedback, source highlighting, breakpoints and primitive variable inspection. Learner-defined function stepping and broader syntax support remain open. It must not be presented as complete merely because drawing stepping exists. Multiple turtles (#7) and the p5.js workshop evaluation (#9) remain later independent decisions.
+Issue #6 now has a bounded source debugger with loop/condition feedback, source highlighting, breakpoints and primitive variable inspection. Named learner-defined function stepping is implemented; broader syntax support remains bounded. It must not be presented as complete merely because drawing stepping exists. Multiple turtles (#7) and the p5.js workshop evaluation (#9) remain later independent decisions.
 
 ## Implementation checkpoint
 

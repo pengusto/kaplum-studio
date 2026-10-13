@@ -33,7 +33,7 @@ The programme kind is labelled in all five languages, independent of the catalog
 section (the circle activity is a finite drawing even under Animations). Mobile
 controls remain visible; optional state and comparison panels stay collapsed.
 p5.js remains deferred. The source debugger is implemented separately with a bounded syntax subset;
-learner-defined function stepping and independent turtles remain future work.
+named learner-defined function stepping is implemented; independent turtles remain future work.
 
 ## Lesson task follow-up
 

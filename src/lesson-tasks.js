@@ -1,5 +1,12 @@
 // Each lesson has an observable outcome and one bounded source edit.
 const content = {
+ functions: [
+  ['Understand how a function uses its parameter.','Code debugger enters square twice: side is 100, then 60. Two squares appear; perimeter becomes 400.','Change square(60) to square(80). Only the second square grows.'],
+  ['Verstehe, wie eine Funktion ihren Parameter benutzt.','Code untersuchen geht zweimal in square: side ist zuerst 100, dann 60. Zwei Quadrate entstehen; perimeter wird 400.','Ändere square(60) zu square(80). Nur das zweite Quadrat wächst.'],
+  ['関数が引数を使う仕組みを理解しよう。','デバッガーでsquareを2回実行。sideは100、次は60。四角形2つ、perimeterは400です。','square(60)をsquare(80)にすると2つ目だけ大きくなります。'],
+  ['Bir işlevin parametresini nasıl kullandığını anla.','Hata ayıklayıcı square içine iki kez girer: side önce 100, sonra 60. İki kare çizilir; perimeter 400 olur.','square(60) yerine square(80) yaz. Yalnız ikinci kare büyür.'],
+  ['Հասկացիր՝ ֆունկցիան ինչպես է օգտագործում պարամետրը։','Վրիպազերծիչը երկու անգամ մտնում է square․ side-ը նախ 100 է, ապա 60։ Երկու քառակուսի, perimeter-ը՝ 400։','square(60)-ը փոխիր square(80)-ի․ մեծանում է միայն երկրորդ քառակուսին։']
+ ],
  square: [
   ['Draw a closed square.','Four equal sides; the Turtle returns to its start.','Change every forward(160) to forward(100). The square gets smaller.'],
   ['Zeichne ein geschlossenes Quadrat.','Vier gleich lange Seiten; die Turtle kehrt zum Start zurück.','Ändere forward(160) zu forward(100). Das Quadrat wird kleiner.'],

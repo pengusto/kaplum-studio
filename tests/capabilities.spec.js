@@ -47,7 +47,7 @@ test('drawing Undo discards future history and leaves learner code intact',async
 });
 
 test('course test lab exposes eight runnable finite lessons and preserves drafts and reset',async({page})=>{
- await page.goto('/#course');await expect(page.locator('.feature-lesson-grid article')).toHaveCount(8);
+ await page.goto('/#course');await expect(page.locator('.feature-lesson-grid article')).toHaveCount(9);
  for(const id of ['square','pen-journey','stamps','circles','undo']){
   await page.goto('/#course/'+id);await expect(page.locator('.lesson-task')).toBeVisible();await page.getByRole('button',{name:'Record drawing',exact:true}).click();await expect(page.getByRole('group',{name:'Drawing playback'})).toBeVisible();await openTools(page);await page.getByRole('button',{name:'Show final drawing',exact:true}).click();await expect(page.locator('#status')).not.toHaveAttribute('data-state','error');
  }
@@ -58,7 +58,7 @@ test('course test lab exposes eight runnable finite lessons and preserves drafts
 
 test('test lab and construction source remain usable in five languages and narrow reduced-motion view',async({page})=>{
  await page.setViewportSize({width:390,height:844});await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/#course');
- for(const language of ['en','de','ja','tr','hy']){await page.locator('.language-picker select').selectOption(language);await expect(page.locator('.feature-lesson-grid article')).toHaveCount(8);await expect.poll(()=>page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);}
+ for(const language of ['en','de','ja','tr','hy']){await page.locator('.language-picker select').selectOption(language);await expect(page.locator('.feature-lesson-grid article')).toHaveCount(9);await expect.poll(()=>page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);}
 });
 
 

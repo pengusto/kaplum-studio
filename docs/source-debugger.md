@@ -6,6 +6,7 @@ The first native prototype is available under **Debug code** directly in the cou
 
 - `let`/`const` with plain identifier bindings; primitive values, arithmetic and assignments.
 - Direct catalogue teaching-command calls, including maintained figure helpers, executed atomically.
+- Named function declarations with plain parameters, local variables and `return` values. Direct own-function calls are stepped into, including nested calls, recursion and calls inside expressions/conditions. Native argument evaluation order and lexical scopes are retained. Active calls are shown beside the drawing; parameters resolve in the current function scope.
 - Braced `for`, `while` and `if` blocks; `break` and `continue`.
 - Native JavaScript lexical scopes, including shadowing. The variable list displays unique declared names resolved in the current scope. A binding outside its scope or before initialization says `not in scope`; this prototype does not distinguish TDZ from absent scope.
 
@@ -13,19 +14,19 @@ The existing Lezer parser validates a bounded syntax whitelist and injects gener
 
 ## Deliberate limits
 
-No functions, closures, callbacks, async/timers, property access, object/array literals, destructuring, try/catch, switch, do/while, imports or var. Unsupported source is rejected before execution, leaving Run available. Helper internals are not stepped. Each if/for/while condition is evaluated once in the worker, then pauses with its actual Boolean result before selecting a branch. Next resumes using that stored result, including side effects such as n++. For initialization and updates still run between checkpoints; a body-entry marker can share the loop header's line. Final snapshots retain the last visible binding scope, not a complete heap or post-loop scope browser. The next highlighted statement has not executed yet. At a condition-result checkpoint the test itself has already run, but its branch has not.
+No function expressions/arrows, function aliases or callbacks, async/timers, property access, object/array literals, destructuring, try/catch, switch, do/while, imports or var. Unsupported source is rejected before execution, leaving Run available. Helper internals are not stepped. Each if/for/while condition is evaluated once in the worker, then pauses with its actual Boolean result before selecting a branch. Next resumes using that stored result, including side effects such as n++. For initialization and updates still run between checkpoints; a body-entry marker can share the loop header's line. Final snapshots retain the last visible binding scope, not a complete heap or post-loop scope browser. The next highlighted statement has not executed yet. At a condition-result checkpoint the test itself has already run, but its branch has not.
 
-There is no step-into/step-over for calls or code rewind. Drawing undo and drawing playback are separate capabilities. Paused source is not a recording of an already-completed program.
+Next automatically steps into supported own functions. There is no separate step-over/step-out control or code rewind. Drawing undo and drawing playback are separate capabilities. Paused source is not a recording of an already-completed program.
 
 ## Safety and budgets
 
-Keep iframe/worker isolation, cancellation and ordinary Stop. Variable snapshots read declared identifiers only and serialize primitive values; objects and functions are opaque type labels, with no property enumeration, getter calls or user-defined string conversion. Input dispatch is disabled during debugging. Source is limited to 50,000 characters, 100 declared names, 2,000 instrumentation points and 100,000 advances. Strings are truncated. The host bounds received fields. The whitelist is a supported-language boundary, not a replacement for sandbox isolation.
+Keep iframe/worker isolation, cancellation and ordinary Stop. Variable snapshots read declared identifiers only and serialize primitive values; objects and functions are opaque type labels, with no property enumeration, getter calls or user-defined string conversion. Input dispatch is disabled during debugging. Source is limited to 50,000 characters, 100 declared names, 2,000 instrumentation points, 64 active own-function calls and 100,000 advances. Strings are truncated. The host bounds received fields. The whitelist is a supported-language boundary, not a replacement for sandbox isolation.
 
 Checks cover genuinely delayed drawing and assignments, code highlight, loop variables, branching/shadowing/break/continue, empty infinite-loop yields, continue/pause/stop, edit cancellation, unsupported-source preservation and mobile controls in five languages. Chromium and Firefox are release gates. Native translation review, Safari and classroom comprehension remain open.
 
 ## Next increment
 
-Target child-facing comprehension testing of condition stepping. Function stepping and safe richer inspection need a separate design; do not expand the subset silently or present this prototype as a full debugger.
+Target child-facing comprehension testing of conditions and function stepping. Richer inspection and broader syntax remain separate work; do not present the supported subset as a full JavaScript debugger.
 
 ## Source-line breakpoints
 
@@ -41,7 +42,7 @@ Debug mode displays the actual editable source beside the drawing on desktop, an
 
 ## Condition feedback
 
-The most recent actual if/for/while result marks its source line green for true or red for false, with an inline explanation in the selected language. During condition feedback the editor wraps long lines so explanations remain readable on mobile. The same explanation is available as a status above the drawing. False means normal branch selection or loop termination, not an error. Results remain visible until the next condition, Restart, Stop or edit. Notes are editor decorations, never inserted into learner code or downloads. The final false loop test remains visible after completion. Helpers remain atomic. Tests compare native results, including side-effecting tests, continue/break, empty for tests and nested branches.
+The most recent actual if/for/while result marks its source line green for true or red for false, with an inline explanation in the selected language. During condition feedback the editor wraps long lines so explanations remain readable on mobile. The same explanation is available as a status above the drawing. False means normal branch selection or loop termination, not an error. Results remain visible until the next condition, a new function entry, a return to a different active-call scope, Restart, Stop or edit. Notes are editor decorations, never inserted into learner code or downloads. The final false loop test remains visible after completion. Helpers remain atomic. Tests compare native results, including side-effecting tests, continue/break, empty for tests and nested branches.
 
 ## Optional example tray
 
@@ -59,3 +60,11 @@ On desktop, drag the separator between code and drawing to allocate 25–75% of 
 ## Adjustable height
 
 The horizontal grip below the desktop workspace resizes code and drawing together from 480 to 1400px and saves the height in localStorage across reloads and examples, including debug mode. Up/Down adjusts by 40px, Home/End selects the limits, and double-click restores the responsive default. Mobile retains its panel sizing. Invalid or unavailable storage falls back safely.
+
+## Own functions
+
+Open **Course → Own functions, step by step** (`#course/functions`), then **Debug code**. The original source draws two squares using `square(100)` and `square(60)`; `perimeter` receives the first return value, 400. Next pauses on the call, enters the function, highlights each body instruction and stops before an explicit return. The compact active-call path shows `main.js → square` (or repeated names during recursion). After return, the next caller checkpoint restores the caller's visible bindings. Function entry highlights the original declaration line with initialized parameters, before body statements run. Empty functions still have an entry checkpoint.
+
+The compiler turns only supported named declarations into native generators and delegates their direct calls with `yield*`. JavaScript still evaluates arguments, short-circuit expressions and return values. Condition results are evaluated exactly once even when their expression enters another function. A private generated call stack is unwound in `finally` on return; it is never part of learner source or exports. Normal Run still executes the original ordinary functions. Existing breakpoints work on entry, body and return lines; editing, Restart and Stop follow the existing contracts.
+
+Function names must be unique in the program and cannot replace teaching commands or timer names. Parameter defaults/rest/destructuring, authored generators, function values/aliases, named-function shadowing and higher-order callbacks are rejected before execution. Nested named functions may read outer lexical bindings when called directly; escaping closures remain unsupported. The variable panel resolves unique names in the current scope, not all stack frames at once. A returned local remains in the last snapshot if the program ends without another checkpoint, consistent with the existing final-snapshot contract. Native-review translations, Safari and learner comprehension are still unverified.
