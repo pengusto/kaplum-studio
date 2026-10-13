@@ -884,7 +884,13 @@ test("Static previews settle without an indeterminate spinner; animations keep r
   await expect(preview.locator('.status-mark')).toHaveAttribute('data-status', 'done');
   await expect(preview.locator('.status-mark')).not.toHaveAttribute('data-indeterminate', '');
   await page.locator('.studio-dock').getByRole('link', {name:'Animations', exact:true}).click();
-  await expect(page.locator('.catalogue-preview').first().getByRole('status')).toHaveText('Running');
+  const circle = page.locator('.example-card').filter({has:page.getByRole('heading',{name:'Make a colourful circle',exact:true})}).locator('.catalogue-preview');
+  await expect(circle).toHaveAttribute('data-drawn','true');
+  await expect(circle.getByRole('status')).toHaveText('Ready');
+  const moving = page.locator('.example-card').filter({has:page.getByRole('heading',{name:'Move Pacman across the screen',exact:true})}).locator('.catalogue-preview');
+  await moving.scrollIntoViewIfNeeded();
+  await expect(moving).toHaveAttribute('data-drawn','true');
+  await expect(moving.getByRole('status')).toHaveText('Running');
 });
 
 test("Figure exploration extremes preserve a clear margin in the actual catalogue camera", async ({ page }) => {
