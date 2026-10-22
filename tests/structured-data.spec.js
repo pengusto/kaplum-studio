@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
-import { studioUrl, studioDescription, serializeStructuredData } from "../src/structured-data";
+import { studioUrl, studioDescription, homeDescription, serializeStructuredData } from "../src/structured-data";
+import { homeCopy } from "../src/home-copy";
 const base = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 for (const [path, type] of [["/", "studio"], ["/docs/", "documentation"]]) {
@@ -19,11 +20,17 @@ for (const [path, type] of [["/", "studio"], ["/docs/", "documentation"]]) {
     if (type === "studio") {
       const app = nodes.find(node => node["@type"] === "WebApplication");
       expect(app.description).toBe(studioDescription);
-      expect(page.description).toBe(studioDescription);
+      expect(page.description).toBe(homeDescription);
+      expect(page.headline).toBe(homeCopy.en.title);
+      expect(html).toContain(homeDescription);
+      expect(html).toContain(homeCopy.en.title);
+      expect(app.audience).toEqual({ "@type": "Audience", audienceType: "Programming beginners and curious learners" });
+      expect(homeDescription.toLowerCase()).toContain(app.audience.audienceType.toLowerCase());
+      expect(JSON.stringify(data)).not.toMatch(/typicalAgeRange|suggestedMinAge|suggestedMaxAge|educationalRole/);
       expect(studioDescription).toContain("for beginners");
       expect(studioDescription).not.toMatch(/children|kids/i);
       const description = html.match(/<meta name="description" content="([^"]*)"/);
-      expect(description?.[1]).toBe(studioDescription);
+      expect(description?.[1]).toBe(homeDescription);
       expect(app.applicationCategory).toBe("EducationalApplication");
       expect(app.offers).toMatchObject({ "@type": "Offer", price: 0, priceCurrency: "EUR" });
       expect(app.isAccessibleForFree).toBe(true);
@@ -43,9 +50,11 @@ test('JSON-LD serialization cannot close the script element', () => {
 });
 
 test('changing language and hash route retains one stable application graph', async ({ page }) => {
-  await page.goto(`${base}/#figures`);
+  await page.goto(`${base}/#home`);
   const schema = page.locator('script[type="application/ld+json"]');
   const original = await schema.textContent();
+  await expect(page.locator(".home-page h1")).toHaveText(homeCopy.en.title);
+  await expect(page.locator(".home-message")).toContainText(homeDescription);
   await page.locator('.language-picker select').selectOption('de');
   await page.goto(`${base}/#animation/circle`);
   await expect(schema).toHaveCount(1);

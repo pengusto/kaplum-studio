@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { homeCopy } from '../components/Home';
+import { homeCopy } from '../src/home-copy';
 const base = process.env.NEXT_PUBLIC_BASE_PATH || '';
 test('Home welcomes learners in five languages and leads to real Studio activities', async ({ page }) => {
   await page.goto(base + '/');

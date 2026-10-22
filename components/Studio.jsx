@@ -17,7 +17,8 @@ import {
 } from "lucide-react";
 import Dock from "./react-bits/Dock";
 import Gallery from "./Gallery";
-import Home, { homeCopy } from "./Home";
+import Home from "./Home";
+import { homeCopy } from "../src/home-copy";
 import Explorer from "./Explorer";
 import WarmTooltip, { WarmTooltipGroup } from "./react-bits/WarmTooltip";
 import Workspace from "./Workspace";
