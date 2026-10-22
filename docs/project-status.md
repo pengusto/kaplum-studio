@@ -4,6 +4,7 @@ Kaplum Studio is an early-development public teaching app. Development is paused
 
 ## Working today
 
+- Home is the first Dock entry. The single-row mobile header hides on downward workspace scrolling and reveals on upward scroll, near the top or keyboard focus; route changes reset the workspace scroll.
 - Home landing page at the root and #home: shared code/drawing illustration, direct example and lesson links, five languages; logo and header Home link return here. Existing hash links still work.
 - General product descriptions, English/German README, package metadata and GitHub About address programming beginners and learners. Concrete classroom material retains its teaching context.
 

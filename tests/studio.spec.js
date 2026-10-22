@@ -11,6 +11,8 @@ const canvasColor = (page) =>
     .locator(".canvas-surface")
     .evaluate((el) => getComputedStyle(el).backgroundColor);
 const changeCanvas = async (page, name) => {
+  // Focusing header controls also reveals the scroll-hidden navigation.
+  await page.getByRole("button", { name: "Settings", exact: true }).focus();
   await page.getByRole("button", { name: "Settings", exact: true }).click();
   await page
     .getByRole("dialog")
@@ -380,7 +382,7 @@ test("Original Dock labels appear only on hover or focus with one active indicat
     await expect(page.locator(".studio-dock .dock-dot")).toHaveCount(1);
     await expect(active.locator(".dock-dot")).toBeVisible();
     const label = active.locator(".dock-label");
-    await expect(page.locator(".studio-dock .dock-label")).toHaveCount(5);
+    await expect(page.locator(".studio-dock .dock-label")).toHaveCount(6);
     await page.mouse.move(0, 0);
     await expect(label).toHaveCSS("opacity", "0");
     const supportsHover = await page.evaluate(() => matchMedia("(hover: hover)").matches);
@@ -420,7 +422,7 @@ test("Touch layout leaves labelled Dock and playback reachable without overlap",
     .toBe(true);
   await stop.click();
   await expect(page.locator("#status")).toHaveText("Stopped");
-  await expect(page.locator(".studio-dock").getByRole("link")).toHaveCount(5);
+  await expect(page.locator(".studio-dock").getByRole("link")).toHaveCount(6);
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,
@@ -611,7 +613,7 @@ test("Dock opens each full catalogue and cards keep readable borders in both the
     await page.setViewportSize(viewport);
     await page.goto("/#commands");
     const dock = page.locator(".studio-dock");
-    await expect(dock.getByRole("link")).toHaveCount(5);
+    await expect(dock.getByRole("link")).toHaveCount(6);
     for (const [label, heading, count] of [["Figures", "Figures", 32], ["Basic commands", "Basic commands", reference.length], ["Animations", "Animations", 26]]) {
       const link = dock.getByRole("link", { name: label, exact: true });
       await link.click();

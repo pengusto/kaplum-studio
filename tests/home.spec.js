@@ -10,13 +10,13 @@ test('Home welcomes learners in five languages and leads to real Studio activiti
   }
   await page.locator('.home-primary').click();
   await expect(page.locator('.example-card')).toHaveCount(32);
-  await page.locator('.brand').click();
+  await page.locator('.studio-dock a[href="#home"]').click();
   await expect(page).toHaveURL(/#home$/);
   await page.locator('.home-demo').click();
   await expect(page.locator('#code')).toContainText('forward(160)');
   await page.locator('.library-toggle').click();
   await expect(page.locator('#example-library-tray')).toBeVisible();
-  await page.locator('.brand').click();
+  await page.locator('.studio-dock a[href="#home"]').click();
   await expect(page.locator('#example-library-tray')).toBeHidden();
   await page.reload();
   await expect(page.locator('.home-page')).toBeVisible();

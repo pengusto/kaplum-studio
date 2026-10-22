@@ -35,3 +35,25 @@ for (const width of [320, 390, 700, 850, 1073, 1150, 1536]) {
     await expect(page.locator('header .release-links a[aria-label="GitHub"]')).toHaveAttribute('href', 'https://github.com/pengusto/kaplum-studio');
   });
 }
+
+for (const width of [320, 1073]) {
+  test(`header reveals on upward scroll and keyboard focus at ${width}px; Home is in Dock`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 780 });
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/#figures');
+    const header = page.locator('.studio-header');
+    expect(await header.evaluate(el => el.getBoundingClientRect().height)).toBeLessThanOrEqual(80);
+    await page.locator('.atlas-workspace').evaluate(el => { el.scrollTop = 500; });
+    await expect(header).toHaveAttribute('data-hidden', 'true');
+    await page.locator('.atlas-workspace').evaluate(el => { el.scrollTop = 440; });
+    await expect(header).toHaveAttribute('data-hidden', 'false');
+    await page.locator('.atlas-workspace').evaluate(el => { el.scrollTop = 600; });
+    await expect(header).toHaveAttribute('data-hidden', 'true');
+    await page.locator('.brand').focus();
+    expect(await header.evaluate(el => el.getBoundingClientRect().bottom)).toBeGreaterThan(0);
+    await page.locator('.studio-dock a[href="#home"]').click();
+    await expect(page.locator('.home-page')).toBeVisible();
+    await expect(header).toHaveAttribute('data-hidden', 'false');
+    await expect(page.locator('.studio-dock a[href="#home"] .dock-dot')).toHaveCount(1);
+  });
+}

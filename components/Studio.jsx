@@ -40,7 +40,10 @@ export default function Studio() {
     [settings, setSettings] = useState(false),
     [preferencesReady, setPreferencesReady] = useState(false),
     [storageError, setStorageError] = useState(false),
-    [libraryOpen, setLibraryOpen] = useState(false);
+    [libraryOpen, setLibraryOpen] = useState(false),
+    [headerHidden, setHeaderHidden] = useState(false);
+  const scrollAnchor = useRef(0);
+  const workspaceScroll = useRef(null);
   const drafts = useRef(new Map());
   const pausedPreviews = useRef(new Set());
   const t = messages(preferences.locale);
@@ -71,6 +74,9 @@ export default function Studio() {
   }, []);
   useEffect(() => {
     if (route === "home" || route.includes("/")) setLibraryOpen(false);
+    setHeaderHidden(false);
+    if (workspaceScroll.current) workspaceScroll.current.scrollTop = 0;
+    scrollAnchor.current = 0;
   }, [route]);
   useEffect(() => {
     document.documentElement.dataset.theme = preferences.theme;
@@ -131,7 +137,7 @@ export default function Studio() {
       <div className="preview-note">
         KAPLUM STUDIO <span>{t("scope")}</span>
       </div>
-      <header>
+      <header className="studio-header" data-hidden={headerHidden}>
         <a className="brand" href="#home">
           <svg className="logo" style={{ color: "var(--accent)" }} viewBox="0 0 64 58" aria-hidden="true">
             <g fill="currentColor">
@@ -202,7 +208,13 @@ export default function Studio() {
         </WarmTooltipGroup>
       </header>
       <main className="atlas-layout" data-library-open={libraryOpen} data-exploring={["figures", "commands", "animations"].includes(route) || route.startsWith("inspect-")}>
-        <div className="atlas-workspace">
+        <div className="atlas-workspace" ref={workspaceScroll} onScroll={(event) => {
+          if (event.target !== event.currentTarget) return;
+          const top = event.currentTarget.scrollTop;
+          const delta = top - scrollAnchor.current;
+          if (top < 24) { setHeaderHidden(false); scrollAnchor.current = top; }
+          else if (Math.abs(delta) > 12) { setHeaderHidden(delta > 0); scrollAnchor.current = top; }
+        }}>
           {storageError && <p role="alert">{t("storageError")}</p>}
           {route === "home" ? <Home locale={preferences.locale} /> : ["figures", "commands", "animations"].includes(route) || route.startsWith("inspect-") ? (
             <Explorer key={route} route={route} preferences={preferences} t={t} drafts={drafts.current} pausedPreviews={pausedPreviews.current} />
@@ -270,6 +282,7 @@ export default function Studio() {
             "--dock-label-ink": "var(--text)",
           }}
           items={[
+            ["home", "home", House, section === "home"],
             ["figures", "figures", Shapes, section === "figures"],
             ["commands", "commands", Terminal, section === "commands"],
             ["animations", "animations", Clapperboard, section === "animations"],
@@ -277,7 +290,7 @@ export default function Studio() {
             ["personal", "projects", FolderOpen, section === "personal"],
           ].map(([id, label, Icon, active]) => ({
             href: `#${id}`,
-            label: t(label),
+            label: id === "home" ? homeCopy[preferences.locale].home : t(label),
             active,
             icon: <Icon size={22} aria-hidden="true" />,
           }))}

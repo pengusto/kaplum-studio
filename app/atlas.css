@@ -1295,3 +1295,31 @@ header .release-links a {
 .github-mark .github-mark-dark { display: none; }
 html[data-theme="light"] .github-mark .github-mark-dark { display: block; }
 html[data-theme="light"] .github-mark .github-mark-light { display: none; }
+
+/* Studio navigation overlays the workspace; content scrolls beneath it. */
+header.studio-header { position: fixed; inset: 0 0 auto; z-index: 60; height: 80px; background: var(--bg); transition: transform 180ms ease; }
+header.studio-header[data-hidden="true"]:not(:focus-within) { transform: translateY(-100%); }
+body:has(.studio-header) main.atlas-layout { height: 100dvh; padding-top: 0; }
+html:has(.studio-header), body:has(.studio-header) { height: 100dvh; overflow: hidden; }
+body:has(.studio-header) .atlas-workspace { height: 100%; overflow: auto; padding-top: 90px; scroll-padding-top: 90px; }
+.studio-dock { width: min(390px, calc(100vw - 24px)); }
+@media (max-width: 700px) {
+  header.studio-header:has(.release-links) { display: flex; flex-wrap: nowrap; height: 64px; padding: 8px 10px; gap: 6px; }
+  header.studio-header .brand, header.studio-header .brand strong { font-size: 0; gap: 0; }
+  header.studio-header .brand .logo { width: 32px; height: 34px; }
+  header.studio-header .header-place { display: none; }
+  header.studio-header .release-links { gap: 3px; margin-left: auto; }
+  header.studio-header .release-links a { padding: 8px; min-height: 36px; }
+  header.studio-header .release-links span:not(.github-mark) { display: none; }
+  header.studio-header .header-tools { grid-column: auto; width: auto; gap: 5px; justify-content: flex-end; }
+  header.studio-header .header-tools > label > svg, header.studio-header .theme-switch > svg { display: none; }
+  header.studio-header .theme-switch { display: inline-flex; padding: 0; width: 34px; min-width: 34px; }
+  header.studio-header .theme-switch .switch-track { width: 34px; }
+  header.studio-header .language-picker { gap: 0; }
+  header.studio-header .language-picker select { max-width: 68px; padding: 7px 2px; font-size: 12px; }
+  header.studio-header .icon-button { width: 36px; min-width: 36px; height: 36px; padding: 7px; }
+  body:has(.studio-header) .atlas-workspace { padding-top: 74px; scroll-padding-top: 74px; }
+}
+@media (prefers-reduced-motion: reduce) { header.studio-header { transition: none; } }
+
+@media (max-width: 700px) { .studio-dock { width: auto; left: 12px; right: 12px; transform: none; } }
