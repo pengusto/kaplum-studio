@@ -1,10 +1,10 @@
 "use client";
+import GitHubMark from "./GitHubMark";
 import { docsCopy } from "../src/docs-copy";
 import { legalCopy } from "../src/legal";
 import { assetUrl } from "../src/asset-url";
 import { useEffect, useRef, useState } from "react";
 import {
-  GitBranch,
   House,
   Shapes,
   Terminal,
@@ -159,7 +159,7 @@ export default function Studio() {
         <nav className="release-links" aria-label={docsCopy[preferences.locale].title}>
           <a href="#home" aria-label={homeCopy[preferences.locale].home} aria-current={route === "home" ? "page" : undefined}><House size={18} aria-hidden="true"/><span>{homeCopy[preferences.locale].home}</span></a>
           <a href={assetUrl(`/docs/?lang=${preferences.locale}`)} aria-label={docsCopy[preferences.locale].title}><BookOpen size={18}/><span>{docsCopy[preferences.locale].title}</span></a>
-          <a href="https://github.com/pengusto/kaplum-studio" aria-label="GitHub"><GitBranch size={18}/><span>GitHub</span></a>
+          <a href="https://github.com/pengusto/kaplum-studio" aria-label="GitHub"><GitHubMark/><span>GitHub</span></a>
         </nav>
         <WarmTooltipGroup delay={300} lean={0}>
           <div className="header-tools">

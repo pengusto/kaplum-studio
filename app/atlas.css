@@ -1289,3 +1289,9 @@ header .release-links a {
 .home-page a:focus-visible { outline: 3px solid var(--accent); outline-offset: 5px; }
 @media (max-width: 1000px) { .home-intro { grid-template-columns: 1fr; }.home-message h1 { max-width: 18ch; }.home-code pre { font-size: 15px; }.home-message > p { max-width: 62ch; } }
 @media (max-width: 600px) { .home-page { padding: 24px 0; }.home-features { grid-template-columns: 1fr; margin-top: 38px; gap: 28px; }.home-code, .home-result { padding: 15px 10px; }.home-code pre { font-size: 10px; }.home-message h1 { font-size: 42px; }.home-message > p { font-size: 16px; }.home-demo-caption span { display: none; } }
+
+.github-mark { display: inline-flex; width: 18px; height: 18px; flex-shrink: 0; }
+.github-mark img { display: block; width: 18px; height: 18px; }
+.github-mark .github-mark-dark { display: none; }
+html[data-theme="light"] .github-mark .github-mark-dark { display: block; }
+html[data-theme="light"] .github-mark .github-mark-light { display: none; }

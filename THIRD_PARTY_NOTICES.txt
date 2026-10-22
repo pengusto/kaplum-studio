@@ -459,3 +459,8 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
+
+GitHub Invertocat marks (black and white SVGs): GitHub, Inc. trademarks,
+not covered by this project's MIT license. Official unmodified assets from
+https://brand.github.com/GitHub_Logos.zip, used only to link to the project
+on GitHub. Brand guidelines: https://brand.github.com/foundations/logo .

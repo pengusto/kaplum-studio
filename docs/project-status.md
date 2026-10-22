@@ -1,8 +1,11 @@
-# Project status — 14 October 2026
+# Project status — 22 October 2026
 
-Kaplum Studio is an early-development public teaching app. Development is paused for now after the verified own-function debugger update. Resume with the classroom trial and the remaining work below. The official repository is `pengusto/kaplum-studio`; its website is https://pengusto.github.io/kaplum-studio/. Original local course archives remain preserved. The earlier private repository was deleted with owner authorization; it is not the active development repository.
+Kaplum Studio is an early-development public teaching app. Development is paused for now after the verified Home, beginner-audience and structured-data updates. Resume with the classroom trial and the remaining work below. The official repository is `pengusto/kaplum-studio`; its website is https://pengusto.github.io/kaplum-studio/. Original local course archives remain preserved. The earlier private repository was deleted with owner authorization; it is not the active development repository.
 
 ## Working today
+
+- Home landing page at the root and #home: shared code/drawing illustration, direct example and lesson links, five languages; logo and header Home link return here. Existing hash links still work.
+- General product descriptions, English/German README, package metadata and GitHub About address programming beginners and learners. Concrete classroom material retains its teaching context.
 
 - Searchable figures, commands and animations; general Turtle commands, drawing helpers and example figures are distinguished.
 - Three-column desktop figure catalogue with inline parameters and real, visible-only previews; responsive mobile layouts and explicit pause.
@@ -13,24 +16,30 @@ Kaplum Studio is an early-development public teaching app. Development is paused
 - Nine finite course experiments with a goal, an observable original-example outcome and an edit challenge.
 - A bounded source debugger: next instruction, continue/pause/stop/restart, highlighted source, primitive variables, line breakpoints and true/false condition feedback. It steps into named learner functions with plain parameters and returns, and shows active calls; see [supported syntax and limits](source-debugger.md).
 - Exact-source, network-free ZIP exports; public documentation, GitHub navigation and legal pages.
-- Static JSON-LD for the application and documentation; see [structured data](structured-data.md).
+- Static JSON-LD for Home, the application and documentation: Home heading/introduction and HTML metadata share the same copy source; Audience matches visible beginners-and-learners wording without invented age bounds; see [structured data](structured-data.md).
 
 ## Latest verified baseline
 
-The implementation at `d1d4b4f` passed all 123 Chromium and 123 Firefox tests, plus 15 mounted Pages and structured-data tests. Its [Pages workflow](https://github.com/pengusto/kaplum-studio/actions/runs/38479560067) completed successfully, including build, verification and deployment. Browser suites use two workers to keep concurrent canvas checks reliable.
+The implementation at `be27b71` passed all 125 Chromium and 125 Firefox tests, plus 15 mounted Pages and structured-data tests. Its [Pages workflow](https://github.com/pengusto/kaplum-studio/actions/runs/39721535948) completed successfully, including build, verification and deployment. Public HTML was checked for matching Home metadata, heading and Audience. Home itself was visually checked after [its release](https://github.com/pengusto/kaplum-studio/actions/runs/39720146494). Browser suites use two workers to keep concurrent canvas checks bounded.
+
+This handoff also replaces the branch placeholder with official black/white GitHub marks in Studio and documentation. Its release uses the same full gates; check the latest [Pages runs](https://github.com/pengusto/kaplum-studio/actions/workflows/pages.yml) for this document's commit rather than treating the prior baseline as evidence for later changes.
 
 The public [own-functions lesson](https://pengusto.github.io/kaplum-studio/#course/functions) was also checked in the browser: stepping entered `square`, highlighted the original source and showed its active call and parameter; continuing drew both squares and returned `perimeter = 400`. These results establish this implementation baseline; the handoff documentation commit is published through the same verification workflow.
 
-The installed pre-push hook runs the full build/browser/Pages checks. `bun run push:verified` then waits for successful Pages publication of the exact commit. Install the hook once per clone with `bun run hooks:install`. Tests cannot establish child comprehension, native translation quality or Safari support.
+The installed pre-push hook runs the full build/browser/Pages checks. `bun run push:verified` then waits for successful Pages publication of the exact commit. Install the hook once per clone with `bun run hooks:install`. Tests cannot establish learner comprehension, native translation quality or Safari support.
 
 ## Remaining work
 
-1. Run the [short classroom trial](classroom-trial.de.md), record where learners need help, and prioritize those observed problems.
-2. Review translations with native speakers; current translations are AI-assisted.
-3. Test Safari and slower devices; check control reachability, drawing clarity and interaction latency.
+1. Run the [short classroom trial](classroom-trial.de.md) ([issue #10](https://github.com/pengusto/kaplum-studio/issues/10)), record where learners need help, and prioritize those observed problems.
+2. Review translations with native speakers ([issue #11](https://github.com/pengusto/kaplum-studio/issues/11)); current translations are AI-assisted.
+3. Test Safari and slower devices ([issue #12](https://github.com/pengusto/kaplum-studio/issues/12)); check control reachability, drawing clarity and interaction latency.
 4. Evaluate broader debugger syntax and inspection deliberately; named own-function stepping is implemented: [issue #6](https://github.com/pengusto/kaplum-studio/issues/6). The existing prototype is implemented; full JavaScript debugging is not.
 5. Independent named turtles: [issue #7](https://github.com/pengusto/kaplum-studio/issues/7).
 6. Optional p5.js workshop mode remains deferred: [issue #9](https://github.com/pengusto/kaplum-studio/issues/9).
+
+## Resume on another computer
+
+Clone the official repository, use the packageManager version in package.json, run `bun install --frozen-lockfile`, `bun run hooks:install` and `bun run dev`. Read AGENTS.md and this status first. Browser-local drafts, settings and original local course archives do not transfer with Git; export personal drafts as ZIP before moving.
 
 ## Source and licensing
 

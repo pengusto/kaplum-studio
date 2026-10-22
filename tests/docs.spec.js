@@ -5,9 +5,14 @@ const base = process.env.NEXT_PUBLIC_BASE_PATH || '';
 test('Studio links to its repository and localized documentation', async ({ page }) => {
   await page.goto(`${base}/#figures`);
   await expect(page.locator('.release-links a[href="https://github.com/pengusto/kaplum-studio"]')).toBeVisible();
+  const mark = page.locator('.release-links .github-mark img:visible');
+  await expect(mark).toHaveJSProperty('naturalWidth', 98);
+  await page.getByRole('switch').click();
+  await expect(page.locator('.release-links .github-mark img:visible')).toHaveAttribute('src', /github-invertocat-black.svg$/);
   await page.locator('.release-links a[href*="/docs/"]').click();
   await expect(page).toHaveURL(/\/docs\/\?lang=en$/);
   await expect(page.locator('.docs-heading')).toContainText('Documentation');
+  await expect(page.locator('.docs-repo .github-mark')).toBeVisible();
 });
 test('documentation shares all command contracts, languages and real preview execution', async ({ page }) => {
   const errors=[]; page.on('pageerror', e => errors.push(e.message));

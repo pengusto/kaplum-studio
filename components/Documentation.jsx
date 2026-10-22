@@ -1,6 +1,7 @@
 "use client";
+import GitHubMark from "./GitHubMark";
 import { useEffect, useRef, useState } from "react";
-import { BookOpen, GitBranch, ArrowUpRight, Search, Sun, Moon } from "lucide-react";
+import { BookOpen, ArrowUpRight, Search, Sun, Moon } from "lucide-react";
 import { docsCopy } from "../src/docs-copy";
 import { reference } from "../src/reference";
 import { parameterMeanings } from "../src/parameters";
@@ -39,7 +40,7 @@ export default function Documentation() {
       <div className="docs-tools">
         <label><span className="sr-only">{t("language")}</span><select aria-label={t("language")} value={locale} onChange={e => preference("locale", e.target.value)}>{languages.map(([id, , name]) => <option key={id} value={id}>{name}</option>)}</select></label>
         <button className="icon-button" aria-label={t("darkMode")} onClick={() => preference("theme", theme === "dark" ? "light" : "dark")}>{theme === "dark" ? <Sun size={19}/> : <Moon size={19}/>}</button>
-        <a href={repository} className="docs-repo"><GitBranch size={18}/>GitHub</a>
+        <a href={repository} className="docs-repo"><GitHubMark/>GitHub</a>
       </div>
     </div>
     <div className="docs-layout">
