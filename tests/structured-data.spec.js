@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { studioUrl, serializeStructuredData } from "../src/structured-data";
+import { studioUrl, studioDescription, serializeStructuredData } from "../src/structured-data";
 const base = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 for (const [path, type] of [["/", "studio"], ["/docs/", "documentation"]]) {
@@ -18,6 +18,12 @@ for (const [path, type] of [["/", "studio"], ["/docs/", "documentation"]]) {
     expect(page.inLanguage).toEqual(["en", "de", "ja", "tr", "hy"]);
     if (type === "studio") {
       const app = nodes.find(node => node["@type"] === "WebApplication");
+      expect(app.description).toBe(studioDescription);
+      expect(page.description).toBe(studioDescription);
+      expect(studioDescription).toContain("for beginners");
+      expect(studioDescription).not.toMatch(/children|kids/i);
+      const description = html.match(/<meta name="description" content="([^"]*)"/);
+      expect(description?.[1]).toBe(studioDescription);
       expect(app.applicationCategory).toBe("EducationalApplication");
       expect(app.offers).toMatchObject({ "@type": "Offer", price: 0, priceCurrency: "EUR" });
       expect(app.isAccessibleForFree).toBe(true);

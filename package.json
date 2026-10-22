@@ -1,6 +1,6 @@
 {
   "name": "kaplum-studio",
-  "description": "A visual JavaScript Turtle studio where children explore examples, understand parameters and create their own drawings.",
+  "description": "A visual JavaScript Turtle studio where learners explore examples, understand parameters and create their own drawings.",
   "license": "MIT",
   "private": true,
   "type": "module",

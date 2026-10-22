@@ -6,7 +6,7 @@
 
 [Live-Studio](https://pengusto.github.io/kaplum-studio/) · [Dokumentation](https://pengusto.github.io/kaplum-studio/docs/) · [English](../../README.md) · **Deutsch**
 
-Kaplum Studio ist ein visuelles JavaScript-Turtle-Studio für Kinder, die gerade mit dem Programmieren anfangen. Sie wählen eine Zeichnung oder Animation, sehen den Code neben dem laufenden Ergebnis, verstehen, was jeder Parameter macht, ändern einen Wert und sehen sofort die Wirkung.
+Kaplum Studio ist ein visuelles JavaScript-Turtle-Studio für Programmieranfänger und Lernende. Sie wählen eine Zeichnung oder Animation, sehen den Code neben dem laufenden Ergebnis, verstehen, was jeder Parameter macht, ändern einen Wert und sehen sofort die Wirkung.
 
 Es ist aus dem Unterricht in Programmier-Anfängerkursen entstanden. Dort war selten der Funktionsaufruf selbst das Schwierige, sondern die Frage, welche Zahl in `drawDino(80, "LimeGreen", 25)` eigentlich was bewirkt.
 
