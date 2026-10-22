@@ -64,6 +64,7 @@ test("live animation stops, English learner source survives language and route c
   page,
 }) => {
   await page.goto("/#animation/bouncing-ball");
+  // Loading only confirms startup, not worker execution: retain Running and changing-pixel checks.
   await expect(page.locator("#status")).toHaveText("Running");
   const pixels = () =>
     page.locator("#canvas").evaluate((c) => {
