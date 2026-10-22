@@ -5,7 +5,7 @@ const base = process.env.NEXT_PUBLIC_BASE_PATH || '';
 test('Studio links to its repository and localized documentation', async ({ page }) => {
   await page.goto(`${base}/#figures`);
   await expect(page.locator('.release-links a[href="https://github.com/pengusto/kaplum-studio"]')).toBeVisible();
-  await page.locator('.release-links a').first().click();
+  await page.locator('.release-links a[href*="/docs/"]').click();
   await expect(page).toHaveURL(/\/docs\/\?lang=en$/);
   await expect(page.locator('.docs-heading')).toContainText('Documentation');
 });

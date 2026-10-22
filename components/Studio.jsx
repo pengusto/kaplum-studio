@@ -5,6 +5,7 @@ import { assetUrl } from "../src/asset-url";
 import { useEffect, useRef, useState } from "react";
 import {
   GitBranch,
+  House,
   Shapes,
   Terminal,
   Clapperboard,
@@ -16,6 +17,7 @@ import {
 } from "lucide-react";
 import Dock from "./react-bits/Dock";
 import Gallery from "./Gallery";
+import Home, { homeCopy } from "./Home";
 import Explorer from "./Explorer";
 import WarmTooltip, { WarmTooltipGroup } from "./react-bits/WarmTooltip";
 import Workspace from "./Workspace";
@@ -32,7 +34,7 @@ function validate(value) {
   };
 }
 export default function Studio() {
-  const [route, setRoute] = useState("figures"),
+  const [route, setRoute] = useState("home"),
     [preferences, setPreferences] = useState(defaults),
     [settings, setSettings] = useState(false),
     [preferencesReady, setPreferencesReady] = useState(false),
@@ -54,11 +56,11 @@ export default function Studio() {
     const read = () => {
       const hash = location.hash.slice(1);
       setRoute(
-        /^(figures|commands|animations|course|personal|course\/[^/]+|figure\/[^/]+|command\/[^/]+|animation\/[^/]+|inspect-figure\/[^/]+|inspect-command\/[^/]+)$/.test(
+        /^(home|figures|commands|animations|course|personal|course\/[^/]+|figure\/[^/]+|command\/[^/]+|animation\/[^/]+|inspect-figure\/[^/]+|inspect-command\/[^/]+)$/.test(
           hash,
         )
           ? hash
-          : "figures",
+          : "home",
       );
     };
     read();
@@ -67,7 +69,7 @@ export default function Studio() {
     return () => window.removeEventListener("hashchange", read);
   }, []);
   useEffect(() => {
-    if (route.includes("/")) setLibraryOpen(false);
+    if (route === "home" || route.includes("/")) setLibraryOpen(false);
   }, [route]);
   useEffect(() => {
     document.documentElement.dataset.theme = preferences.theme;
@@ -129,7 +131,7 @@ export default function Studio() {
         KAPLUM STUDIO <span>{t("scope")}</span>
       </div>
       <header>
-        <a className="brand" href="#figures">
+        <a className="brand" href="#home">
           <svg className="logo" style={{ color: "var(--accent)" }} viewBox="0 0 64 58" aria-hidden="true">
             <g fill="currentColor">
               <path d="M20 13 18 4 24 7 28 1 32 7 39 3 35 13Z" fill="#ffcf57" />
@@ -149,11 +151,12 @@ export default function Studio() {
           Kaplum <strong>Studio</strong>
         </a>
         <span className="header-place">
-          {["course", "personal"].includes(section)
+          {section === "home" ? homeCopy[preferences.locale].home : ["course", "personal"].includes(section)
             ? t(section)
             : t("discover")}
         </span>
         <nav className="release-links" aria-label={docsCopy[preferences.locale].title}>
+          <a href="#home" aria-label={homeCopy[preferences.locale].home} aria-current={route === "home" ? "page" : undefined}><House size={18} aria-hidden="true"/><span>{homeCopy[preferences.locale].home}</span></a>
           <a href={assetUrl(`/docs/?lang=${preferences.locale}`)} aria-label={docsCopy[preferences.locale].title}><BookOpen size={18}/><span>{docsCopy[preferences.locale].title}</span></a>
           <a href="https://github.com/pengusto/kaplum-studio" aria-label="GitHub"><GitBranch size={18}/><span>GitHub</span></a>
         </nav>
@@ -200,7 +203,7 @@ export default function Studio() {
       <main className="atlas-layout" data-library-open={libraryOpen} data-exploring={["figures", "commands", "animations"].includes(route) || route.startsWith("inspect-")}>
         <div className="atlas-workspace">
           {storageError && <p role="alert">{t("storageError")}</p>}
-          {["figures", "commands", "animations"].includes(route) || route.startsWith("inspect-") ? (
+          {route === "home" ? <Home locale={preferences.locale} /> : ["figures", "commands", "animations"].includes(route) || route.startsWith("inspect-") ? (
             <Explorer key={route} route={route} preferences={preferences} t={t} drafts={drafts.current} pausedPreviews={pausedPreviews.current} />
           ) : <Workspace
             key={route}
@@ -219,7 +222,7 @@ export default function Studio() {
           />}
       <button
         className="library-toggle"
-        hidden={["figures", "commands", "animations"].includes(route) || route.startsWith("inspect-")}
+        hidden={["home", "figures", "commands", "animations"].includes(route) || route.startsWith("inspect-")}
         aria-expanded={libraryOpen}
         aria-controls="example-library-tray"
         onClick={() => setLibraryOpen(!libraryOpen)}

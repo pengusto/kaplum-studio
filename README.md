@@ -8,6 +8,8 @@
 
 Kaplum Studio is a visual JavaScript Turtle studio for people new to programming. Learners pick a drawing or animation, see its code next to the live result, understand what each parameter does, change a value and immediately see the effect.
 
+The Home page introduces the Studio with a code-and-drawing preview and direct links to examples and guided lessons. Existing example links remain available.
+
 It grew out of teaching beginner programming courses, where the hardest part was rarely the idea of a function call. It was connecting `drawDino(80, "LimeGreen", 25)` to *which number does what*.
 
 ![Kaplum Studio: three-column figure catalogue with live previews and inline parameter controls](docs/images/kaplum-next-dark.png)

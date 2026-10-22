@@ -23,7 +23,7 @@ test("React gallery keeps complete inventory, navigation, search and explanation
 }) => {
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
-  await page.goto("/");
+  await page.goto("/#figures");
   await expect(page.locator(".example-card")).toHaveCount(32);
   await expect(page.locator(".brand svg")).toBeVisible();
   await page.getByRole("searchbox").fill("drawDino");

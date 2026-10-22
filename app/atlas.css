@@ -1261,3 +1261,31 @@ header .release-links a {
 
 .debug-call-stack {font-size:.85rem;line-height:1.5;overflow-wrap:anywhere;}
 .debug-call-stack span {color:var(--muted);}
+
+/* Home uses the Studio palette and a single code/drawing demonstration. */
+.home-page { max-width: 1440px; width: 100%; margin: 0 auto; padding: clamp(24px, 5vw, 76px) 12px 24px; }
+.home-intro { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: clamp(28px, 5vw, 80px); align-items: center; }
+.home-message h1 { font-size: clamp(38px, 4.7vw, 72px); line-height: 1.06; letter-spacing: -.045em; margin: 0 0 25px; max-width: 12ch; }
+.home-message > p { font-size: 18px; line-height: 1.7; color: var(--muted); max-width: 44ch; }
+.home-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 18px; margin: 28px 0; }
+.home-actions a { font-weight: 650; border-radius: 10px; padding: 12px 0; }
+.home-actions .home-primary { display: inline-flex; align-items: center; gap: 12px; background: var(--accent); color: var(--bg); padding: 13px 18px; }
+.home-message .home-assurance { font-size: 13px; }
+.home-demo { min-width: 0; display: block; border: 1px solid var(--line); border-radius: 18px; overflow: hidden; background: var(--surface); box-shadow: 0 18px 55px #0002; }
+.home-window { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+.home-window > span:first-child { color: var(--accent); letter-spacing: 4px; }
+.home-demo-panes { display: grid; grid-template-columns: 1fr 1fr; }
+.home-code, .home-result { padding: 22px 18px; min-width: 0; }
+.home-code { background: var(--code); border-right: 1px solid var(--line); }
+.home-code > span, .home-result > span { color: var(--muted); font-size: 12px; }
+.home-code pre { margin: 26px 0; font-size: clamp(11px, 1.1vw, 15px); line-height: 1.9; overflow: auto; background: none; padding: 0; border: 0; }
+.home-syntax { color: var(--accent); }.home-keyword { color: var(--teaching); }
+.home-result svg { display: block; width: 100%; max-height: 270px; margin: 14px auto; }
+.home-demo-caption { margin: 0; padding: 15px 20px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; }
+.home-demo-caption span { color: var(--accent); }
+.home-features { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; margin-top: 70px; border-top: 1px solid var(--line); padding-top: 30px; }
+.home-features a { position: relative; padding-right: 22px; }.home-features a > svg:first-child { color: var(--accent); }.home-features a > svg:last-child { position: absolute; top: 0; right: 0; }
+.home-features h2 { font-size: 19px; margin: 16px 0 8px; }.home-features p { color: var(--muted); margin: 0; max-width: 42ch; }
+.home-page a:focus-visible { outline: 3px solid var(--accent); outline-offset: 5px; }
+@media (max-width: 1000px) { .home-intro { grid-template-columns: 1fr; }.home-message h1 { max-width: 18ch; }.home-code pre { font-size: 15px; }.home-message > p { max-width: 62ch; } }
+@media (max-width: 600px) { .home-page { padding: 24px 0; }.home-features { grid-template-columns: 1fr; margin-top: 38px; gap: 28px; }.home-code, .home-result { padding: 15px 10px; }.home-code pre { font-size: 10px; }.home-message h1 { font-size: 42px; }.home-message > p { font-size: 16px; }.home-demo-caption span { display: none; } }
