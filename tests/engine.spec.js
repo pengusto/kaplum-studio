@@ -1,3 +1,4 @@
+import { teacherExamples } from "../src/teacher-examples";
 import { test, expect } from "@playwright/test";
 import { readFile } from "node:fs/promises";
 const engine = await readFile(new URL("../engine/library.js", import.meta.url), "utf8");
@@ -227,4 +228,34 @@ test('teacher inspection messages reject invalid sandbox values and return detac
  const valid=inspectionState(state);expect(valid).toEqual(state);expect(valid).not.toBe(state);
  for(const value of [{...state,x:Infinity},{...state,lineWidth:0},{...state,pen:'yes'},{...state,stampCount:1001},{...state,penColor:'x'.repeat(129)}])expect(inspectionState(value)).toBeNull();
  const effects={stroke:1,fill:0,text:0,clear:0,stamp:0,removeStamp:0};expect(inspectionStep({before:state,after:state,effects})).toBeTruthy();expect(inspectionStep({before:state,after:state,effects:{...effects,stroke:-1}})).toBeNull();
+});
+
+
+test("moving star clips at the edge without wrapping filled geometry across the canvas", async ({ page }) => {
+  await load(page);
+  await page.evaluate(helpers);
+  const starter = teacherExamples.find(example => example.id === "moving-star").starter;
+  const frame = async x => page.evaluate(({source, x}) => {
+    window.requestAnimationFrame = () => 0;
+    (0, eval)(source.replace("let x = -250;", "let x = " + x + ";"));
+    const ctx = document.getElementById("imagecanvas").getContext("2d");
+    const data = ctx.getImageData(0, 0, 700, 700).data;
+    let left = 0, right = 0;
+    for (let y = 200; y < 500; y++) for (let px = 0; px < 700; px++) {
+      const i = (y * 700 + px) * 4;
+      if (data[i] === 236 && data[i + 1] === 150 && data[i + 2] === 64) {
+        if (px < 350) left++;
+        else right++;
+      }
+    }
+    return {left, right};
+  }, {source: starter, x});
+  const edge = await frame(320);
+  expect(edge.left).toBe(0);
+  expect(edge.right).toBeGreaterThan(100);
+  const outside = await frame(500);
+  expect(outside).toEqual({left: 0, right: 0});
+  const returned = await frame(-250);
+  expect(returned.left).toBeGreaterThan(100);
+  expect(returned.right).toBe(0);
 });

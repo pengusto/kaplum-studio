@@ -49,6 +49,7 @@ loop();
     steps: ["Run the code and watch what changes.", "Change the movement from x + 3 to x + 6."],
     extension: "Change the star from five points to eight.",
     starter: `// Change the movement from x + 3 to x + 6.
+wrap(false);
 let x = -250;
 let turn = 0;
 
