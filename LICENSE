@@ -1,21 +1,64 @@
-MIT License
+Pengusto Commercial License 1.0
+Effective for distributions carrying this notice from 2026-10-24.
 
-Copyright (c) 2026 Enis Uysal
+Copyright (c) 2026 Enis Uysal (Pengusto).
+All rights reserved except as expressly granted below or by applicable law.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+1. Scope
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+This license applies only to the copyrightable code, engine, drawing helpers,
+examples, documentation and tests authored by Pengusto for Kaplum Studio
+(the "Software"), including compiled counterparts and bundled runtime files
+in offline project exports. It does not assert ownership of third-party
+material or independently authored programs, drawings or data of users.
+User-created work remains the user's; a bundled Kaplum runtime remains
+subject to its own license.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+Third-party components, dependencies, artwork and notices retain their own
+terms, including MIT and MIT + Commons Clause where applicable. See
+THIRD_PARTY_NOTICES.txt, components/react-bits/LICENSE.md and the relevant
+asset provenance documents. This license does not replace those terms.
+
+2. Source inspection and public demonstration
+
+You may view the source and make copies solely for private source-code
+inspection. Rights to view and fork a public repository under GitHub's terms
+are preserved. You may explore the maintainer-hosted public demonstration
+solely to evaluate the Software. This does not authorize classroom teaching,
+training, organizational use, independent deployment or redistribution.
+
+3. Paid commercial agreement required
+
+Except for section 2, running or deploying the Software, adapting it for use,
+distributing it, or providing access to its functionality requires a separate
+prior written commercial agreement with Pengusto and payment of the fees
+agreed in that agreement. This includes internal use by an organization,
+educational institution or training provider, whether nonprofit or commercial,
+and applies to self-hosted, local, hosted and offline runtime deployments.
+
+The agreement must define the licensed organization, permitted functionality,
+authorized teachers and learners, users or locations, duration, fees, and any
+permitted modifications or redistribution of bundled runtime files. No paid
+usage rights or particular price are implied merely by access to this repository
+or demonstration. Request an agreement through the maintainer's GitHub profile:
+https://github.com/pengusto. Do not post private contract or course data in
+public issues.
+
+4. Preservation of existing rights
+
+This notice does not revoke previously granted rights or restrict third-party
+permissions or mandatory rights under applicable law.
+
+5. No implied rights
+
+Except for section 2, no permission to use the Software is granted without
+the separate agreement described in section 3. No trademark rights, ownership
+transfer, exclusivity, endorsement, support or service commitment is implied.
+
+6. Disclaimer
+
+To the extent permitted by applicable law, copies provided for source
+inspection or demonstration are supplied "AS IS", without warranties of any
+kind. Nothing here excludes liability that cannot lawfully be excluded.
+Warranties, liability and service obligations for paid use must be set out
+in the separate commercial agreement.

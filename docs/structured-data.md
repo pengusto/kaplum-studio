@@ -4,7 +4,7 @@ Kaplum publishes server-rendered JSON-LD in the static export. The Studio has a 
 
 The Home WebPage uses its visible English heading and introduction from the shared home-copy module; the HTML description uses the same introduction. The WebApplication keeps its feature-focused product description and an Audience matching the visible programming-beginners-and-learners positioning. No ages, school stages or educational roles are inferred. English is the initial static-export language; changing interface language does not create separate indexed pages or change the stable graph.
 
-The application describes verified existing features, the five languages, MIT license, repository, documentation and zero-cost access. Ratings, reviews, FAQ, breadcrumbs, course credentials and organization claims are omitted because the site does not provide their corresponding content.
+The application describes verified existing features, the five languages, commercial license, repository and documentation. It does not advertise free operational access or a zero-price offer; paid usage terms are agreed separately. Ratings, reviews, FAQ, breadcrumbs, course credentials and organization claims are omitted because the site does not provide their corresponding content.
 
 Google software rich results require a real rating or review; this markup currently has neither and does not claim rich-result eligibility. WebSite site-name markup is omitted because Google does not support separate site names for subdirectories such as this Pages mount.
 

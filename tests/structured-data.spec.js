@@ -32,8 +32,9 @@ for (const [path, type] of [["/", "studio"], ["/docs/", "documentation"]]) {
       const description = html.match(/<meta name="description" content="([^"]*)"/);
       expect(description?.[1]).toBe(homeDescription);
       expect(app.applicationCategory).toBe("EducationalApplication");
-      expect(app.offers).toMatchObject({ "@type": "Offer", price: 0, priceCurrency: "EUR" });
-      expect(app.isAccessibleForFree).toBe(true);
+      expect(app.offers).toBeUndefined();
+      expect(app.isAccessibleForFree).toBe(false);
+      expect(studioDescription).not.toMatch(/\bfree\b/i);
       expect(app.license).toBe("https://github.com/pengusto/kaplum-studio/blob/main/LICENSE");
       expect(page.mainEntity["@id"]).toBe(app["@id"]);
       expect(app.softwareHelp.url).toBe(studioUrl + "docs/");

@@ -69,6 +69,7 @@ export async function projectFiles(code, background = "white") {
       "/engine/functions.js",
       "/THIRD_PARTY_NOTICES.txt",
       "/engine/teaching-clock.js",
+      "/LICENSE",
     ].map(async (path) => {
       const response = await fetch(assetUrl(path));
       if (!response.ok) throw new Error(`Cannot load ${path}`);
@@ -85,5 +86,6 @@ export async function projectFiles(code, background = "white") {
     "program.js": code,
     "THIRD_PARTY_NOTICES.txt": assets[2],
     "teaching-clock.js": assets[3],
+    "LICENSE": assets[4],
   };
 }

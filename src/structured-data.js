@@ -2,7 +2,7 @@ import { homeCopy } from "./home-copy";
 
 export const studioUrl = "https://pengusto.github.io/kaplum-studio/";
 export const repositoryUrl = "https://github.com/pengusto/kaplum-studio";
-export const studioDescription = "A free visual JavaScript Turtle studio for beginners: explore examples, adjust parameters, inspect code step by step and export offline projects.";
+export const studioDescription = "A commercially licensed visual JavaScript Turtle studio for beginners: explore examples, adjust parameters, inspect code step by step and export offline projects.";
 export const homeDescription = homeCopy.en.intro;
 const applicationId = `${studioUrl}#application`;
 const documentationId = `${studioUrl}docs/#webpage`;
@@ -21,8 +21,7 @@ export const studioStructuredData = {
       audience: { "@type": "Audience", audienceType: "Programming beginners and curious learners" },
       operatingSystem: "Any",
       browserRequirements: "Requires JavaScript and a modern web browser.",
-      isAccessibleForFree: true,
-      offers: { "@type": "Offer", price: 0, priceCurrency: "EUR", url: studioUrl },
+      isAccessibleForFree: false,
       inLanguage: languages,
       license: `${repositoryUrl}/blob/main/LICENSE`,
       sameAs: repositoryUrl,

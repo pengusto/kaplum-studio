@@ -14,7 +14,7 @@
 
 [**Studio öffnen →**](https://pengusto.github.io/kaplum-studio/) · [Befehlsreferenz](https://pengusto.github.io/kaplum-studio/docs/) · [English](../../README.md) · **Deutsch**
 
-[![Lizenz: eigener Code MIT](https://img.shields.io/badge/project_code-MIT-blue)](#lizenz)
+[![Lizenz: kommerziell](https://img.shields.io/badge/license-Pengusto_Commercial_1.0-blue)](#lizenz)
 [![GitHub Pages](https://github.com/pengusto/kaplum-studio/actions/workflows/pages.yml/badge.svg)](https://github.com/pengusto/kaplum-studio/actions/workflows/pages.yml)
 [![Status: frühe Entwicklung](https://img.shields.io/badge/status-early%20development-orange)](#projektstand)
 
@@ -24,9 +24,17 @@ Es entstand aus Programmier-Anfängerkursen: Oft war die schwierige Frage, welch
 
 ![Figurenkatalog mit echten Turtle-Vorschauen, Beispielaufrufen und direkt bedienbaren Parametern](../images/kaplum-next-dark.png)
 
+## Lizenzmodell
+
+Für Kaplums eigenen Code gilt die **[Pengusto Commercial License 1.0](../../LICENSE)**.
+Unterricht, institutionelle Nutzung, Selbsthosting und die Nutzung der Offline-Runtime
+erfordern eine separate bezahlte schriftliche Vereinbarung. Die öffentliche Demo
+kann zur Evaluierung ausprobiert werden. Eigene Programme und Zeichnungen bleiben
+deine; enthaltene Runtime-Dateien behalten ihre Lizenz. [Umfang und Kontakt](../licensing.md).
+
 ## Dein erstes Experiment
 
-Ohne Installation oder Konto: [Öffne den Dinosaurier](https://pengusto.github.io/kaplum-studio/#figure/figur-dino).
+Zur Evaluierung in der öffentlichen Demo, ohne Installation oder Konto: [Öffne den Dinosaurier](https://pengusto.github.io/kaplum-studio/#figure/figur-dino).
 
 1. Starte das Beispiel und öffne die Parametererklärungen.
 2. Ändere Größe oder Farbe und starte es erneut. Die Zeichnung entsteht aus dem sichtbaren Code.
@@ -59,7 +67,7 @@ Dies sind echte Studio-Screenshots aus dem Produktions-Screenshot-Test in [`test
 
 ## Lokal starten
 
-Benötigt [Bun](https://bun.sh) **1.4.2**, Git und einen aktuellen Chromium- oder Firefox-Browser. Safari ist noch nicht getestet.
+Für eine von deiner Vereinbarung gedeckte Nutzung. Benötigt [Bun](https://bun.sh) **1.4.2**, Git und einen aktuellen Chromium- oder Firefox-Browser. Safari ist noch nicht getestet.
 
 ```sh
 git clone https://github.com/pengusto/kaplum-studio.git
@@ -118,8 +126,8 @@ Für Maintainer: Den versionierten Hook einmal pro Clone mit `bun run hooks:inst
 
 ## Lizenz
 
-Der eigene Code von Kaplum Studio steht unter der [MIT-Lizenz](../../LICENSE). Sie ersetzt keine Fremdlizenzen:
+Der eigene Code von Kaplum Studio steht unter der [Pengusto Commercial License 1.0](../../LICENSE). Quelltexteinsicht und öffentliche Demo dienen der Evaluierung; Unterricht und institutionelle Nutzung erfordern eine bezahlte schriftliche Vereinbarung. Fremdlizenzen bleiben erhalten:
 
-- `engine/library.js` ist ein neuer Canvas-Turtle-Kern unter MIT und ersetzt die frühere angepasste Unterrichts-Engine samt RGB-Parser. Die Zeichenhelfer in `engine/functions.js` wurden laut Erklärung des Autors von Enis Uysal mit Codex erstellt. Dieses öffentliche Repository beginnt mit dem aktuellen Quelltextstand und enthält nicht die frühere Unterrichts-Fork-Historie. Siehe [Engine-Herkunft](../engine-migration.md).
+- `engine/library.js` ist ein gepflegter Canvas-Turtle-Kern unter der kommerziellen Projektlizenz und ersetzt die frühere angepasste Unterrichts-Engine samt RGB-Parser. Die Zeichenhelfer in `engine/functions.js` wurden laut Erklärung des Autors von Enis Uysal mit Codex erstellt. Dieses öffentliche Repository beginnt mit dem aktuellen Quelltextstand und enthält nicht die frühere Unterrichts-Fork-Historie. Siehe [Engine-Herkunft](../engine-migration.md).
 - Die eingebundenen [React-Bits-Komponenten](../../components/react-bits/README.md) behalten **MIT + Commons Clause** unter [ihrer Lizenz](../../components/react-bits/LICENSE.md); sie sind nicht in den ZIPs der Lernenden enthalten.
 - Die Abhängigkeiten bleiben in [THIRD_PARTY_NOTICES.txt](../../THIRD_PARTY_NOTICES.txt) genannt. Beispielnamen oder Darstellungen gewähren keine Rechte an fremden Figuren oder Marken.

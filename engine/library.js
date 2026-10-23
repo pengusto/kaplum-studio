@@ -1,4 +1,4 @@
-// Kaplum Studio Turtle core — Copyright (c) 2026 Enis Uysal, MIT.
+// Kaplum Studio Turtle core — Copyright (c) 2026 Enis Uysal. Pengusto Commercial License 1.0; see LICENSE.
 // Canvas coordinates: origin in the centre, positive y upwards, 0° points up.
 (function () {
   const image = document.getElementById("imagecanvas");

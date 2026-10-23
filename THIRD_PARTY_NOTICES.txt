@@ -1,7 +1,7 @@
 Third-party notices for the current Kaplum Studio release snapshot.
 
-The Canvas Turtle core and drawing helpers are covered by the project MIT
-licence. Helper authorship was confirmed by Enis Uysal on 12 October 2026:
+The Canvas Turtle core and drawing helpers are covered by the project
+Pengusto Commercial License 1.0; see LICENSE. Helper authorship was confirmed by Enis Uysal on 12 October 2026:
 they were created with Codex assistance.
 
 This repository does not include the previous teaching-fork engine, its RGB
