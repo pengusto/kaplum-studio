@@ -1,120 +1,119 @@
+![Kaplum Studio — a penguin and a crowned turtle draw glowing geometry on paper in a cosy atelier](docs/images/kaplum-zeichenatelier-banner.png)
+
+*AI-generated banner illustration; [asset sources and scope](docs/images/README.md).*
+
 # Kaplum Studio
 
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
-[![CI: GitHub Actions](https://img.shields.io/badge/CI-GitHub%20Actions-2088FF?logo=githubactions&logoColor=white)](.github/workflows/ci.yml)
+### Change a number. See an idea take shape.
+
+[**Open Studio →**](https://pengusto.github.io/kaplum-studio/) · [Command reference](https://pengusto.github.io/kaplum-studio/docs/) · **English** · [Deutsch](docs/readme/README.de.md)
+
+[![License: project code MIT](https://img.shields.io/badge/project_code-MIT-blue)](#license)
+[![GitHub Pages](https://github.com/pengusto/kaplum-studio/actions/workflows/pages.yml/badge.svg)](https://github.com/pengusto/kaplum-studio/actions/workflows/pages.yml)
 [![Status: early development](https://img.shields.io/badge/status-early%20development-orange)](#project-status)
 
-[**Live Studio**](https://pengusto.github.io/kaplum-studio/) · [**Documentation**](https://pengusto.github.io/kaplum-studio/docs/) · **English** · [Deutsch](docs/readme/README.de.md)
+Kaplum Studio is a visual JavaScript Turtle playground for programming beginners and the people teaching them. Pick a drawing, see the code beside its result, and change a parameter to discover what it does.
 
-Kaplum Studio is a visual JavaScript Turtle studio for people new to programming. Learners pick a drawing or animation, see its code next to the live result, understand what each parameter does, change a value and immediately see the effect.
+It grew out of beginner programming courses: the difficult part was often connecting `drawDino(80, "LimeGreen", 25)` to *which number changes what*. Kaplum puts that connection on screen.
 
-The Home page introduces the Studio with a code-and-drawing preview and direct links to examples and guided lessons. Existing example links remain available.
+![Figure catalogue with real Turtle previews, example calls and inline parameter controls](docs/images/kaplum-next-dark.png)
 
-It grew out of teaching beginner programming courses, where the hardest part was rarely the idea of a function call. It was connecting `drawDino(80, "LimeGreen", 25)` to *which number does what*.
+## Your first experiment
 
-![Kaplum Studio: three-column figure catalogue with live previews and inline parameter controls](docs/images/kaplum-next-dark.png)
+No installation or account needed: [open the dinosaur](https://pengusto.github.io/kaplum-studio/#figure/figur-dino).
 
-## What it does
+1. Run the example and open its parameter explanations.
+2. Change the size or colour, then run it again. The drawing comes from the code you see.
+3. Try [Square replay](https://pengusto.github.io/kaplum-studio/#course/square) to walk through a drawing, or [Own functions, step by step](https://pengusto.github.io/kaplum-studio/#course/functions) to inspect code execution.
+4. Export a ZIP, unzip it and open `index.html`. Your exact `program.js` and the engine travel with it; no server or internet connection is needed.
 
-- **Example library.** 32 figures, 73 commands and helpers and 26 animations, each with a real preview rendered by the engine.
-- **Code and result together.** A CodeMirror editor sits beside the canvas on desktop, with Run, Restart and Stop next to the result. Animations start automatically, except when reduced motion is requested.
-- **Parameters made visible.** Each argument in the code gets a number that matches a row in the inspector: parameter name, current value and plain-language meaning. Figure and command catalogue cards expose numeric controls, colours and boolean choices directly, updating the live preview and displayed call. Expressions remain read-only; existing Studio drafts are preserved.
-- **Safe execution.** Learner code runs in a Web Worker inside a sandboxed iframe. Stop, navigation and hidden tabs terminate it, so an infinite loop cannot freeze the page.
-- **Offline project export.** One ZIP contains `index.html`, the learner's exact `program.js` and the engine. Unzip it, open `index.html` and it runs without a server or internet connection.
-- **Comfortable for long sessions.** Dark interface and dark canvas by default, with independent light options. The settings are kept in the browser.
+## From a picture to a program
 
-## Quick start
+| Explore | Understand | Make it yours |
+| --- | --- | --- |
+| 32 figures, 77 commands and helpers, 26 animations | Numbered arguments, parameter meanings and editable catalogue controls | CodeMirror editor beside the canvas on desktop; panel tabs on mobile |
+| Nine guided course experiments with a goal and an edit challenge | Recorded drawing playback, drawing undo and live Turtle position/direction | Keyboard and pointer input, stamps, circles and general drawing helpers |
+| Searchable examples with real engine previews | A bounded source debugger with line breakpoints, primitive variables and named function stepping | Exact-source offline ZIP export |
 
-Requires [Bun](https://bun.sh) 1.4.2 and a current Chromium or Firefox. Safari has not been tested yet.
+Figure and command cards update their drawing and displayed call as you adjust numbers, colours or booleans. Expression arguments stay read-only; existing Studio drafts are preserved. Previews run only while visible, explicit pauses survive catalogue navigation, and reduced motion requires explicit playback.
+
+Learner code runs in a Web Worker inside a sandboxed iframe. Stop, navigation and hidden tabs terminate execution; the suite checks that an infinite loop does not freeze the interface.
+
+Appearance and canvas background can be changed independently, with ten Studio colour presets saved locally. The app is a static site: no backend, account, analytics or cloud storage.
+
+## Drawing steps and code steps
+
+**Drawing playback** records finite synchronous programs. Previous/next steps show drawing states; drawing undo discards later drawing history. Neither rewinds JavaScript variables. Frame animations have separate pause/resume controls; timer and input programs use Run/Stop.
+
+**Debug code** pauses before supported source instructions. Use Next code statement or Continue, inspect primitive variables and active calls, and set a line breakpoint. Named learner functions with plain parameters and returns are supported. The prototype handles a bounded subset of JavaScript; see [supported syntax and limitations](docs/source-debugger.md).
+
+![Course workspace with a learning goal, editable source, drawing playback and Turtle state](docs/images/kaplum-course.png)
+
+These are actual Studio screenshots, captured by the production screenshot test in [`tests/studio.spec.js`](tests/studio.spec.js), not mockups or AI-generated illustrations. They show example content; third-party component licences still apply (see [License](#license)).
+
+## Run locally
+
+Requires [Bun](https://bun.sh) **1.4.2**, Git and a current Chromium or Firefox. Safari remains untested.
 
 ```sh
+git clone https://github.com/pengusto/kaplum-studio.git
+cd kaplum-studio
 bun install --frozen-lockfile
 bun run dev
 ```
 
-Open http://localhost:4173.
-
-To build the static site and serve it locally:
+Open [localhost:4173](http://localhost:4173). If that port is already in use, leave the other server running and use `bun run dev --port 4193`, then open `http://localhost:4193`. For a production build:
 
 ```sh
 bun run build      # static export in out/
-bun run preview    # serves out/ on http://localhost:4173
+bun run preview    # serves out/ at http://localhost:4173
 ```
 
-`out/` is plain static files and can be served by any web server. There is no backend, account, analytics or cloud storage.
-
-## Tests
-
-The Playwright suite runs against the production build and checks real behaviour: the full catalogue and search, drawing and stopping animations, isolation of infinite loops, theme and canvas settings, keyboard access, the mobile layout, source-preserving parameter edits and an extracted offline ZIP that actually runs.
+`out/` can be served by a static web server. GitHub Pages needs the `/kaplum-studio` base path:
 
 ```sh
+NEXT_PUBLIC_BASE_PATH=/kaplum-studio bun run build
+NEXT_PUBLIC_BASE_PATH=/kaplum-studio bunx playwright test tests/pages.spec.js tests/structured-data.spec.js
+```
+
+Install the test browsers first as described below.
+
+## Project status
+
+**Early development; classroom acceptance is still open.** The [status record](docs/project-status.md) documents a development pause after the Home, beginner-audience and structured-data updates. The example library, editable parameters, course, themes and offline exports are implemented; a working feature is not evidence that beginners understand it unaided.
+
+Remaining work includes the [short German classroom trial](docs/classroom-trial.de.md), Safari/slower-device checks and native-speaker translation review. Broader debugger support ([#6](https://github.com/pengusto/kaplum-studio/issues/6)) and independent named turtles ([#7](https://github.com/pengusto/kaplum-studio/issues/7)) remain open; optional p5.js mode is deferred.
+
+**Languages:** interface and teaching content cover English, German, Japanese, Turkish and Armenian. Translations are AI-assisted and await native-speaker review. Learner code keeps English JavaScript names; German teaching-command aliases are available. Changing the interface language does not translate an edited program.
+
+## Build, test and contribute
+
+Built with Next.js static export, React 19, CodeMirror 6 and a maintained Canvas Turtle engine. Selected UI components come from React Bits and Lucide.
+
+The Playwright suite checks catalogue/search, animation controls, loop isolation, settings, keyboard access, mobile layouts, source-preserving edits and an extracted offline ZIP that actually runs.
+
+```sh
+bunx playwright install chromium firefox
 bun run build
 bun run test
 PLAYWRIGHT_BROWSER=firefox bun run test
 ```
 
-First run: `bunx playwright install chromium firefox`. The suite also refreshes the screenshots in `docs/images/`. The Pages workflow calls CI once on every push to `main`: build plus both browsers. Pull requests run CI directly; deployment requires successful verification.
+Direct test runs refresh screenshots in `docs/images/`; set `KAPLUM_SCREENSHOT_DIR` to a temporary directory to keep them out of your diff. See [Contributing](CONTRIBUTING.md) for focused changes, translation rules and classroom-data boundaries.
 
-## How it is built
+For maintainers, install the versioned hook once per clone with `bun run hooks:install`. Before every push, `bun run verify:push` checks the production build, full Chromium and Firefox suites, and the Pages subpath build/tests. The pre-push hook enforces those checks and keeps screenshots temporary. After committing on `main`, use `bun run push:verified`; it pushes through the hook and waits for the Pages workflow for that exact commit. Pull requests run CI; Pages deployment requires successful build and verification.
 
-Next.js (App Router, static export), React 19, CodeMirror 6 and Bun. The Turtle engine is a maintained JavaScript library that runs inside the worker. Interface details use selected [React Bits](https://reactbits.dev) components and [Lucide](https://lucide.dev) icons. See [docs/architecture.md](docs/architecture.md) for the execution model and project layout, and [docs/teaching-api.md](docs/teaching-api.md) for the drawing commands.
-
-## Project status
-
-Kaplum Studio is in early development and used for teaching. Working today: the example library, the studio, inline figure and command parameter controls, dark and light modes and offline export.
-
-The course includes nine runnable experiments with a goal, an observable baseline and a source-edit challenge. Finite drawings support recorded playback and drawing undo. Frame animations support pause/resume; timer and input programs use Run/Stop.
-
-A bounded [source debugger prototype](docs/source-debugger.md) now pauses before code instructions, highlights the line and shows primitive variables. It supports simple variables, direct teaching calls, braced for/while/if and named own functions with parameters/returns; active calls and source-line breakpoints are available. Try **Course → Own functions, step by step**. Broader JavaScript support remains bounded ([#6](https://github.com/pengusto/kaplum-studio/issues/6)). Independent named turtles remain planned ([#7](https://github.com/pengusto/kaplum-studio/issues/7)). The optional p5.js mode is deferred. Safari, native translation review and classroom usability remain unverified. The [short German classroom trial](docs/classroom-trial.de.md) is ready to use; see [current project status](docs/project-status.md).
-
-**Languages.** Complete interface and teaching content in English, German, Japanese, Turkish and Armenian. Translations are AI-assisted; native-speaker review is still welcome. Learner code uses English JavaScript names; German aliases exist for teaching commands.
+| Read next | Purpose |
+| --- | --- |
+| [Teaching API](docs/teaching-api.md) | Commands, coordinates, input, stamps and export contracts |
+| [Architecture](docs/architecture.md) | Execution model and project layout |
+| [Source debugger](docs/source-debugger.md) | Supported syntax, stepping and limits |
+| [Project status](docs/project-status.md) | Dated verification evidence and remaining work |
 
 ## License
 
-Kaplum Studio's own code is released under the [MIT License](LICENSE).
+Kaplum Studio's own code is released under the [MIT License](LICENSE). This does not replace third-party terms:
 
-Some parts come from other projects and keep their own licences:
-
-- `engine/library.js` is a new Canvas-based Turtle core under MIT. It replaces the adapted teaching-fork core and its bundled RGB parser. The drawing helpers in `engine/functions.js` were created by Enis Uysal with Codex assistance, as confirmed by the owner, and are covered by the project MIT License. This release repository starts from the current source and does not include the previous teaching-fork engine or its Git history. Third-party licences are retained in [THIRD_PARTY_NOTICES.txt](THIRD_PARTY_NOTICES.txt).
-- React Bits components in `components/react-bits/` are under MIT + Commons Clause. See [their licence](components/react-bits/LICENSE.md).
-- npm dependencies are listed in `THIRD_PARTY_NOTICES.txt`.
-
-Appearance settings offer ten coordinated Studio colour presets, saved locally. Dark/light appearance and canvas background are independent. Dock names appear on hover or keyboard focus; drawing and code syntax colours retain their meaning.
-
-The Dock opens Figures, Basic commands and Animations directly, alongside Course and My projects. Each catalogue is searchable and uses the full content width. Figure and command overview cards offer an isolated live configurator: React Bits ScrubField, range controls, boolean choices and the browser colour picker update the actual Turtle drawing and displayed call. Open in Studio transfers a configured example only when no Studio draft exists. Existing drafts remain intact. Unsupported expression arguments are displayed rather than evaluated by the UI.
-
-Catalogue previews execute the real Turtle examples only while at least 35% visible. Scrolling away or hiding the tab terminates their sandbox; returning restarts the example. Explicit pauses persist across catalogue navigation within the open tab. Reduced motion requires explicit playback. The Dock is a fixed overlay on desktop and mobile; scroll tails keep final controls reachable.
-
-## GitHub Pages
-
-The Pages workflow builds and tests the static export at `/kaplum-studio` before deploying. Local and VPS builds use the root path by default. To test the Pages mount locally:
-
-```sh
-NEXT_PUBLIC_BASE_PATH=/kaplum-studio bun run build
-NEXT_PUBLIC_BASE_PATH=/kaplum-studio bunx playwright test tests/pages.spec.js
-```
-
-The interface, parameter explanations, figure descriptions and activities are available in English, German, Japanese, Turkish and Armenian. Function names and learner code remain English; changing language never translates an edited program.
-
-Commands distinguish Turtle primitives, general drawing helpers and example figures. The workspace includes live position/direction/pen state, an optional coordinate grid and pointer-coordinate copying. Focus the canvas for `onKey`; `onClick` receives logical coordinates. Both support unsubscribing and standalone exports. See [Teaching API](docs/teaching-api.md) for the contracts.
-
-## Try the new Turtle features
-
-Open the [feature test lab](https://pengusto.github.io/kaplum-studio/#course): square replay, pen-up travel, removable stamps, circle paths versus static shapes, undo-clear, position queries, colour/width and edge wrapping. Each lesson explains its goal, what to look for in the original example and one change to try. **Edit code** focuses the editor without replacing your draft. Open a lesson and choose **Start step-by-step**. Play/pause, previous/next step, restart and stop sit above the canvas; the progress counter shows your place. The recording icon starts a fresh trace of edited code. The **More canvas tools** menu contains the coordinate grid, playback speed, final drawing and undo. Position and heading stay visible below the canvas; expand the state and before/after comparison when needed. **Undo drawing step** discards later drawing history; **Previous drawing step** only rewinds playback. Reset protects edited drafts, and ZIP export preserves the exact editor source.
-
-`stamp()`, `clearStamp(id)`, `circle(radius, extent, steps)` and recorded drawing `undo()` are general Turtle capabilities. Pacman and Dino remain example helpers, with expandable views of their maintained construction source. Replay/undo support finite synchronous programs and do not rewind JavaScript variables; use normal Run for timers or input. See [teaching API](docs/teaching-api.md) for geometry, storage limits and stamp layering.
-
-![Course walkthrough: goal, editable code and recorded drawing controls](docs/images/kaplum-course.png)
-
-Frame animations show **Pause animation** while running and **Resume animation** while paused. Resume retains pending frames without replaying the paused time. Restart begins again; Stop terminates execution. This pause is separate from finite drawing playback, which does not step JavaScript statements or inspect variables.
-
-To test code stepping, open a course lesson, choose **Debug code** above the canvas, then use **Next code statement**. The highlighted instruction has not run yet. Continue runs to completion unless you pause or stop. See [supported syntax and limitations](docs/source-debugger.md).
-
-In the debugger panel, set a **Breakpoint line** to pause before the next supported checkpoint on that line. Continue can hit it again in a loop. Restart preserves it; editing code clears it.
-
-
-## Verified publishing
-
-Run `bun run hooks:install` once per clone. The pre-push hook runs `bun run verify:push`: production build, the full Chromium and Firefox suites, and a separate `/kaplum-studio` build with Pages tests. A failed check blocks the push. Test screenshots stay temporary; the root-path preview is rebuilt afterwards.
-
-After committing, use `bun run push:verified` on main. It pushes through the hook and waits up to 15 minutes for the Pages workflow for that exact commit. Failed deployment, unavailable GitHub access or timeout exits with an error; success confirms the published commit and links the run. Pull requests retain their CI checks.
+- `engine/library.js` is a new Canvas Turtle core under MIT, replacing the earlier adapted teaching-fork engine and RGB parser. The drawing helpers in `engine/functions.js` were created by Enis Uysal with Codex assistance, according to the owner's declaration. This public repository starts from the current source snapshot and excludes the earlier teaching-fork history. See [engine provenance](docs/engine-migration.md).
+- Vendored [React Bits components](components/react-bits/README.md) retain **MIT + Commons Clause** under [their licence](components/react-bits/LICENSE.md); they are not included in learner ZIPs.
+- Dependency attributions remain in [THIRD_PARTY_NOTICES.txt](THIRD_PARTY_NOTICES.txt). Example names or depictions do not grant rights to third-party characters or trademarks.
