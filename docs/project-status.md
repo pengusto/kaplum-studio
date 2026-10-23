@@ -44,6 +44,6 @@ Clone the official repository, use the packageManager version in package.json, r
 
 ## Source and licensing
 
-Project code is MIT-licensed. On 12 October the owner confirmed authorship of the figure helpers created with Codex assistance. The maintained engine and retained component notices are documented in [engine migration](engine-migration.md) and the repository's license/third-party notices. Preserve original teaching sources and their provenance.
+Project code uses Pengusto Commercial License 1.0; third-party terms remain applicable. On 12 October the owner confirmed authorship of the figure helpers created with Codex assistance. The maintained engine and retained component notices are documented in [engine migration](engine-migration.md) and the repository's license/third-party notices. Preserve original teaching sources and their provenance.
 
 Earlier feature plans and stabilization checkpoints describe historical implementation stages. Their test counts and measurements are dated evidence; this page is the current summary.

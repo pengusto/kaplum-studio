@@ -62,7 +62,7 @@ export default function Documentation() {
             </article>
           </div>
         </section>
-        {['offline','about'].map(id => <section id={id} key={id}><h2>{d[id]}</h2><p>{d[id+'Text']}</p>{id === 'about' && <p><a href={`${repository}/blob/main/LICENSE`}>MIT</a> · <a href={`${repository}/blob/main/THIRD_PARTY_NOTICES.txt`}>Third-party notices</a> · <a href={`${repository}/issues`}>GitHub Issues</a></p>}</section>)}
+        {['offline','about'].map(id => <section id={id} key={id}><h2>{d[id]}</h2><p>{d[id+'Text']}</p>{id === 'about' && <p><a href={`${repository}/blob/main/LICENSE`}>Pengusto Commercial License 1.0</a> · <a href={`${repository}/blob/main/THIRD_PARTY_NOTICES.txt`}>Third-party notices</a> · <a href={`${repository}/issues`}>GitHub Issues</a></p>}</section>)}
         <footer className="docs-footer"><a href={assetUrl(`/legal/#${locale}`)}>{legalCopy[locale].notice}</a><a href={assetUrl(`/legal/#privacy-${locale}`)}>{legalCopy[locale].privacy}</a></footer>
       </main>
     </div>

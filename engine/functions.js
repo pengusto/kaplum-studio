@@ -1,4 +1,4 @@
-// Copyright (c) 2026 Enis Uysal. MIT License; see LICENSE.
+// Copyright (c) 2026 Enis Uysal. Pengusto Commercial License 1.0; see LICENSE.
 // Created with Codex assistance; authorship confirmed by the owner.
 // Maintained English helpers. German aliases share these implementations.
 (function () {

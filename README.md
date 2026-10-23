@@ -14,7 +14,7 @@
 
 [**Open Studio →**](https://pengusto.github.io/kaplum-studio/) · [Command reference](https://pengusto.github.io/kaplum-studio/docs/) · **English** · [Deutsch](docs/readme/README.de.md)
 
-[![License: project code MIT](https://img.shields.io/badge/project_code-MIT-blue)](#license)
+[![License: commercial](https://img.shields.io/badge/license-Pengusto_Commercial_1.0-blue)](#license)
 [![GitHub Pages](https://github.com/pengusto/kaplum-studio/actions/workflows/pages.yml/badge.svg)](https://github.com/pengusto/kaplum-studio/actions/workflows/pages.yml)
 [![Status: early development](https://img.shields.io/badge/status-early%20development-orange)](#project-status)
 
@@ -24,9 +24,17 @@ It grew out of beginner programming courses: the difficult part was often connec
 
 ![Figure catalogue with real Turtle previews, example calls and inline parameter controls](docs/images/kaplum-next-dark.png)
 
+## Licensing
+
+Kaplum Studio's own code uses **[Pengusto Commercial License 1.0](LICENSE)**.
+Teaching, organizational use, self-hosting and offline runtime use require a
+separate paid written agreement. The public demonstration is available for
+evaluation. Your own programs and drawings remain yours; bundled runtime files
+retain their license. [Scope and contact](docs/licensing.md).
+
 ## Your first experiment
 
-No installation or account needed: [open the dinosaur](https://pengusto.github.io/kaplum-studio/#figure/figur-dino).
+For evaluation in the public demonstration, no installation or account is needed: [open the dinosaur](https://pengusto.github.io/kaplum-studio/#figure/figur-dino).
 
 1. Run the example and open its parameter explanations.
 2. Change the size or colour, then run it again. The drawing comes from the code you see.
@@ -59,7 +67,7 @@ These are actual Studio screenshots, captured by the production screenshot test 
 
 ## Run locally
 
-Requires [Bun](https://bun.sh) **1.4.2**, Git and a current Chromium or Firefox. Safari remains untested.
+For use covered by your agreement. Requires [Bun](https://bun.sh) **1.4.2**, Git and a current Chromium or Firefox. Safari remains untested.
 
 ```sh
 git clone https://github.com/pengusto/kaplum-studio.git
@@ -118,8 +126,8 @@ For maintainers, install the versioned hook once per clone with `bun run hooks:i
 
 ## License
 
-Kaplum Studio's own code is released under the [MIT License](LICENSE). This does not replace third-party terms:
+Kaplum Studio's own code uses [Pengusto Commercial License 1.0](LICENSE). Source inspection and the public demonstration are permitted for evaluation; use in teaching or an organization needs a paid written agreement. This does not replace third-party terms:
 
-- `engine/library.js` is a new Canvas Turtle core under MIT, replacing the earlier adapted teaching-fork engine and RGB parser. The drawing helpers in `engine/functions.js` were created by Enis Uysal with Codex assistance, according to the owner's declaration. This public repository starts from the current source snapshot and excludes the earlier teaching-fork history. See [engine provenance](docs/engine-migration.md).
+- `engine/library.js` is a maintained Canvas Turtle core under the project commercial license, replacing the earlier adapted teaching-fork engine and RGB parser. The drawing helpers in `engine/functions.js` were created by Enis Uysal with Codex assistance, according to the owner's declaration. This public repository starts from the current source snapshot and excludes the earlier teaching-fork history. See [engine provenance](docs/engine-migration.md).
 - Vendored [React Bits components](components/react-bits/README.md) retain **MIT + Commons Clause** under [their licence](components/react-bits/LICENSE.md); they are not included in learner ZIPs.
 - Dependency attributions remain in [THIRD_PARTY_NOTICES.txt](THIRD_PARTY_NOTICES.txt). Example names or depictions do not grant rights to third-party characters or trademarks.

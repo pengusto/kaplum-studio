@@ -1,5 +1,7 @@
 # Contributing to Kaplum Studio
 
+The project code uses [Pengusto Commercial License 1.0](LICENSE); third-party terms remain applicable. Agree contribution and licensing terms with the maintainer before submitting code. No assignment of contributor rights is implied. Development instructions do not grant operational usage rights.
+
 Small, focused contributions are welcome. Describe the learner-facing problem in a GitHub issue before starting a large change. Do not upload student projects, personal data or classroom materials.
 
 Use Bun 1.4.2 and the committed lockfile:

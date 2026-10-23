@@ -29,7 +29,7 @@ for (const id of ["en", "de", "ja", "tr", "hy"]) {
     await page.getByRole("searchbox").fill("drawDino");
     await expect(page.locator(".example-card")).toHaveCount(1);
     await expect(page.locator(".catalogue-preview")).toHaveAttribute("data-drawn", "true");
-    for (const path of ["/engine/library.js", "/engine/functions.js", "/src/worker.js", "/favicon.svg", "/THIRD_PARTY_NOTICES.txt"]) {
+    for (const path of ["/engine/library.js", "/engine/functions.js", "/src/worker.js", "/favicon.svg", "/THIRD_PARTY_NOTICES.txt", "/LICENSE"]) {
       expect((await page.request.get(base + path)).ok()).toBe(true);
     }
     await page.reload();
@@ -63,6 +63,12 @@ test("mounted offline ZIP retains exact source, fallback canvas, notices and rea
     expect(
       await readFile(join(dir, "THIRD_PARTY_NOTICES.txt"), "utf8"),
     ).toContain("Turtle");
+    expect(await readFile(join(dir, "LICENSE"), "utf8")).toBe(
+      await readFile("LICENSE", "utf8"),
+    );
+    expect(await readFile(join(dir, "THIRD_PARTY_NOTICES.txt"), "utf8")).toBe(
+      await readFile("THIRD_PARTY_NOTICES.txt", "utf8"),
+    );
     const offline = await browser.newPage();
     await offline.goto(pathToFileURL(join(dir, "index.html")).href);
     await expect
@@ -132,4 +138,18 @@ test('mounted course lab and construction views load under Pages subpath',async(
  await page.goto(`${base}/#course`);await expect(page.locator('.feature-lesson-grid article')).toHaveCount(9);await page.locator('.feature-lesson-grid article').first().getByRole('link').click();await expect(page).toHaveURL(/#course\/square$/);await page.getByRole('button',{name:'Record drawing',exact:true}).click();await expect(page.getByRole('group',{name:'Drawing playback'})).toBeVisible();
  await page.goto(`${base}/#course/functions`);await page.locator('.lesson-debug-start').click();await page.getByRole('button',{name:'Continue code',exact:true}).click();await expect(page.locator('.debug-command')).toContainText('Finished');await expect(page.locator('.debug-call-stack')).toHaveText('Active calls: main.js');await expect(page.locator('.source-debugger dl > div').filter({has:page.locator('dt',{hasText:/^perimeter$/})}).locator('dd')).toHaveText('400');
  await page.goto(`${base}/#figure/figur-pacman`);await page.locator('.inspector-toggle').click();await expect(page.locator('.explanation-pane')).toBeVisible();await page.locator('.example-construction summary').click();await expect(page.locator('.example-construction pre')).toContainText('function drawPacman(');
+});
+
+test("commercial license is served and documented in every UI language", async ({ page, request }) => {
+  const response = await request.get(`${base}/LICENSE`);
+  expect(response.ok()).toBe(true);
+  expect(await response.text()).toBe(await readFile("LICENSE", "utf8"));
+  for (const locale of ["en", "de", "ja", "tr", "hy"]) {
+    await page.goto(`${base}/docs/?lang=${locale}`);
+    await expect(page.locator("html")).toHaveAttribute("lang", locale);
+    await expect(page.locator("#about")).toContainText("Pengusto Commercial License 1.0");
+    await expect(page.locator("#about").getByRole("link", { name: "Pengusto Commercial License 1.0", exact: true }))
+      .toHaveAttribute("href", "https://github.com/pengusto/kaplum-studio/blob/main/LICENSE");
+    await expect(page.locator("#about").getByRole("link", { name: "MIT", exact: true })).toHaveCount(0);
+  }
 });
