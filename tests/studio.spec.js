@@ -639,7 +639,7 @@ test("Dock opens each full catalogue and cards keep readable borders in both the
 test("Kaplum branding and existing browser preferences survive the rename", async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem("kaplu-settings-v1", JSON.stringify({ theme: "light", canvas: "dark", locale: "en", colorPreset: "violet" })));
   await page.goto("/");
-  await expect(page).toHaveTitle("Kaplum Studio");
+  await expect(page).toHaveTitle("Kaplum Studio – Learn JavaScript with Turtle Graphics");
   await expect(page.locator(".brand")).toHaveText("Kaplum Studio");
   await expect(page.locator("html")).toHaveAttribute("data-color-preset", "violet");
   await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
