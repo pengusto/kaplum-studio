@@ -42,6 +42,14 @@ for (const [path, type] of [["/", "studio"], ["/docs/", "documentation"]]) {
   });
 }
 
+test('public sitemap includes the application and documentation, without hash routes', async ({ request }) => {
+  const response = await request.get(`${base}/sitemap.xml`);
+  expect(response.ok()).toBe(true);
+  const xml = await response.text();
+  const urls = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(match => match[1]);
+  expect(urls).toEqual([studioUrl, `${studioUrl}docs/`]);
+});
+
 test('JSON-LD serialization cannot close the script element', () => {
   const value = { name: '</script><script>alert("x")</script>' };
   const serialized = serializeStructuredData(value);
