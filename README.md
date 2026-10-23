@@ -1,4 +1,10 @@
-![Kaplum Studio — a penguin and a crowned turtle draw glowing geometry on paper in a cosy atelier](docs/images/kaplum-zeichenatelier-banner.png)
+<picture>
+  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset="docs/images/kaplum-zeichenatelier-mobile-dark.png">
+  <source media="(max-width: 600px) and (prefers-color-scheme: light)" srcset="docs/images/kaplum-zeichenatelier-mobile-light.png">
+  <source media="(prefers-color-scheme: dark)" srcset="docs/images/kaplum-zeichenatelier-banner.png">
+  <source media="(prefers-color-scheme: light)" srcset="docs/images/kaplum-zeichenatelier-light.png">
+  <img alt="Kaplum Studio: a penguin and crowned turtle draw geometry on paper in an atelier" src="docs/images/kaplum-zeichenatelier-light.png">
+</picture>
 
 *AI-generated banner illustration; [asset sources and scope](docs/images/README.md).*
 

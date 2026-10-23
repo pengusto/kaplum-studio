@@ -1,4 +1,10 @@
-![Kaplum Studio — ein Pinguin und eine gekrönte Turtle zeichnen leuchtende Geometrie auf Papier im gemütlichen Atelier](../images/kaplum-zeichenatelier-banner.png)
+<picture>
+  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset="../images/kaplum-zeichenatelier-mobile-dark.png">
+  <source media="(max-width: 600px) and (prefers-color-scheme: light)" srcset="../images/kaplum-zeichenatelier-mobile-light.png">
+  <source media="(prefers-color-scheme: dark)" srcset="../images/kaplum-zeichenatelier-banner.png">
+  <source media="(prefers-color-scheme: light)" srcset="../images/kaplum-zeichenatelier-light.png">
+  <img alt="Kaplum Studio: Pinguin und gekrönte Turtle zeichnen Geometrie auf Papier im Atelier" src="../images/kaplum-zeichenatelier-light.png">
+</picture>
 
 *KI-generierte Bannerillustration; [Bildherkunft und Geltungsbereich](../images/README.md).*
 
