@@ -39,7 +39,7 @@ For evaluation in the public demonstration, no installation or account is needed
 1. Run the example and open its parameter explanations.
 2. Change the size or colour, then run it again. The drawing comes from the code you see.
 3. Try [Square replay](https://pengusto.github.io/kaplum-studio/#course/square) to walk through a drawing, or [Own functions, step by step](https://pengusto.github.io/kaplum-studio/#course/functions) to inspect code execution.
-4. Export a ZIP, unzip it and open `index.html`. Your exact `program.js` and the engine travel with it; no server or internet connection is needed.
+4. Export a ZIP with your exact `program.js`, the engine and an `EXPORT-README.txt` explaining the offline files and applicable license. Where your rights permit offline use, unzip it and open `index.html`; no server or internet connection is needed.
 
 ## From a picture to a program
 

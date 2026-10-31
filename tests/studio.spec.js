@@ -176,6 +176,8 @@ test("offline ZIP retains exact source, fallback canvas, notices and real execut
     expect(
       await readFile(join(dir, "THIRD_PARTY_NOTICES.txt"), "utf8"),
     ).toContain("Turtle");
+    expect(await readFile(join(dir, "LICENSE"), "utf8")).toBe(await readFile("LICENSE", "utf8"));
+    expect(await readFile(join(dir, "EXPORT-README.txt"), "utf8")).toBe(await readFile("EXPORT-README.txt", "utf8"));
     const offline = await browser.newPage();
     await offline.goto(pathToFileURL(join(dir, "index.html")).href);
     await expect

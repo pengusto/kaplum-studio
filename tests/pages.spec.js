@@ -29,7 +29,7 @@ for (const id of ["en", "de", "ja", "tr", "hy"]) {
     await page.getByRole("searchbox").fill("drawDino");
     await expect(page.locator(".example-card")).toHaveCount(1);
     await expect(page.locator(".catalogue-preview")).toHaveAttribute("data-drawn", "true");
-    for (const path of ["/engine/library.js", "/engine/functions.js", "/src/worker.js", "/favicon.svg", "/THIRD_PARTY_NOTICES.txt", "/LICENSE"]) {
+    for (const path of ["/engine/library.js", "/engine/functions.js", "/src/worker.js", "/favicon.svg", "/THIRD_PARTY_NOTICES.txt", "/LICENSE", "/EXPORT-README.txt"]) {
       expect((await page.request.get(base + path)).ok()).toBe(true);
     }
     await page.reload();
@@ -37,6 +37,26 @@ for (const id of ["en", "de", "ja", "tr", "hy"]) {
     expect(errors).toEqual([]);
   });
 }
+
+test("export preserves the program and can retry if the offline guide cannot load", async ({ page }) => {
+  await page.goto(`${base}/#personal`);
+  const source = 'forward(23); // keep my work';
+  await page.locator("#code").click();
+  await page.keyboard.press("ControlOrMeta+A");
+  await pasteCode(page, source);
+  await page.route("**/EXPORT-README.txt", route => route.abort());
+  const button = page.getByRole("button", { name: "Download project ZIP", exact: true });
+  const error = page.getByRole("alert").filter({ hasText: "The download could not be created. Your code is still here." });
+  await button.click();
+  await expect(error).toBeVisible();
+  await expect(page.locator("#code")).toHaveText(source);
+  await expect(button).toBeEnabled();
+  await page.unroute("**/EXPORT-README.txt");
+  const download = page.waitForEvent("download");
+  await button.click();
+  expect((await download).suggestedFilename()).toBe("turtle-project.zip");
+  await expect(error).toHaveCount(0);
+});
 
 test("mounted offline ZIP retains exact source, fallback canvas, notices and real execution", async ({
   page,
@@ -68,6 +88,9 @@ test("mounted offline ZIP retains exact source, fallback canvas, notices and rea
     );
     expect(await readFile(join(dir, "THIRD_PARTY_NOTICES.txt"), "utf8")).toBe(
       await readFile("THIRD_PARTY_NOTICES.txt", "utf8"),
+    );
+    expect(await readFile(join(dir, "EXPORT-README.txt"), "utf8")).toBe(
+      await readFile("EXPORT-README.txt", "utf8"),
     );
     const offline = await browser.newPage();
     await offline.goto(pathToFileURL(join(dir, "index.html")).href);

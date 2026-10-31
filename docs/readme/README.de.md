@@ -39,7 +39,7 @@ Zur Evaluierung in der öffentlichen Demo, ohne Installation oder Konto: [Öffne
 1. Starte das Beispiel und öffne die Parametererklärungen.
 2. Ändere Größe oder Farbe und starte es erneut. Die Zeichnung entsteht aus dem sichtbaren Code.
 3. Probiere [Quadrat abspielen](https://pengusto.github.io/kaplum-studio/#course/square) für einzelne Zeichenschritte oder [Eigene Funktionen, Schritt für Schritt](https://pengusto.github.io/kaplum-studio/#course/functions) zur Untersuchung der Code-Ausführung.
-4. Exportiere eine ZIP, entpacke sie und öffne `index.html`. Dein exaktes `program.js` und die Engine sind dabei; Server und Internet sind nicht nötig.
+4. Exportiere eine ZIP mit deinem exakten `program.js`, der Engine und einer `EXPORT-README.txt` zu den Offline-Dateien und der geltenden Lizenz. Soweit deine Rechte die Offline-Nutzung erlauben, entpacke sie und öffne `index.html`; Server und Internet sind nicht nötig.
 
 ## Vom Bild zum Programm
 
